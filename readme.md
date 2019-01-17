@@ -19,7 +19,7 @@ Additionally, it has instructions on how to build and deploy the robot
 
 #### IntelliJ
 - Run `./gradlew idea`
-- Open the `FRC-2018-Public.ipr` file with IntelliJ
+- Open the `Laika-2019.ipr` file with IntelliJ
 
 ### Building/Deploying to the Robot
 - Run `./gradlew build` to build the code. Use the `--info` flag for more details
