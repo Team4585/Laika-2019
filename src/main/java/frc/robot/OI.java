@@ -12,6 +12,8 @@ package frc.robot;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+  private int HELMSTICKPORT;
+  private int WEAPONSTICKPORT;
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -39,4 +41,21 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+  
+  /*
+  Move Forward/Backward           | Axis 1 (X Axis)                | Helm
+  Turn Right/Left                 | Twist (getDirectionDegrees())  | Helm
+  Move Cargo Grabber Up/Down      | Axis 1                         | Weapons
+  Move Panel Grabber Up/Down      | Axis 1                         | Weapons
+  Switch from Cargo to Panel      | Trigger (getTrigger())         | Weapons
+  Start/Stop Cargo Intake         | Button 5                       | Weapons
+  Push Hatch Panels               | Button 6                       | Weapons
+  Start Climb                     | Button 12                      | Weapons
+  Switch To Televised             | Button 11                      | Helm/Weapons
+  */
+  
+  private Joystick _HelmStick;
+  private Joystick _WeaponStick;
+  
+  
 }
