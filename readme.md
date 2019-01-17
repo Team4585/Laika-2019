@@ -24,3 +24,8 @@ Additionally, it has instructions on how to build and deploy the robot
 ### Building/Deploying to the Robot
 - Run `./gradlew build` to build the code. Use the `--info` flag for more details
 - Run `./gradlew deploy` to deploy to the robot in Terminal (Mac) or Powershell (Windows)
+
+
+## Variable Naming Conventions
+- c_*** (i.e. `c_DriveLowGearVelocityKi`): Final constants
+- m_*** (i.e. `m_subsystem`): Private instance variables
