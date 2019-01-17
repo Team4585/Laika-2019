@@ -44,10 +44,10 @@ public class OI {
   
   /*
   Move Forward/Backward           | Axis 1 (X Axis)                | Helm
-  Turn Right/Left                 | Twist (getDirectionDegrees())  | Helm
+  Turn Right/Left                 | Twist                          | Helm
   Move Cargo Grabber Up/Down      | Axis 1                         | Weapons
   Move Panel Grabber Up/Down      | Axis 1                         | Weapons
-  Switch from Cargo to Panel      | Trigger (getTrigger())         | Weapons
+  Switch from Cargo to Panel      | Trigger                        | Weapons
   Start/Stop Cargo Intake         | Button 5                       | Weapons
   Push Hatch Panels               | Button 6                       | Weapons
   Start Climb                     | Button 12                      | Weapons
@@ -57,7 +57,36 @@ public class OI {
   private Joystick _HelmStick;
   private Joystick _WeaponStick;
   
-  public OI () {
-    
+  private bool isCargoActive;
+  
+  public OI ()
+  {
+    _HelmStick = new Joystick(HELMSTICKPORT);
+    _WeaponStick = new Joystick(WEAPONSTICKPORT);
+  }
+  
+  public bool GetCargoActive ()
+  {
+    if (_HelmStick.getTriggerPressed()) 
+    {
+      isCargoActive = !isCargoActive;
+    }
+    return (isCargoActive);
+  }
+  public double GetCargoAxis ()
+  {
+    if (isCargoActive)
+    {
+      return (_HelmStick.getY(GenericHID.Hand.kRight));
+    }
+    return (0);
+  }
+  public double GetPanelAxis ()
+  {
+    if (!isCargoActive)
+    {
+      return (_HelmStick.getY(GenericHID.Hand.kRight));
+    }
+    return (0);
   }
 }
