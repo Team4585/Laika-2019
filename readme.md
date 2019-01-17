@@ -15,7 +15,7 @@ Additionally, it has instructions on how to build and deploy the robot
 #### Eclipse
 - Run `./gradlew eclipse`
 - Open Eclipse and go to "File > Open Projects" from "File System..."
-- Set the import source to the `FRC-2018-Public` folder then click finish
+- Set the import source to the `Laika 2019` folder then click finish
 
 #### IntelliJ
 - Run `./gradlew idea`
