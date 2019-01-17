@@ -57,5 +57,7 @@ public class OI {
   private Joystick _HelmStick;
   private Joystick _WeaponStick;
   
-  
+  public OI () {
+    
+  }
 }
