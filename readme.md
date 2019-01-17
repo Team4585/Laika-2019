@@ -1,6 +1,8 @@
 # FRC 2019 Robot Code
 
-    This is the code for Team 4585's 2019 Robot: Laika! Below, there are instructions to opening this repository in Eclipse and IntelliJ. Additionally, it has instructions on how to build and deply the robot
+This is the code for Team 4585's 2019 Robot: Laika! 
+Below, there are instructions to opening this repository in Eclipse and IntelliJ. 
+Additionally, it has instructions on how to build and deploy the robot
 
 ## Setup Instructions
 
