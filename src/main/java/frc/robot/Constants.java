@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
@@ -47,4 +48,19 @@ public class Constants {
     public static final double c_DriveHighGearVelocityKd = 0.0; //Tune
     public static final double c_DriveHighGearVelocityKf = 0.0; //Tune
     public static final int c_DriveHighGearVelocityIZone = 0; //Tune
+
+    public static final int c_ShifterSolenoidID = 12;
+    public static Solenoid makeSolenoidForId(int solenoidId) {
+        if (solenoidId <= 4) {
+            // These solenoids are on PCM 1, wired 1-4 to 7-4.
+            return new Solenoid(1, 8 - solenoidId);
+        } else if (solenoidId <= 8) {
+            // These solenoids are on PCM 0, wired 5-8 to 0-3.
+            return new Solenoid(0, solenoidId - 5);
+        } else if (solenoidId <= 12) {
+            // These solenoids are on PCM 0, wired 9-12 to 7-4.
+            return new Solenoid(0, 16 - solenoidId);
+        }
+        throw new IllegalArgumentException("Solenoid ID not valid: " + solenoidId);
+    }
 }
