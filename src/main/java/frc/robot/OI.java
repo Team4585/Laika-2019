@@ -43,15 +43,15 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
   
   /*
-  Move Forward/Backward           | Axis 1 (X Axis)                | Helm
-  Turn Right/Left                 | Twist                          | Helm
-  Move Cargo Grabber Up/Down      | Axis 1                         | Weapons
-  Move Panel Grabber Up/Down      | Axis 1                         | Weapons
-  Switch from Cargo to Panel      | Trigger                        | Weapons
-  Start/Stop Cargo Intake         | Button 5                       | Weapons
-  Push Hatch Panels               | Button 6                       | Weapons
-  Start Climb                     | Button 12                      | Weapons
-  Switch To Televised             | Button 11                      | Helm/Weapons
+  Move Forward/Backward           | Axis 1                         | Helm           | Done
+  Turn Right/Left                 | Twist                          | Helm           | Done
+  Move Cargo Grabber Up/Down      | Axis 1                         | Weapons        | Done
+  Move Panel Grabber Up/Down      | Axis 1                         | Weapons        | Done
+  Switch from Cargo to Panel      | Trigger                        | Weapons        | Done
+  Start/Stop Cargo Intake         | Button 5                       | Weapons        | 
+  Push Hatch Panels               | Button 6                       | Weapons        | 
+  Start Climb                     | Button 12                      | Weapons        | 
+  Switch To Televised             | Button 11                      | Helm/Weapons   | 
   */
   
   private Joystick _HelmStick;
@@ -67,7 +67,7 @@ public class OI {
   
   public bool GetCargoActive ()
   {
-    if (_HelmStick.getTriggerPressed()) 
+    if (_WeopnStick.getTriggerPressed()) 
     {
       isCargoActive = !isCargoActive;
     }
@@ -77,7 +77,7 @@ public class OI {
   {
     if (isCargoActive)
     {
-      return (_HelmStick.getY(GenericHID.Hand.kRight));
+      return (_WeaponStick.getY(GenericHID.Hand.kRight));
     }
     return (0);
   }
@@ -85,8 +85,16 @@ public class OI {
   {
     if (!isCargoActive)
     {
-      return (_HelmStick.getY(GenericHID.Hand.kRight));
+      return (_WeaponStick.getY(GenericHID.Hand.kRight));
     }
     return (0);
+  }
+  public double GetRobotForward ()
+  {
+    return (_HelmStick.getY(GenericHID.Hand.kRight));
+  }
+  public double GetRobotTwist ()
+  {
+    return (_HelmStick.getTwist());
   }
 }
