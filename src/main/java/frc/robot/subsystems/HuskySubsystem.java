@@ -2,7 +2,12 @@ package frc.team4585.robot;
 
 public interface HuskySubsystem {
 	
-	public bool Active;
+	private bool Active;
+	
+	public void setActive(bool a)
+	{
+		Active = a;
+	}
 	
 	public void onDeactivate();
 	
