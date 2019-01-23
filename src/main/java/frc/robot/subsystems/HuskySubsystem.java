@@ -22,5 +22,4 @@ public interface HuskySubsystem {
 	public void teleopInit();
 	
 	public void doTeleop();
-	
 }
