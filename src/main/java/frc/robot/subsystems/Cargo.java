@@ -18,4 +18,14 @@ public class Cargo extends HuskySubsystem
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
     _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
   }
+  
+  public void SetArmTarget (double angle)
+  {
+    _arm.SetTarget(double angle);
+  }
+  
+  public void ToggleIntake ()
+  {
+    _intake.Toggle();
+  }
 }
