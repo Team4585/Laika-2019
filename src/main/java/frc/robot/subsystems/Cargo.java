@@ -17,9 +17,15 @@ public class Cargo extends HuskySubsystem
     _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
   }
   
+  public void onDeactivate ()
+  {
+    _arm.SetActive(false);
+    _intake.SetActive(false);
+  }
+  
   public void SetArmTarget (double angle)
   {
-    _arm.SetTarget(double angle);
+    _arm.SetTarget(angle);
   }
   
   public void ToggleIntake ()
