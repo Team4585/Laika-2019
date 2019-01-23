@@ -7,15 +7,29 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-public class HatchMech extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+public class HatchMech implements HuskySubsystem
+{
+  private PivotArm _arm;
+  private HatchIntake _intake;
+  public HatchMech (int ArmMotorPort, int ArmSensorPort, int HatchMotorPort, int HatchSensorPort)
+  {
+     _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
+    _intake = new HatchIntake(HatchMotorPort, HatchSensorPort);
+  }
+  
+  public void onDeactivate ()
+  {
+    _arm.SetActive(false);
+    _intake.SetActive(false);
+  }
+  
+  public void SetArmTarget (double angle)
+  {
+    _arm.SetTarget(angle);
+  }
+  
+  public void Release ()
+  {
+    _intake.Release();
   }
 }
