@@ -21,7 +21,11 @@ public class PivotArm extends HuskySubsystem
             SetTarget();
       }
       
-      public void update ()
+      public void doAuto ()
+      {
+            //move to target position
+      }
+      public void doTeleop ()
       {
             //move to target position
       }
