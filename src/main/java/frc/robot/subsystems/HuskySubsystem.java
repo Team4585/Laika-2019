@@ -7,6 +7,10 @@ public interface HuskySubsystem {
 	public void setActive(bool a)
 	{
 		Active = a;
+		if (a == false)
+		{
+			onDeactivate();
+		}
 	}
 	
 	public void onDeactivate();
