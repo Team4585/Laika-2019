@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
 public class Cargo extends HuskySubsystem
 {
   private PivotArm _arm;
