@@ -17,10 +17,10 @@ public class OI {
   Move Cargo Grabber Up/Down      | Axis 1                         | Weapons        | Done
   Move Panel Grabber Up/Down      | Axis 1                         | Weapons        | Done
   Switch from Cargo to Panel      | Trigger                        | Weapons        | Done
-  Start/Stop Cargo Intake         | Button 5                       | Weapons        | 
-  Push Hatch Panels               | Button 6                       | Weapons        | 
-  Start Climb                     | Button 12                      | Weapons        | 
-  Switch To Televised             | Button 11                      | Helm/Weapons   | 
+  Start/Stop Cargo Intake         | Button 5                       | Weapons        | Done
+  Push Hatch Panels               | Button 6                       | Weapons        | Done
+  Start Climb                     | Button 12                      | Weapons        | Done
+  Switch To Televised             | Button 11                      | Helm/Weapons   | Done
   */
   
   private Joystick _HelmStick;
@@ -65,5 +65,21 @@ public class OI {
   public double GetRobotTwist ()
   {
     return (_HelmStick.getTwist());
+  }
+  public bool GetCargoToggle ()
+  {
+    return _WeaponStick.getRawButton(5);
+  }
+  public bool GetHatchPush ()
+  {
+    return _WeaponStick.getRawButton(6);
+  }
+  public bool GetClimb ()
+  {
+    return _WeaponStick.getRawButton(12);
+  }
+  public bool GetTelevisedSwitch ()
+  {
+    return _WeaponStick.getRawButton(11);
   }
 }
