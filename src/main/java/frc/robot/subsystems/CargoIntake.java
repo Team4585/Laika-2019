@@ -12,38 +12,38 @@ public class CargoIntake implements HuskySubsystem
 {
 	private static final double IN_DISTANCE_PER_PULSE = 0.01;
 	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
-  
-  private Encoder _IntakeEncoder;
-  
-  //private SomeSensor _CheckSensor;
-  public CargoIntake (int MotorPort, int SensorPort)
-  {
-    //set encoder
-    //set sensor
-  }
-  
-  public void onDeactivate ()
-  {
-    _IntakeEncoder.reset();
-  }
-  
-  public void Intake ()
-  {
-    //Set encoder
-  }
-  public void Outtake ()
-  {
-    //set encoder
-  }
-  public void Toggle ()
-  {
-    if (/*Sensor senses ball*/)
-    {
-      Outtake ();
-    }
-    else
-    {
-      Intake ();
-    }
-  }
+
+	private Encoder _IntakeEncoder;
+
+	//private SomeSensor _CheckSensor;
+	public CargoIntake (int MotorPort, int SensorPort)
+	{
+		//set encoder
+		//set sensor
+	}
+
+	public void onDeactivate ()
+	{
+		_IntakeEncoder.reset();
+	}
+
+	public void Intake ()
+	{
+		//Set encoder
+	}
+	public void Outtake ()
+	{
+		//set encoder
+	}
+	public void Toggle ()
+	{
+		if (/*Sensor senses ball*/)
+		{
+			  Outtake ();
+		}
+		else
+		{
+			  Intake ();
+		}
+	}
 }
