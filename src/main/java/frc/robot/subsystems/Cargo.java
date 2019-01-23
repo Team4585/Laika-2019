@@ -9,13 +9,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class CargoPivot extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+public class Cargo extends HuskySubsystem
+{
+  private PivotArm _arm;
+  private CargoIntake _intake;
+  public Cargo (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
+  {
+     _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
+    _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
   }
 }
