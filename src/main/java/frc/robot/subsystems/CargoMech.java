@@ -11,7 +11,7 @@ public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
   private CargoIntake _intake;
-  public Cargo (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
+  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
   {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
     _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
