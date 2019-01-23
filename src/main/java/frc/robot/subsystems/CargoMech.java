@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-public class Cargo implements HuskySubsystem
+public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
   private CargoIntake _intake;
