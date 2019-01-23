@@ -18,7 +18,7 @@ public class PivotArm extends HuskySubsystem
   
       public void onDeactivate ()
       {
-            SetTarget();
+            SetTarget(0);
       }
       
       public void doAuto ()
