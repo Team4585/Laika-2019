@@ -1,9 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
+
 
 public class Constants {
     

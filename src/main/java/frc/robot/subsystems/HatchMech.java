@@ -7,29 +7,42 @@
 
 package frc.robot.subsystems;
 
-public class HatchMech implements HuskySubsystem
-{
+public class HatchMech implements HuskySubsystem {
   private PivotArm _arm;
-  private HatchIntake _intake;
-  public HatchMech (int ArmMotorPort, int ArmSensorPort, int HatchMotorPort, int HatchSensorPort)
-  {
+  private HatchIO _intake;
+  public HatchMech (int ArmMotorPort, int ArmSensorPort, int HatchMotorPort, int HatchSensorPort) {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _intake = new HatchIntake(HatchMotorPort, HatchSensorPort);
+    _intake = new HatchIO(HatchMotorPort, HatchSensorPort);
   }
   
-  public void onDeactivate ()
-  {
-    _arm.SetActive(false);
-    _intake.SetActive(false);
-  }
   
-  public void SetArmTarget (double angle)
-  {
+  public void SetArmTarget (double angle) {
     _arm.SetTarget(angle);
   }
   
-  public void Release ()
-  {
-    _intake.Release();
+  public void release () {
+    _intake.release();
   }
+
+  @Override
+  public void autoInit() {
+
+  }
+
+  @Override
+  public void doAuto() {
+
+  }
+
+  @Override
+  public void teleopInit() {
+
+  }
+
+  @Override
+  public void doTeleop() {
+
+  }
+
+
 }

@@ -8,42 +8,56 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 
-public class CargoIntake implements HuskySubsystem
-{
+public class CargoIntake implements HuskySubsystem {
 	private static final double IN_DISTANCE_PER_PULSE = 0.01;
 	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
 
 	private Encoder _IntakeEncoder;
 
 	//private SomeSensor _CheckSensor;
-	public CargoIntake (int MotorPort, int SensorPort)
-	{
+	public CargoIntake (int MotorPort, int SensorPort) {
 		//set encoder
 		//set sensor
 	}
 
-	public void onDeactivate ()
-	{
+	public void onDeactivate () {
 		_IntakeEncoder.reset();
 	}
 
-	public void Intake ()
-	{
+	public void Intake () {
 		//Set encoder
 	}
-	public void Outtake ()
-	{
+	public void Output () {
 		//set encoder
 	}
-	public void Toggle ()
-	{
-		if (/*Sensor senses ball*/)
-		{
-			  Outtake ();
+	public void Toggle () {
+		/** 
+		if (Sensor senses ball) {
+			  Output ();
 		}
-		else
-		{
+		else {
 			  Intake ();
 		}
+		**/
+	}
+
+	@Override
+	public void autoInit() {
+
+	}
+
+	@Override
+	public void doAuto() {
+
+	}
+
+	@Override
+	public void teleopInit() {
+
+	}
+
+	@Override
+	public void doTeleop() {
+
 	}
 }
