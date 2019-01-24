@@ -6,16 +6,44 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.Encoder;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+public class CargoIntake implements HuskySubsystem
+{
+	private static final double IN_DISTANCE_PER_PULSE = 0.01;
+	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
 
-public class CargoIntake extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+	private Encoder _IntakeEncoder;
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+	//private SomeSensor _CheckSensor;
+	public CargoIntake (int MotorPort, int SensorPort)
+	{
+		//set encoder
+		//set sensor
+	}
+
+	public void onDeactivate ()
+	{
+		_IntakeEncoder.reset();
+	}
+
+	public void Intake ()
+	{
+		//Set encoder
+	}
+	public void Outtake ()
+	{
+		//set encoder
+	}
+	public void Toggle ()
+	{
+		if (/*Sensor senses ball*/)
+		{
+			  Outtake ();
+		}
+		else
+		{
+			  Intake ();
+		}
+	}
 }

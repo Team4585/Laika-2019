@@ -7,14 +7,14 @@
 
 package frc.robot.subsystems;
 
-public class HatchMech implements HuskySubsystem
+public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
-  private HatchIntake _intake;
-  public HatchMech (int ArmMotorPort, int ArmSensorPort, int HatchMotorPort, int HatchSensorPort)
+  private CargoIntake _intake;
+  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
   {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _intake = new HatchIntake(HatchMotorPort, HatchSensorPort);
+    _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
   }
   
   public void onDeactivate ()
@@ -28,8 +28,8 @@ public class HatchMech implements HuskySubsystem
     _arm.SetTarget(angle);
   }
   
-  public void Release ()
+  public void ToggleIntake ()
   {
-    _intake.Release();
+    _intake.Toggle();
   }
 }
