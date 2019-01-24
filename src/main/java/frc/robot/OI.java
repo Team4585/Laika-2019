@@ -7,40 +7,9 @@
 
 package frc.robot;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
 public class OI {
   private int HELMSTICKPORT;
   private int WEAPONSTICKPORT;
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
-
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
-
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
-
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
-
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
-
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
   
   /*
   Move Forward/Backward           | Axis 1                         | Helm           | Done
@@ -48,10 +17,10 @@ public class OI {
   Move Cargo Grabber Up/Down      | Axis 1                         | Weapons        | Done
   Move Panel Grabber Up/Down      | Axis 1                         | Weapons        | Done
   Switch from Cargo to Panel      | Trigger                        | Weapons        | Done
-  Start/Stop Cargo Intake         | Button 5                       | Weapons        | 
-  Push Hatch Panels               | Button 6                       | Weapons        | 
-  Start Climb                     | Button 12                      | Weapons        | 
-  Switch To Televised             | Button 11                      | Helm/Weapons   | 
+  Start/Stop Cargo Intake         | Button 5                       | Weapons        | Done
+  Push Hatch Panels               | Button 6                       | Weapons        | Done
+  Start Climb                     | Button 12                      | Weapons        | Done
+  Switch To Televised             | Button 11                      | Helm/Weapons   | Done
   */
   
   private Joystick _HelmStick;
@@ -63,11 +32,11 @@ public class OI {
   {
     _HelmStick = new Joystick(HELMSTICKPORT);
     _WeaponStick = new Joystick(WEAPONSTICKPORT);
-  }
-  
+  } 
+  //These functions will be used by the 
   public bool GetCargoActive ()
   {
-    if (_WeopnStick.getTriggerPressed()) 
+    if (_WeaponStick.getTriggerPressed()) 
     {
       isCargoActive = !isCargoActive;
     }
@@ -96,5 +65,21 @@ public class OI {
   public double GetRobotTwist ()
   {
     return (_HelmStick.getTwist());
+  }
+  public bool GetCargoToggle ()
+  {
+    return _WeaponStick.getRawButton(5);
+  }
+  public bool GetHatchPush ()
+  {
+    return _WeaponStick.getRawButton(6);
+  }
+  public bool GetClimb ()
+  {
+    return _WeaponStick.getRawButton(12);
+  }
+  public bool GetTelevisedSwitch ()
+  {
+    return _WeaponStick.getRawButton(11);
   }
 }
