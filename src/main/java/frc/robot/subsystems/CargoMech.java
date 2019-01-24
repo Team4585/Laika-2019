@@ -10,17 +10,17 @@ package frc.robot.subsystems;
 public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
-  private CargoIntake _intake;
+  private CargoIO _io;
   public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
   {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
+    _io = new CargoIO(ClawMotorPort, ClawSensorPort);
   }
   
   public void onDeactivate ()
   {
     _arm.SetActive(false);
-    _intake.SetActive(false);
+    _io.SetActive(false);
   }
   
   public void SetArmTarget (double angle)
@@ -30,6 +30,6 @@ public class CargoMech implements HuskySubsystem
   
   public void ToggleIntake ()
   {
-    _intake.Toggle();
+    _io.Toggle();
   }
 }
