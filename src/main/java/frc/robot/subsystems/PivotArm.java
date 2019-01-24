@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 public class PivotArm extends HuskySubsystem
 {
       private double TargetAngle;
+      private double CurrentAngle;
 
       public PivotArm (int MotorPort, int SensorPort)
       {
@@ -23,10 +24,14 @@ public class PivotArm extends HuskySubsystem
       
       public void doAuto ()
       {
-            //move to target position
+            doTask();
       }
       public void doTeleop ()
       {
-            //move to target position
+            doTask();
+      }
+      private void doTask ()
+      {
+            //calculate PID and go to target position
       }
 }
