@@ -5,31 +5,46 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package org.huskyrobotics.frc2018.subsystems;
 
 public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
-  private CargoIO _io;
-  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
-  {
+  private CargoIntake _intake;
+  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort) {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _io = new CargoIO(ClawMotorPort, ClawSensorPort);
+    _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
   }
   
-  public void onDeactivate ()
-  {
-    _arm.SetActive(false);
-    _io.SetActive(false);
+  public void onDeactivate () {
+
   }
   
-  public void SetArmTarget (double angle)
-  {
+  public void SetArmTarget (double angle) {
     _arm.SetTarget(angle);
   }
   
-  public void ToggleIntake ()
-  {
-    _io.Toggle();
+  public void ToggleIntake () {
+    _intake.Toggle();
+  }
+
+  @Override
+  public void autoInit() {
+
+  }
+
+  @Override
+  public void doAuto() {
+
+  }
+
+  @Override
+  public void teleopInit() {
+
+  }
+
+  @Override
+  public void doTeleop() {
+
   }
 }
