@@ -48,7 +48,6 @@ public class Flipper implements HuskySubsystem {
 //
 //    }
 
-<<<<<<< HEAD
     }
 
     @Override
@@ -70,7 +69,5 @@ public class Flipper implements HuskySubsystem {
     public void doTeleop() {
 
     }
-=======
->>>>>>> 997931f0609a1e08c6e2412a34f98c3d46328f22
 }
 
