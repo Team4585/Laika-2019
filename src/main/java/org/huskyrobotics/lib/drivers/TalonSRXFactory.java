@@ -1,4 +1,4 @@
-package frc.robot.lib.drivers;
+package org.huskyrobotics.lib.drivers;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;

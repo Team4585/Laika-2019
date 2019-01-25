@@ -5,10 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package org.huskyrobotics.frc2018.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import org.huskyrobotics.frc2018.Robot;
+import org.huskyrobotics.frc2018.subsystems.*;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -16,7 +17,6 @@ import frc.robot.Robot;
 public class ExampleCommand extends Command {
   public ExampleCommand() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_subsystem);
   }
 
   // Called just before this Command runs the first time

@@ -1,5 +1,5 @@
 
-package frc.robot.subsystems;
+package org.huskyrobotics.frc2018.subsystems;
 
 public class PivotArm implements HuskySubsystem
 {
