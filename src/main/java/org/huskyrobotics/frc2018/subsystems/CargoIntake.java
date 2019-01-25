@@ -8,14 +8,14 @@
 package org.huskyrobotics.frc2018.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 
-public class CargoIntake implements HuskySubsystem {
+public class CargoI) implements HuskySubsystem {
 	private static final double IN_DISTANCE_PER_PULSE = 0.01;
 	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
 
 	private Encoder _IntakeEncoder;
 
 	//private SomeSensor _CheckSensor;
-	public CargoIntake (int MotorPort, int SensorPort) {
+	public CargoIO (int MotorPort, int SensorPort) {
 		//set encoder
 		//set sensor
 	}
