@@ -3,7 +3,7 @@ package org.huskyrobotics.frc2018.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 //implement husky subsystem
 
-public class Flipper {
+public class Flipper implements HuskySubsystem {
 
     private int m_channel = 0;
     private double m_pulseDuration = 1.00; //from 0.01 to 2.55 seconds
@@ -44,6 +44,26 @@ public class Flipper {
      * Pulls the main part of the robot onto the platform.
      */
     public void winch() {
+
+    }
+
+    @Override
+    public void autoInit() {
+
+    }
+
+    @Override
+    public void doAuto() {
+
+    }
+
+    @Override
+    public void teleopInit() {
+
+    }
+
+    @Override
+    public void doTeleop() {
 
     }
 }
