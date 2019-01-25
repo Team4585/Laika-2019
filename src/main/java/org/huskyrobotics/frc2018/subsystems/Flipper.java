@@ -40,10 +40,13 @@ public class Flipper {
         */
     }
 
-    /**
-     * Pulls the main part of the robot onto the platform.
-     */
-    public void winch() {
+//    /**
+//     * Pulls the main part of the robot onto the platform.
+//     */
+//    public void winch() {
+//
+//
+//    }
 
-    }
 }
+
