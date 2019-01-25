@@ -1,17 +1,27 @@
 
-package frc.robot.subsystems;
+package org.huskyrobotics.frc2018.subsystems;
 
 public class PivotArm implements HuskySubsystem
 {
       private double TargetAngle;
       private double CurrentAngle;
 
-      public PivotArm (int MotorPort, int SensorPort) {
-             //set motor
-             //set sensor
+      private int m_SensorPort = 0;
+      private double m_MotorPort = 0;
+
+      public PivotArm(int MotorPort, int SensorPort) {
+            m_SensorPort = SensorPort;
+            m_MotorPort = MotorPort;
       }
-  
-      public void SetTarget (double angle) {
+
+      /**
+       * @return the currentAngle
+       */
+      public double getCurrentAngle() {
+            return CurrentAngle;
+      }
+
+      public void SetTarget(double angle) {
             TargetAngle = angle;
       }
   

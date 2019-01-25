@@ -5,23 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package org.huskyrobotics.frc2018.subsystems;
 
-public class HatchMech implements HuskySubsystem {
+public class CargoMech implements HuskySubsystem
+{
   private PivotArm _arm;
-  private HatchIO _intake;
-  public HatchMech (int ArmMotorPort, int ArmSensorPort, int HatchMotorPort, int HatchSensorPort) {
-     _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _intake = new HatchIO(HatchMotorPort, HatchSensorPort);
+  private CargoIO _intake;
+  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort) {
+    _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
+    _intake = new CargoIO(ClawMotorPort, ClawSensorPort);
   }
   
+  public void onDeactivate () {
+
+  }
   
   public void SetArmTarget (double angle) {
     _arm.SetTarget(angle);
   }
   
-  public void release () {
-    _intake.release();
+  public void ToggleIntake () {
+    _intake.Toggle();
   }
 
   @Override
@@ -43,6 +47,4 @@ public class HatchMech implements HuskySubsystem {
   public void doTeleop() {
 
   }
-
-
 }
