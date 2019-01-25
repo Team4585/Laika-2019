@@ -8,7 +8,7 @@
 package org.huskyrobotics.frc2018.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 
-public class CargoI) implements HuskySubsystem {
+public class CargoIO implements HuskySubsystem {
 	private static final double IN_DISTANCE_PER_PULSE = 0.01;
 	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
 
