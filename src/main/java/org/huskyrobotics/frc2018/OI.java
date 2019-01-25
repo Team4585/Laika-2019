@@ -5,7 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package org.huskyrobotics.frc2018;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class OI {
   private int HELMSTICKPORT;
@@ -23,20 +26,20 @@ public class OI {
   Switch To Televised             | Button 11                      | Helm/Weapons   | Done
   */
   
-  private Joystick _HelmStick;
-  private Joystick _WeaponStick;
+  private Joystick m_HelmStick;
+  private Joystick m_WeaponStick;
   
   private boolean isCargoActive;
   
   public OI ()
   {
-    _HelmStick = new Joystick(HELMSTICKPORT);
-    _WeaponStick = new Joystick(WEAPONSTICKPORT);
+    m_HelmStick = new Joystick(HELMSTICKPORT);
+    m_WeaponStick = new Joystick(WEAPONSTICKPORT);
   } 
   //These functions will be used by the 
   public boolean GetCargoActive ()
   {
-    if (_WeaponStick.getTriggerPressed()) 
+    if (m_WeaponStick.getTriggerPressed()) 
     {
       isCargoActive = !isCargoActive;
     }
@@ -46,7 +49,7 @@ public class OI {
   {
     if (isCargoActive)
     {
-      return (_WeaponStick.getY(GenericHID.Hand.kRight));
+      return (m_WeaponStick.getY(GenericHID.Hand.kRight));
     }
     return (0);
   }
@@ -54,32 +57,32 @@ public class OI {
   {
     if (!isCargoActive)
     {
-      return (_WeaponStick.getY(GenericHID.Hand.kRight));
+      return (m_WeaponStick.getY(GenericHID.Hand.kRight));
     }
     return (0);
   }
   public double GetRobotForward ()
   {
-    return (_HelmStick.getY(GenericHID.Hand.kRight));
+    return (m_HelmStick.getY(GenericHID.Hand.kRight));
   }
   public double GetRobotTwist ()
   {
-    return (_HelmStick.getTwist());
+    return (m_HelmStick.getTwist());
   }
   public boolean GetCargoToggle ()
   {
-    return _WeaponStick.getRawButton(5);
+    return m_WeaponStick.getRawButton(5);
   }
   public boolean GetHatchPush ()
   {
-    return _WeaponStick.getRawButton(6);
+    return m_WeaponStick.getRawButton(6);
   }
   public boolean GetClimb ()
   {
-    return _WeaponStick.getRawButton(12);
+    return m_WeaponStick.getRawButton(12);
   }
   public boolean GetTelevisedSwitch ()
   {
-    return _WeaponStick.getRawButton(11);
+    return m_WeaponStick.getRawButton(11);
   }
 }
