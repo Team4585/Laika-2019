@@ -74,8 +74,6 @@ private Drive() {
 
     m_Shifter = Constants.makeSolenoidForId(Constants.c_ShifterSolenoidID);
 
-    reloadGains();
-
     m_Pigeon = new PigeonIMU(3);
 }
   @Override

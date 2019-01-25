@@ -11,25 +11,40 @@ public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
   private CargoIntake _intake;
-  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort)
-  {
+  public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort) {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
     _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
   }
   
-  public void onDeactivate ()
-  {
-    _arm.SetActive(false);
-    _intake.SetActive(false);
+  public void onDeactivate () {
+
   }
   
-  public void SetArmTarget (double angle)
-  {
+  public void SetArmTarget (double angle) {
     _arm.SetTarget(angle);
   }
   
-  public void ToggleIntake ()
-  {
+  public void ToggleIntake () {
     _intake.Toggle();
+  }
+
+  @Override
+  public void autoInit() {
+
+  }
+
+  @Override
+  public void doAuto() {
+
+  }
+
+  @Override
+  public void teleopInit() {
+
+  }
+
+  @Override
+  public void doTeleop() {
+
   }
 }

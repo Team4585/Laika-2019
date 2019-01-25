@@ -26,7 +26,7 @@ public class OI {
   private Joystick _HelmStick;
   private Joystick _WeaponStick;
   
-  private bool isCargoActive;
+  private boolean isCargoActive;
   
   public OI ()
   {
@@ -34,7 +34,7 @@ public class OI {
     _WeaponStick = new Joystick(WEAPONSTICKPORT);
   } 
   //These functions will be used by the 
-  public bool GetCargoActive ()
+  public boolean GetCargoActive ()
   {
     if (_WeaponStick.getTriggerPressed()) 
     {
@@ -66,19 +66,19 @@ public class OI {
   {
     return (_HelmStick.getTwist());
   }
-  public bool GetCargoToggle ()
+  public boolean GetCargoToggle ()
   {
     return _WeaponStick.getRawButton(5);
   }
-  public bool GetHatchPush ()
+  public boolean GetHatchPush ()
   {
     return _WeaponStick.getRawButton(6);
   }
-  public bool GetClimb ()
+  public boolean GetClimb ()
   {
     return _WeaponStick.getRawButton(12);
   }
-  public bool GetTelevisedSwitch ()
+  public boolean GetTelevisedSwitch ()
   {
     return _WeaponStick.getRawButton(11);
   }
