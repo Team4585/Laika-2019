@@ -5,11 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package org.huskyrobotics.frc2018.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class CargoIntake extends Subsystem {
+public class Climber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
