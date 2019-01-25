@@ -8,11 +8,13 @@
 package frc.robot.subsystems;
 
 public class HatchMech implements HuskySubsystem {
+
   private PivotArm _arm;
   private HatchIO _intake;
+
   public HatchMech (int ArmMotorPort, int ArmSensorPort, int HatchMotorPort, int HatchSensorPort) {
      _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _intake = new HatchIO(HatchMotorPort, HatchSensorPort);
+     _intake = new HatchIO(HatchMotorPort, HatchSensorPort);
   }
   
   
