@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package org.huskyrobotics.frc2018;
 
 import edu.wpi.first.wpilibj.RobotBase;
 

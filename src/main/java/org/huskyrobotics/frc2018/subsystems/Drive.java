@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package org.huskyrobotics.frc2018.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -18,8 +18,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import frc.robot.Constants;
-import frc.robot.lib.drivers.TalonSRXFactory;
+import org.huskyrobotics.frc2018.Constants;
+import org.huskyrobotics.lib.drivers.TalonSRXFactory;
 
 import java.util.ArrayList;
 
@@ -73,8 +73,6 @@ private Drive() {
         m_RghtSlave.setInverted(true);
 
     m_Shifter = Constants.makeSolenoidForId(Constants.c_ShifterSolenoidID);
-
-    reloadGains();
 
     m_Pigeon = new PigeonIMU(3);
 }
