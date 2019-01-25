@@ -48,8 +48,6 @@ public class Flipper implements HuskySubsystem {
 //
 //    }
 
-    }
-
     @Override
     public void autoInit() {
 
