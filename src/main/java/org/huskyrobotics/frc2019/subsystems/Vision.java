@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2018.subsystems;
+package org.huskyrobotics.frc2019.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 

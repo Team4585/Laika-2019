@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2018.subsystems;
+package org.huskyrobotics.frc2019.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -17,7 +17,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import org.huskyrobotics.frc2018.Constants;
+import org.huskyrobotics.frc2019.Constants;
 import org.huskyrobotics.lib.drivers.TalonSRXFactory;
 
 import java.util.ArrayList;

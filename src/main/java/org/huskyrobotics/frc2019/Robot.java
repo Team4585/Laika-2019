@@ -5,15 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2018;
+package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.huskyrobotics.frc2018.commands.ExampleCommand;
-import org.huskyrobotics.frc2018.subsystems.*;
+import org.huskyrobotics.frc2019.commands.ExampleCommand;
+import org.huskyrobotics.frc2019.subsystems.*;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
