@@ -1,9 +1,7 @@
-package frc.robot;
+package org.huskyrobotics.frc2018;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
+
 
 public class Constants {
     
