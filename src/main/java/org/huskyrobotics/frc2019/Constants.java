@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 
 public class Constants {
-    
+    public static final double c_LooperDt = 0.01;
     /* Physical Constants */
 
     //Wheels

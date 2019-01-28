@@ -18,7 +18,11 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import org.huskyrobotics.frc2019.Constants;
+import org.huskyrobotics.frc2019.loops.*;
 import org.huskyrobotics.lib.drivers.TalonSRXFactory;
+import org.huskyrobotics.lib.drivers.VictorSPXFactory;
+import org.huskyrobotics.lib.util.DriveSignal;
+
 
 import java.util.ArrayList;
 
@@ -31,6 +35,7 @@ public class Drive extends Subsystem {
 
   //Physical Hardware
   private final TalonSRX m_LeftMaster, m_RightMaster;
+  private final VictorSPX m_LeftSlave, m_RightSlave;
   private final Solenoid m_Shifter;
 
   // Control states
@@ -63,13 +68,26 @@ private Drive() {
     // Start all Talons in open loop mode.
     m_LeftMaster = TalonSRXFactory.createDefaultTalon(0);
     configureMaster(m_LeftMaster, true);
+    m_LeftSlave = VictorSPXFactory.createDefaultVictorSPX(0);
 
     m_RightMaster = TalonSRXFactory.createDefaultTalon(1);
     configureMaster((m_RightMaster), false);
+    m_RightSlave = VictorSPXFactory.createDefaultVictorSPX(1);
 
     m_Shifter = Constants.makeSolenoidForId(Constants.c_ShifterSolenoidID);
 
     m_Pigeon = new PigeonIMU(3);
+
+    //reloadGains();
+
+    //Force solenoid message
+    m_IsHighGear = true;
+    //setHighGear(false);
+
+
+    //Force a CAN message
+    m_IsBrakeMode = true;
+    //setBrakeMode(false);
 }
   @Override
   public void initDefaultCommand() {
