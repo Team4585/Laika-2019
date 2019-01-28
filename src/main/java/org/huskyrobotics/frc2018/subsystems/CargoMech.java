@@ -10,10 +10,10 @@ package org.huskyrobotics.frc2018.subsystems;
 public class CargoMech implements HuskySubsystem
 {
   private PivotArm _arm;
-  private CargoIntake _intake;
+  private CargoIO _intake;
   public CargoMech (int ArmMotorPort, int ArmSensorPort, int ClawMotorPort, int ClawSensorPort) {
-     _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
-    _intake = new CargoIntake(ClawMotorPort, ClawSensorPort);
+    _arm = new PivotArm(ArmMotorPort, ArmSensorPort);
+    _intake = new CargoIO(ClawMotorPort, ClawSensorPort);
   }
   
   public void onDeactivate () {
