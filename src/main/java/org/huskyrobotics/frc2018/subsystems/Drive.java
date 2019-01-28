@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import org.huskyrobotics.frc2018.Constants;
@@ -31,7 +30,7 @@ public class Drive extends Subsystem {
   private static Drive m_Instance = new Drive(); //Creates an instance of the Drive command
 
   //Physical Hardware
-  private final TalonSRX m_LeftMaster, m_RightMaster, m_LeftSlave, m_RghtSlave;
+  private final TalonSRX m_LeftMaster, m_RightMaster;
   private final Solenoid m_Shifter;
 
   // Control states
@@ -64,13 +63,9 @@ private Drive() {
     // Start all Talons in open loop mode.
     m_LeftMaster = TalonSRXFactory.createDefaultTalon(0);
     configureMaster(m_LeftMaster, true);
-    m_LeftSlave  = TalonSRXFactory.createPermanentSlaveTalon(2, 0);
-        m_LeftSlave.setInverted(false);
 
     m_RightMaster = TalonSRXFactory.createDefaultTalon(1);
     configureMaster((m_RightMaster), false);
-    m_RghtSlave   = TalonSRXFactory.createPermanentSlaveTalon(3, 1);
-        m_RghtSlave.setInverted(true);
 
     m_Shifter = Constants.makeSolenoidForId(Constants.c_ShifterSolenoidID);
 
