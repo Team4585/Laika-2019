@@ -6,58 +6,65 @@
 /*----------------------------------------------------------------------------*/
 
 package org.huskyrobotics.frc2018.subsystems;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.NidecBrushless;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class CargoIO implements HuskySubsystem {
-	private static final double IN_DISTANCE_PER_PULSE = 0.01;
-	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
-
-	private Encoder _IntakeEncoder;
+	private NidecBrushless m_motor;
+	private DigitalInput m_limitSwitch;
+	
+	private boolean hasBall = false;
+	
+	private double maxSpeed = 1.0;
 
 	//private SomeSensor _CheckSensor;
-	public CargoIO (int MotorPort, int SensorPort) {
-		//set encoder
-		//set sensor
+	public CargoIO (int motorChannelPWM, int  motorChannelDio, int sensorChannel) {
+		m_motor = new NidecBrushless(motorChannelPWM, motorChannelDio);
+		m_limitSwitch = new DigitalInput(sensorChannel);
 	}
-
-	public void onDeactivate () {
-		_IntakeEncoder.reset();
-	}
-
-	public void Intake () {
-		//Set encoder
-	}
-	public void Output () {
-		//set encoder
-	}
-	public void Toggle () {
-		/** 
-		if (Sensor senses ball) {
-			  Output ();
+	
+	public void activate () {
+		if (hasBall) {
+			output();
+			hasBall = false;
+		} else {
+			intake();
 		}
-		else {
-			  Intake ();
-		}
-		**/
+	}
+	
+	private void intake () {
+		m_motor.set(maxSpeed);
+	}
+	
+	private void output () {
+		m_motor.set(-maxSpeed);
+	}
+	
+	private void init() {
+		m_motor.stopMotor();
+		hasBall = false;
+	}
+	private void do() {
+		hasBall = m_limitSwitch.get();
 	}
 
 	@Override
 	public void autoInit() {
-
+		init();
 	}
 
 	@Override
 	public void doAuto() {
-
+		do();
 	}
 
 	@Override
 	public void teleopInit() {
-
+		init();
 	}
 
 	@Override
 	public void doTeleop() {
-
+		do();
 	}
 }
