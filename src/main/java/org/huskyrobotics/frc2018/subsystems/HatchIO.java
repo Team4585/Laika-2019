@@ -15,7 +15,7 @@ public class HatchIO implements HuskySubsystem {
         m_IsActive = true;
     }
     
-	pubilc void reset () {
+	public void reset () {
         for (NidecBrushless actuator : m_linearActuators) { 
             actuator.reset();
         }
