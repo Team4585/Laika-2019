@@ -1,14 +1,20 @@
 package org.huskyrobotics.frc2018.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 public class Flipper implements HuskySubsystem {
 
     // the channel of the solenoids(should be the same)
-    private int m_channel = 0;
+    private int c_channel = 0;
+    private int c_winchMotorPort = 0;
+    private int c_deviceNumber = 66666;
     // initially set to false untill winch is the correct radius
     private boolean m_status = false;
-    private Clamp clamp = new Clamp(m_channel, m_status);
-    private Winch winch = new Winch();
+    private Clamp c_clamp = new Clamp(c_channel, m_status);
+    private Winch c_winch = new Winch(c_winchMotorPort, c_deviceNumber);
 
     public void autoInit() {
 
@@ -59,32 +65,44 @@ public class Flipper implements HuskySubsystem {
      */
     public void clamp() {
         // calls m_sol.set(m_status) in Clamp class extending/detracting the piston.
-        clamp.setStatus();
+        c_clamp.setStatus();
     }
-
+    // documentation for winch: http://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_victor_s_p_x.html#a24abd61c6efb94078a83eacefd53b67d
     public class Winch {
+        private int c_deviceNumber;
+        private int c_winchMotorPort;
 
-        private int winchMotorPort; // motor port variable
-        private double m_currentLoc;
-        private boolean m_status;
+        VictorSPX m_moter = new VictorSPX(c_deviceNumber);
+        public Winch(int c_winchMotorPort, int c_deviceNumber) {
+            this.c_winchMotorPort = c_winchMotorPort;
+            this.c_deviceNumber = c_deviceNumber;
+        }
 
         /**
          * possible method to get current location of winch
          */
-        public String getWinchLoc() {
-            return null;
+        public void getWinchLoc() {
         }
 
         /**
          * releases the winch rope
          */
         public void extendWinch() {
+            m_moter.set(ControlMode.PercentOutput, 1.0);
         }
 
         /**
          * retracts the winch rope
          */
         public void retractWinch() {
+            m_moter.set(ControlMode.PercentOutput, -1.0);
+        }
+
+        /**
+         * stops the winch
+         */
+        public void stopWinch() {
+            m_moter.set(ControlMode.PercentOutput, 0.0);
         }
     }
 
@@ -92,6 +110,9 @@ public class Flipper implements HuskySubsystem {
      * Pulls the main part of the robot onto the platform.
      */
     public void winch() {
-
+        c_winch.retractWinch();
+        c_winch.stopWinch();
+        c_winch.extendWinch();
+        c_winch.getWinchLoc();
     }
 }
