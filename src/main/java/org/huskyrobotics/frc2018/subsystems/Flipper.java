@@ -1,13 +1,37 @@
 package org.huskyrobotics.frc2018.subsystems;
-
 import edu.wpi.first.wpilibj.Solenoid;
-//implement husky subsystem
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 public class Flipper implements HuskySubsystem {
 
-    private int m_channel = 0;
-    private double m_pulseDuration = 1.00; //from 0.01 to 2.55 seconds
-    private Solenoid m_sol = new Solenoid(m_channel);
+    // the channel of the solenoids(should be the same)
+    private int c_channel = 0;
+    private int c_winchMotorPort = 0;
+    private int c_deviceNumber = 66666;
+    // initially set to false untill winch is the correct radius
+    private boolean m_status = false;
+    private Clamp c_clamp = new Clamp(c_channel, m_status);
+    private Winch c_winch = new Winch(c_winchMotorPort, c_deviceNumber);
+
+    public void autoInit() {
+
+    }
+
+    public void doAuto() {
+
+    }
+
+    public void teleopInit() {
+
+    }
+
+    public void doTeleop() {
+
+    }
+
     /**
      * Extends the clamps so they can clamp on.
      */
@@ -15,57 +39,80 @@ public class Flipper implements HuskySubsystem {
 
     }
 
+    public class Clamp {
+        private int m_channel;
+        private boolean m_status;
+
+        private Solenoid m_sol = new Solenoid(m_channel);
+
+        public Clamp(int m_channel, boolean m_status) {
+            this.m_channel = m_channel;
+            this.m_status = m_status;
+        }
+
+        /**
+         * Turns the piston either on or off.
+         */
+        public void setStatus() {
+            // turns the output on, extending the piston. See
+            // http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Solenoid.html#set(boolean)
+            m_sol.set(m_status);
+        }
+    }
+
     /**
      * Clamps onto the platform so winch can pull robot up.
      */
     public void clamp() {
-        //The duration of the pulse, from 0.01 to 2.55 seconds. See http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Solenoid.html#setPulseDuration(double)
-        m_sol.setPulseDuration(m_pulseDuration);
-        //turns the output on. See http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Solenoid.html#set(boolean)
-        m_sol.set(true);
-        //starts the pulse based on the duration see setPulseDuration above. See http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Solenoid.html#startPulse()
-        m_sol.startPulse();
+        // calls m_sol.set(m_status) in Clamp class extending/detracting the piston.
+        c_clamp.setStatus();
+    }
+    // documentation for winch: http://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_victor_s_p_x.html#a24abd61c6efb94078a83eacefd53b67d
+    public class Winch {
+        private int c_deviceNumber;
+        private int c_winchMotorPort;
 
-        //checks if the solenoid output is true.
-        if(m_sol.get()) {
-            System.out.println("Solenoid is On");
-        } else {
-            System.out.println("Solenoid is Off");
+        VictorSPX m_moter = new VictorSPX(c_deviceNumber);
+        public Winch(int c_winchMotorPort, int c_deviceNumber) {
+            this.c_winchMotorPort = c_winchMotorPort;
+            this.c_deviceNumber = c_deviceNumber;
         }
 
-        /*when to close/stop the solenoid output.
-        if(something) {
-            sol.close();
+        /**
+         * possible method to get current location of winch
+         */
+        public void getWinchLoc() {
         }
-        */
+
+        /**
+         * releases the winch rope
+         */
+        public void extendWinch() {
+            m_moter.set(ControlMode.PercentOutput, 1.0);
+        }
+
+        /**
+         * retracts the winch rope
+         */
+        public void retractWinch() {
+            m_moter.set(ControlMode.PercentOutput, -1.0);
+        }
+
+        /**
+         * stops the winch
+         */
+        public void stopWinch() {
+            m_moter.set(ControlMode.PercentOutput, 0.0);
+        }
     }
 
-//    /**
-//     * Pulls the main part of the robot onto the platform.
-//     */
-//    public void winch() {
-//
-//
-//    }
-
-    @Override
-    public void autoInit() {
-
-    }
-
-    @Override
-    public void doAuto() {
-
-    }
-
-    @Override
-    public void teleopInit() {
-
-    }
-
-    @Override
-    public void doTeleop() {
-
+    /**
+     * Pulls the main part of the robot onto the platform.
+     */
+    public void winch() {
+        c_winch.retractWinch();
+        c_winch.stopWinch();
+        c_winch.extendWinch();
+        c_winch.getWinchLoc();
     }
 }
-
