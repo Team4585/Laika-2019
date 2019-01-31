@@ -15,10 +15,15 @@ public class HatchIO implements HuskySubsystem {
         m_IsActive = true;
     }
     
-    private void init () {
+	public void reset () {
         for (NidecBrushless actuator : m_linearActuators) { 
             actuator.reset();
         }
+	}
+	
+    private void init () {
+		m_IsActive = false;
+		reset();
     }
     
     private void do () {
