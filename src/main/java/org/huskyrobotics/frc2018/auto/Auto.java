@@ -30,7 +30,7 @@ public class Auto {
 			}
 			break;
 		}
-		//TODO adjust bot and place thing
+		//TODO place thing
 	}
 		static void allignRobot(int placeholdDis2, int placeholdDis1) {
 		int disBetSen = 2;
