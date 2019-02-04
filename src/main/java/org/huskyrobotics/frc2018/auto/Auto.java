@@ -2,7 +2,7 @@ package mainPack;
 import java.lang.Math;
 import lineSmoother.FalconPathPlanner;
 
-public class DoAuto {
+public class Auto {
 	static double seconds = 15.0; //the amount of seconds to run bot
 	static double step = 0.1; //the period of time between each change of speed (smaller step is more accurate)
 	static double robotWidth = 0.2; //distance in feet between wheels
