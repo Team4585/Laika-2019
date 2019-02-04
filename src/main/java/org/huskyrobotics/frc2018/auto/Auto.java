@@ -5,7 +5,7 @@ import lineSmoother.FalconPathPlanner;
 public class Auto {
 	static double seconds = 15.0; //the amount of seconds to run bot
 	static double step = 0.1; //the period of time between each change of speed (smaller step is more accurate)
-	static double robotWidth = 0.2; //distance in feet between wheels
+	static double robotWidth = 0.1; //distance in feet between wheels
 	//seconds divided by step must be an integer
 	public static void doAuto(int startLoc, int end) { // for startLoc 0 = left, 1 = middle, 2 = right; for end 0 = left, 1 = right
 		switch (startLoc) {
@@ -44,6 +44,7 @@ public class Auto {
 	}
 	static void driveOffHab() {
 		//TODO drive bot forward by x dis to get bot off hab
+		//TODO put sensors instead of 0s
 		allignRobot(0, 0);
 		//TODO drive robot back by placeholdDis1 - Desired dis away from hab
 	}
@@ -69,6 +70,7 @@ public class Auto {
 
 		FalconPathPlanner path = new FalconPathPlanner(waypoints);
 		path.calculate(seconds, step, robotWidth);
+		path.driveBot();
 	}
 	static void m2l() {
 		double[][] waypoints = new double[][]{
@@ -83,6 +85,7 @@ public class Auto {
 
 		FalconPathPlanner path = new FalconPathPlanner(waypoints);
 		path.calculate(seconds, step, robotWidth);
+		path.driveBot();
 	}
 	static void r2l() {
 		double[][] waypoints = new double[][]{
@@ -97,6 +100,7 @@ public class Auto {
 
 		FalconPathPlanner path = new FalconPathPlanner(waypoints);
 		path.calculate(seconds, step, robotWidth);
+		path.driveBot();
 	}
 	static void l2r() {
 		double[][] waypoints = new double[][]{
@@ -111,6 +115,7 @@ public class Auto {
 
 		FalconPathPlanner path = new FalconPathPlanner(waypoints);
 		path.calculate(seconds, step, robotWidth);
+		path.driveBot();
 	}
 	static void m2r() {
 		double[][] waypoints = new double[][]{
@@ -124,7 +129,8 @@ public class Auto {
 		}; 
 
 		FalconPathPlanner path = new FalconPathPlanner(waypoints);
-		path.calculate(seconds, step, robotWidth);
+		path.calculate(seconds, step, robotWidth
+		path.driveBot();
 	}
 	static void r2r() {
 		double[][] waypoints = new double[][]{
@@ -139,5 +145,6 @@ public class Auto {
 
 		FalconPathPlanner path = new FalconPathPlanner(waypoints);
 		path.calculate(seconds, step, robotWidth);
+		path.driveBot();
 	}
 }
