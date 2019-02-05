@@ -1,0 +1,10 @@
+track 0 1.5
+track 1.5 1.5
+track 1.5 0
+track 1.5 -1.5
+track 0 -1.5
+track -1.5 -1.5
+track -1.5 0
+track -1.5 1.5
+track 0 1.5
+track 0 0
