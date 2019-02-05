@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.huskyrobotics.frc2018.commands.ExampleCommand;
 import org.huskyrobotics.frc2018.subsystems.*;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +22,9 @@ import org.huskyrobotics.frc2018.subsystems.*;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
+  private PivotArm m_arm;
+  private CargoIO m_cargo;
+  private HatchIO m_hatch;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -34,7 +36,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    m_arm = new PivotArm(RobotMap.armMotorPWM, RobotMap.armMotorDIO, RobotMap.armSensor);
+    m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
+    m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
