@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class looper implements ILooper {
-    public final double c_Period = Constants.c_LooperDt;
+    public final double c_Period = Constants.kLooperDt;
 
     private boolean m_running;
 

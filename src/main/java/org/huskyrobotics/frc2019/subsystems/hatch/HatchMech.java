@@ -5,7 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.subsystems;
+package org.huskyrobotics.frc2019.subsystems.hatch;
+
+import org.huskyrobotics.frc2019.subsystems.*;
+import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 
 public class HatchMech implements HuskySubsystem {
   private PivotArm _arm;

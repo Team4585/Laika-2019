@@ -5,14 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.subsystems;
-import edu.wpi.first.wpilibj.Encoder;
+package org.huskyrobotics.frc2019.subsystems.cargo;
+//import edu.wpi.first.wpilibj.Encoder;       We're using the CTRE libraries here, so encoders are a part of those classes
+import com.ctre.phoenix.motorcontrol.can.*;
+import org.huskyrobotics.frc2019.subsystems.*;
 
 public class CargoIntake implements HuskySubsystem {
 	private static final double IN_DISTANCE_PER_PULSE = 0.01;
 	private static final double OUT_DISTANCE_PER_PULSE = -0.01;
 
-	private Encoder _IntakeEncoder;
+	//private Encoder _IntakeEncoder;
 
 	//private SomeSensor _CheckSensor;
 	public CargoIntake (int MotorPort, int SensorPort) {
@@ -21,7 +23,7 @@ public class CargoIntake implements HuskySubsystem {
 	}
 
 	public void onDeactivate () {
-		_IntakeEncoder.reset();
+		//_IntakeEncoder.reset();
 	}
 
 	public void Intake () {

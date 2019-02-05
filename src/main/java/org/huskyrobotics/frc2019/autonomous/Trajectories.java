@@ -16,7 +16,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("WeakerAccess")
 public class Trajectories {
     private static List<TimingConstraint<Pose2dWithCurvature>> constraints = Arrays.asList(
         new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(4.5))),

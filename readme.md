@@ -27,5 +27,5 @@ Additionally, it has instructions on how to build and deploy the robot
 
 
 ## Variable Naming Conventions
-- c_*** (i.e. `c_DriveLowGearVelocityKi`): Final constants
+- k*** (i.e. `kDriveLowGearVelocityKi`): Final constants
 - m_*** (i.e. `m_subsystem`): Private instance variables

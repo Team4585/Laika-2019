@@ -1,4 +1,4 @@
-package org.huskyrobotics.frc2019.subsystems;
+package org.huskyrobotics.frc2019.subsystems.climber;
 
 import edu.wpi.first.wpilibj.Solenoid;
 //implement husky subsystem
