@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.huskyrobotics.frc2019.subsystems.*;
-import org.huskyrobotics.frc2019.subsystems.hatch.*;
-import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.subsystems.drive.*;
+//import org.huskyrobotics.frc2019.subsystems.hatch.*;
+import org.huskyrobotics.frc2019.subsystems.cargo.*;
+import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,11 +26,11 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI m_oi;
+  //public static OI m_oi;
   private PivotArm m_arm;
-  private CargoIO m_cargo;
-  private HatchIO m_hatch;
-
+  //private CargoIO m_cargo;
+  //private HatchIO m_hatch;
+  private VisionController Limelight;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -126,6 +127,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    Limelight.center(0.3,0.4,0.2,0.2);
   }
 
   /**

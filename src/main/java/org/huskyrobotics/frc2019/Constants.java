@@ -29,7 +29,8 @@ public class Constants {
     //Motor Controller Config
     public static final int kTimeoutMs = 100;
     public static final int drivePIDIdx = 0;
-    public static final int velocityConstant = 10; //We need to tune this to find our velocity
+    public static final int kLGvelocityConstant = 10; //We need to tune this to find our velocity
+    public static final int kHGvelocityConstant = 10;
     //Gearing and mechanical gains
     /*This is where we put our robot velocity and angular velocity, as well as any required pathing constants*/
 
