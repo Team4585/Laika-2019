@@ -1,4 +1,3 @@
-import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.lang.Math;
