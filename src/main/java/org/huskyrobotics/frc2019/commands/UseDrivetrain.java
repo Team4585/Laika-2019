@@ -9,7 +9,7 @@ package org.huskyrobotics.frc2019.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.huskyrobotics.frc2019.Robot;
-import org.huskyrobotics.frc2019.subsystems.*;
+import org.huskyrobotics.frc2019.subsystems.drive.*;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -17,7 +17,6 @@ import org.huskyrobotics.frc2019.subsystems.*;
 public class UseDrivetrain extends Command {
   public UseDrivetrain() {
     // Use requires() here to declare subsystem dependencies
-    requires(Drivetrain.getInstance());
   }
 
   // Called just before this Command runs the first time
