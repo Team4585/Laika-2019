@@ -1,3 +1,5 @@
+import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.lang.Math;
 import lineSmoother.FalconPathPlanner;
@@ -62,6 +64,8 @@ public class Auto {
 			//TODO make path
 		}; 
 	public void doAuto(int startLoc, int end) { // for startLoc 0 = left, 1 = middle, 2 = right; for end 0 = left, 1 = right
+		Ultrasonic lUltra = new Ultrasonic(1,1);
+		Ultrasonic rUltra = new Ultrasonic(1,1);
 		switch (startLoc) {
 		case 0: driveOffHab();
 			if(end == 0) {
@@ -100,8 +104,7 @@ public class Auto {
 	}
 	void driveOffHab() {
 		//TODO drive bot forward by x dis to get bot off hab
-		//TODO put sensors instead of 0s
-		allignRobot(0, 0);
+		allignRobot(lUltra.getRangeInches(), rUltra.getRangeInches());
 		//TODO drive robot back by placeholdDis1 - Desired dis away from hab
 	}
 	
