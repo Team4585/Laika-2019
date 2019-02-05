@@ -25,7 +25,20 @@ Additionally, it has instructions on how to build and deploy the robot
 - Run `./gradlew build` to build the code. Use the `--info` flag for more details
 - Run `./gradlew deploy` to deploy to the robot in Terminal (Mac) or Powershell (Windows)
 
+## Features
+- Limelight
+
+This project contains a class that uses the Limelight 2.0 where it centers on sight of reflective tape. This is simply done by the functions defined in the VisionController.java class in subsystems/drive.
+
+- Gear Shifting
+
+This project allows for a two speed shifting using a single solenoid. This is described by the Shift() function in the Drivetrain.java class in subsystems/drive.
+
+- Closed Loop Teleop Control
+
+Using the powerful CTRE libraries, the Talon SRXs and Victor SPXs in the drivetrain have access to closed loop control, allowing for error correction during the Teleop period. This allows for a much better experience for the drivers, who don't have to account for any unnecessary error.
+
 
 ## Variable Naming Conventions
-- c_*** (i.e. `c_DriveLowGearVelocityKi`): Final constants
+- k*** (i.e. `kDriveLowGearVelocityKi`): Final constants
 - m_*** (i.e. `m_subsystem`): Private instance variables

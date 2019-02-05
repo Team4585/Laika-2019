@@ -1,9 +1,12 @@
-package org.huskyrobotics.frc2018.subsystems;
+package org.huskyrobotics.frc2019.subsystems.climber;
+
 import edu.wpi.first.wpilibj.Solenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import org.huskyrobotics.frc2019.subsystems.*;
 
 public class Flipper implements HuskySubsystem {
 

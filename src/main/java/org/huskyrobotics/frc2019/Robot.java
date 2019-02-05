@@ -5,14 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2018;
+package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.huskyrobotics.frc2018.subsystems.*;
+import org.huskyrobotics.frc2019.subsystems.*;
+import org.huskyrobotics.frc2019.subsystems.drive.*;
+//import org.huskyrobotics.frc2019.subsystems.hatch.*;
+import org.huskyrobotics.frc2019.subsystems.cargo.*;
+import org.huskyrobotics.frc2019.inputs.*;
+import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -21,11 +26,11 @@ import org.huskyrobotics.frc2018.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI m_oi;
+  //public static OI m_oi;
   private PivotArm m_arm;
-  private CargoIO m_cargo;
-  private HatchIO m_hatch;
-
+  //private CargoIO m_cargo;
+  //private HatchIO m_hatch;
+  private VisionController Limelight;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -35,10 +40,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
-    m_arm = new PivotArm(RobotMap.armMotorPWM, RobotMap.armMotorDIO, RobotMap.armSensor);
-    m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
-    m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
+    //m_oi = new OI();                                                                                    These all 
+    //m_arm = new PivotArm(RobotMap.armMotorPWM, RobotMap.armMotorDIO, RobotMap.armSensor);               error out
+    //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
+    //m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -122,6 +127,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    Limelight.center(0.3,0.4,0.2,0.2);
   }
 
   /**

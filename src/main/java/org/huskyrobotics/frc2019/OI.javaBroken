@@ -1,5 +1,5 @@
 //this class is used to get driver input
-package org.huskyrobotics.frc2018;
+package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID;

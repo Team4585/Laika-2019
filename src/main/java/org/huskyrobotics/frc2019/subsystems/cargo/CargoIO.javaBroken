@@ -5,9 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2018.subsystems;
+package org.huskyrobotics.frc2019.subsystems.cargo;
+
 import edu.wpi.first.wpilibj.NidecBrushless;
 import edu.wpi.first.wpilibj.DigitalInput;
+
+import org.huskyrobotics.frc2019.subsystems.*;
 
 public class CargoIO implements HuskySubsystem {
 	private NidecBrushless m_motor;

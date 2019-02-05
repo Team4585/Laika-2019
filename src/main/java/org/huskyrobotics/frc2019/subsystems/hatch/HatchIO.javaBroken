@@ -1,4 +1,6 @@
-package org.huskyrobotics.frc2018.subsystems;
+package org.huskyrobotics.frc2019.subsystems.hatch;
+
+import org.huskyrobotics.frc2019.subsystems.*;
 
 public class HatchIO implements HuskySubsystem {
     
