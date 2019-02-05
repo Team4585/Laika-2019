@@ -1,4 +1,9 @@
+<<<<<<< HEAD:src/main/java/org/huskyrobotics/frc2018/subsystems/Flipper.java
 package org.huskyrobotics.frc2018.subsystems;
+=======
+package org.huskyrobotics.frc2019.subsystems.climber;
+
+>>>>>>> 11b33896191cb30e983f51722fbc3bf6a0eb876f:src/main/java/org/huskyrobotics/frc2019/subsystems/climber/Flipper.java
 import edu.wpi.first.wpilibj.Solenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
