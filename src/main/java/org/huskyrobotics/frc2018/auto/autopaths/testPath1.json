@@ -1,0 +1,22 @@
+{
+	"drivePath": [
+		[0, 1],
+		[1, 1],
+		[1, 0],
+		[1, -1]
+	],
+	"armPath": [
+	    {
+			"action": "move",
+			"value": 0
+		},
+		{
+			"action": "wait",
+			"value": 1
+		},
+		{
+			"action": "move",
+			"value": 90
+		}
+	]
+}
