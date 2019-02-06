@@ -6,11 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package org.huskyrobotics.frc2018.subsystems;
-import edu.wpi.first.wpilibj.NidecBrushless;
+import  com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class CargoIO implements HuskySubsystem {
-	private NidecBrushless m_motor;
+	private VictorSPX m_motor;
 	private DigitalInput m_limitSwitch;
 	
 	private boolean hasBall = false;
