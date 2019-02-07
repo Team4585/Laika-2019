@@ -2,7 +2,6 @@
 package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID;
 
 import java.util.HashMap;
 
@@ -13,22 +12,32 @@ public class OI {
   private Joystick m_HelmStick;
   private Joystick m_WeaponStick;
   
-  private HashMap<String, Int> controlsH = new HashMap<String, int>();//holds info for helm driver's mapping
+  private HashMap<String, Integer> controlsH = new HashMap<String, Integer>();//holds info for helm driver's mapping
   controlsH.put("RobotForward", 1);
   controlsH.put("RobotTwist", 0);
   
-  private HashMap<String, Int> controlsW = new HashMap<String, int>();//holds info for weapon driver's mapping
+  private HashMap<String, Integer> controlsW = new HashMap<String, Integer>();//holds info for weapon driver's mapping
   controlsW.put("ArmAxis", 1);
   controlsW.put("CargoActivate", 0);
   controlsW.put("HatchPush", 1);
   controlsW.put("Climb", 2);
   controlsW.put("TeleopSwitch", 7);
   
-  public OI (int hsp, int wsp) {
-    HELMSTICKPORT = hsp;
-    WEAPONSTICKPORT = wsp;
+  public OI (int khsp, int kwsp) {
+    HELMSTICKPORT = khsp;
+    WEAPONSTICKPORT = kwsp;
     m_HelmStick = new Joystick(HELMSTICKPORT);
     m_WeaponStick = new Joystick(WEAPONSTICKPORT);
+
+    controlsH = new HashMap<String, Integer>();
+    controlsH.put("RobotForward", 1);
+    controlsH.put("RobotTwist", 0);
+    controlsW = new HashMap<String, Integer>();
+    controlsW.put("ArmAxis", 1);
+    controlsW.put("CargoActivate", 0);
+    controlsW.put("HatchPush", 1);
+    controlsW.put("Climb", 2);
+    controlsW.put("TeleopSwitch", 7);
   } 
   //These functions will be used by robot.java to get the input
   public double GetRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
