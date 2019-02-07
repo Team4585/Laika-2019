@@ -13,11 +13,11 @@ public class OI {
   private Joystick m_HelmStick;
   private Joystick m_WeaponStick;
   
-  private HashMap<String, String> controlsH = new HashMap<String, int>();//holds info for helm driver's mapping
+  private HashMap<String, Int> controlsH = new HashMap<String, int>();//holds info for helm driver's mapping
   controlsH.put("RobotForward", 1);
   controlsH.put("RobotTwist", 0);
   
-  private HashMap<String, String> controlsW = new HashMap<String, int>();//holds info for weapon driver's mapping
+  private HashMap<String, Int> controlsW = new HashMap<String, int>();//holds info for weapon driver's mapping
   controlsW.put("ArmAxis", 1);
   controlsW.put("CargoActivate", 0);
   controlsW.put("HatchPush", 1);
