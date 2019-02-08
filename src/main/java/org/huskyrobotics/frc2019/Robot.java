@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   private PivotArm m_arm;
   //private CargoIO m_cargo;
   //private HatchIO m_hatch;
+  public static Drivetrain m_Drive;
   private VisionController Limelight;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();

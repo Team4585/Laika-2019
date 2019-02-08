@@ -35,7 +35,7 @@ public class Drivetrain extends Subsystem {
 
    //Defining Slave Victor SPXs
    private VictorSPX m_LeftSlave = new VictorSPX(RobotMap.kLeftSlave);
-   private VictorSPX m_RightSlave = new VictorSPX(RobotMap.kRightMaster);
+   private VictorSPX m_RightSlave = new VictorSPX(RobotMap.kRightSlave);
    
    //Creates a double to keep track of the angle gathered by the Pigeon
    public double supposedAngle;
@@ -49,8 +49,9 @@ public class Drivetrain extends Subsystem {
 
    //Creating Solenoid object for Shifter
    Solenoid m_Shifter = new Solenoid(0);
-   Boolean m_IsHighGear;
+   public Boolean m_IsHighGear;
 
+   public static Drivetrain instance;
 
     public void DTinit(){
        
@@ -173,10 +174,18 @@ public class Drivetrain extends Subsystem {
      *This makes the robot more controllable at high speeds. Also handles the robot's quick turn functionality - 
      *"quick turn" overrides constant-curvature turning for turn-in-place maneuvers.
      */
-    private void curvatureDrive(double throttle, double turn)
+    public void curvatureDrive(double throttle, double turn)
 	{
 		drive.curvatureDrive(throttle, turn, true);	//curvature drive from WPILIB libraries.
-	}
+    }
+    
+    public static Drivetrain getInstance()
+    {
+   if (instance == null)
+    instance = new Drivetrain();
+
+   return instance;
+    }
 
     /*if(Constants.kWillToLive <= 0){
      * m_LeftMaster.set(1);
