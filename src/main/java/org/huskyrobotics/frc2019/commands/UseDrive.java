@@ -21,7 +21,7 @@ public class UseDrive extends Command {
     // eg. requires(chassis);
   }
   Drivetrain m_Drive = new Drivetrain();
-  Joystick m_Helm = new Joystick(0);
+  OI m_Helm = new OI(0,1);
 
   // Called just before this Command runs the first time
   @Override
@@ -32,7 +32,7 @@ public class UseDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_Drive.curvatureDrive(m_Helm.getY(), m_Helm.getX());
+    m_Drive.curvatureDrive(m_Helm.GetRobotForward(), m_Helm.GetRobotTwist());
     
   }
 
