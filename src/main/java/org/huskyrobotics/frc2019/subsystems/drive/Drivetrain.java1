@@ -88,7 +88,7 @@ public class Drivetrain extends Subsystem {
             System.out.println("Shifted to Low Gear");
         }
     }
-    public void customArcadeDrive(double xValue, double yValue, Gyro gyro)
+    /*public void customArcadeDrive(double xValue, double yValue, Gyro gyro)
 	{
 		if(yValue != 0 && Math.abs(xValue) < 0.15) //Checks that the xValue is less than 15%, giving some turning deadband
         {
@@ -106,7 +106,7 @@ public class Drivetrain extends Subsystem {
 			curvatureDrive(xValue, yValue);
 			supposedAngle = gyro.getYaw();
 		}
-	}
+	}*/
     
     //Sets the percent output of each motor
     public void setPercentOutput(double lOutput, double rOutput)

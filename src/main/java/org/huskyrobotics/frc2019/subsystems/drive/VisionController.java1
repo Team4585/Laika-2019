@@ -34,8 +34,8 @@ public class VisionController
     public void center(double kp, double ki, double kd, double errorThreshold)  //method to center the robot to target without moving toward target
 	{
         updateInputs();
-		double error = this.x / 27; //error is x / 27. x is measured in degrees, where the max x is 27. We get a value from -1 to 1 to scale for speed output
-		if(error > -errorThreshold && error < errorThreshold)   //checking if the error is within a threshold to stop the robot from moving
+		double error = Math.abs(this.x / 27); //error is x / 27. x is measured in degrees, where the max x is 27. We get a value from -1 to 1 to scale for speed output
+		if(error < errorThreshold)   //checking if the error is within a threshold to stop the robot from moving
 		{
 			speed = 0;                              //setting global variable speed equal to zero
 			drivetrain.setSpeed(speed, speed);      //setting Drivetrain to 0 speed
@@ -49,13 +49,13 @@ public class VisionController
     public void follow(double kp, double ki, double kd, double errorThreshold, double defaultSpeed, double targetArea)    //method for robot to follow a target while maintaing center point
 	{
         updateInputs();
-        double error = this.x / 27;                                 //error is x / 27. x is measured in degrees, where the max x is 27. We get a value from -1 to 1 to scale for speed output
+        double error = Math.abs(this.x / 27);                                 //error is x / 27. x is measured in degrees, where the max x is 27. We get a value from -1 to 1 to scale for speed output
         if(this.area >= targetArea/2)                               //redundant "if" in order to make sure the robot stops
         {
             drivetrain.setSpeed(0,0);                               //set drivetrain to 0 speed if target distance is unreached
         }
 
-		if( (error > -errorThreshold) && (error < errorThreshold) ) //if error is in between the threshold execute following statements
+		if( error < errorThreshold ) //if error is in between the threshold execute following statements
 		{
             if(this.area < targetArea/2)
             {
