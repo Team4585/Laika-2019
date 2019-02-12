@@ -12,16 +12,9 @@ public class OI {
   private Joystick m_HelmStick;
   private Joystick m_WeaponStick;
   
-  private HashMap<String, Integer> controlsH = new HashMap<String, Integer>();//holds info for helm driver's mapping
-  controlsH.put("RobotForward", 1);
-  controlsH.put("RobotTwist", 0);
+  private HashMap<String, Integer> controlsH;//holds info for helm driver's mapping
   
-  private HashMap<String, Integer> controlsW = new HashMap<String, Integer>();//holds info for weapon driver's mapping
-  controlsW.put("ArmAxis", 1);
-  controlsW.put("CargoActivate", 0);
-  controlsW.put("HatchPush", 1);
-  controlsW.put("Climb", 2);
-  controlsW.put("TeleopSwitch", 7);
+  private HashMap<String, Integer> controlsW;//holds info for weapon driver's mapping
   
   public OI (int khsp, int kwsp) {
     HELMSTICKPORT = khsp;

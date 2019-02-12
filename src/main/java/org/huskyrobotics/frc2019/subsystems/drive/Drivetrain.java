@@ -69,6 +69,7 @@ public class Drivetrain extends Subsystem {
        m_RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
        m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
        m_RightMaster.configPeakOutputReverse(-1,Constants.kTimeoutMs);
+
     
     // Slaving Victors
         m_LeftSlave.follow(m_LeftMaster);
@@ -173,7 +174,7 @@ public class Drivetrain extends Subsystem {
      *This makes the robot more controllable at high speeds. Also handles the robot's quick turn functionality - 
      *"quick turn" overrides constant-curvature turning for turn-in-place maneuvers.
      */
-    private void curvatureDrive(double throttle, double turn)
+    public void curvatureDrive(double throttle, double turn)
 	{
 		drive.curvatureDrive(throttle, turn, true);	//curvature drive from WPILIB libraries.
 	}

@@ -16,6 +16,7 @@ import org.huskyrobotics.frc2019.subsystems.*;
 import org.huskyrobotics.frc2019.subsystems.drive.*;
 //import org.huskyrobotics.frc2019.subsystems.hatch.*;
 import org.huskyrobotics.frc2019.subsystems.cargo.*;
+import org.huskyrobotics.frc2019.subsystems.hatch.*;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 /**
@@ -28,8 +29,8 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 public class Robot extends TimedRobot {
   //public static OI m_oi;
   private PivotArm m_arm;
-  //private CargoIO m_cargo;
-  //private HatchIO m_hatch;
+  private CargoIO m_cargo;
+  private HatchIO m_hatch;
   private VisionController Limelight;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
