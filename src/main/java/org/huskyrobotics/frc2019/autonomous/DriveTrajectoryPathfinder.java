@@ -3,6 +3,7 @@ import java.io.File;
 
 import org.huskyrobotics.frc2019.Constants;
 import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,7 +65,7 @@ public class DriveTrajectoryPathfinder extends Command {
 
     mModifier = new TankModifier(mSourceTrajectory);
 
-    mModifier.modify(Constants.kWheelTrackWidth);    
+    mModifier.modify(Constants.drivetrain.wheel_base);    
     mLeftTrajectory = mModifier.getLeftTrajectory();
     mRightTrajectory = mModifier.getRightTrajectory();
     
@@ -136,20 +137,20 @@ public class DriveTrajectoryPathfinder extends Command {
   @Override
   protected void execute() {
     try {
-      mLeftOutput = mLeftFollower.calculate(Robot.m_Drive.getLeft().getFeet() - mLeftStartDistance) + Constants.kleftstatickv;
-      mRightOutput = mRightFollower.calculate(Robot.m_Drive.getRight().getFeet() - mRightStartDistance) + RobotConfig.krightstatickv;
+      mLeftOutput = mLeftFollower.calculate(Robot.m_Drive.getLeft().getFeet() - mLeftStartDistance) + Constants.drivetrain.kleftstatickv;
+      mRightOutput = mRightFollower.calculate(Robot.m_Drive.getRight().getFeet() - mRightStartDistance) + Constants.drivetrain.krightstatickv;
     } catch (ArrayIndexOutOfBoundsException e) {
       mLeftOutput = 0;
       mRightOutput = 0;
     }
     
     mDesiredHeading = Pathfinder.r2d(mLeftFollower.getHeading());
-    mAngularError = Pathfinder.boundHalfDegrees(mDesiredHeading - Robot.m_Drive.Gyro());
+    mAngularError = Pathfinder.boundHalfDegrees(mDesiredHeading - Robot.m_Drive.getGyro());
         
     // TODO make sure that the sign is the correct direction, it should be!
-    mTurn = mAngularError * Constnats.kgyrocorrectkp;
+    mTurn = mAngularError * Constants.pathfinder.gyro_correct_kp;
     
-    Robot.m_Drive.setVoltage(mLeftOutput + mTurn, mRightOutput - mTurn);
+    Robot.m_Drive.setVoltages(mLeftOutput + mTurn, mRightOutput - mTurn);
 
     SmartDashboard.putString("Left target pathfinder data: ", 
       String.format("Velocity (position) heading (current): %s (%s) %s (%s)", 
