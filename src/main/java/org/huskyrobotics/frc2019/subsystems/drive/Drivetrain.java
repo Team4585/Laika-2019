@@ -35,7 +35,7 @@ public class Drivetrain extends Subsystem {
 
    //Defining Slave Victor SPXs
    private VictorSPX m_LeftSlave = new VictorSPX(RobotMap.kLeftSlave);
-   private VictorSPX m_RightSlave = new VictorSPX(RobotMap.kRightMaster);
+   private VictorSPX m_RightSlave = new VictorSPX(RobotMap.kRightSlave);
    
    //Creates a double to keep track of the angle gathered by the Pigeon
    public double supposedAngle;
@@ -49,27 +49,28 @@ public class Drivetrain extends Subsystem {
 
    //Creating Solenoid object for Shifter
    Solenoid m_Shifter = new Solenoid(0);
-   Boolean m_IsHighGear;
+   public Boolean m_IsHighGear;
 
+   public static Drivetrain instance;
 
     public void DTinit(){
        
     // Configure Left Side
-        m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivePIDIdx, Constants.kTimeoutMs);
+        m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
         m_LeftMaster.setSensorPhase(true);
-        m_LeftMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-        m_LeftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        m_LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-        m_LeftMaster.configPeakOutputReverse(-1,Constants.kTimeoutMs);
+        m_LeftMaster.configNominalOutputForward(0, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.configNominalOutputReverse(0, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.configPeakOutputForward(1, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.configPeakOutputReverse(-1,Constants.drivetrain.kTimeoutMs);
 
     // Configure Right Side 
-       m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivePIDIdx, Constants.kTimeoutMs);
+       m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.setSensorPhase(true);
-       m_RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-       m_RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-       m_RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-       m_RightMaster.configPeakOutputReverse(-1,Constants.kTimeoutMs);
 
+       m_RightMaster.configNominalOutputForward(0, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.configNominalOutputReverse(0, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.configPeakOutputForward(1, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.configPeakOutputReverse(-1,Constants.drivetrain.kTimeoutMs);
     
     // Slaving Victors
         m_LeftSlave.follow(m_LeftMaster);
@@ -88,7 +89,7 @@ public class Drivetrain extends Subsystem {
             System.out.println("Shifted to Low Gear");
         }
     }
-    public void customArcadeDrive(double xValue, double yValue, Gyro gyro)
+    /*public void customArcadeDrive(double xValue, double yValue, Gyro gyro)
 	{
 		if(yValue != 0 && Math.abs(xValue) < 0.15) //Checks that the xValue is less than 15%, giving some turning deadband
         {
@@ -106,7 +107,7 @@ public class Drivetrain extends Subsystem {
 			curvatureDrive(xValue, yValue);
 			supposedAngle = gyro.getYaw();
 		}
-	}
+	}*/
     
     //Sets the percent output of each motor
     public void setPercentOutput(double lOutput, double rOutput)
@@ -126,13 +127,13 @@ public class Drivetrain extends Subsystem {
     public void setSpeed(double lSpeed, double rSpeed)
 	{
     if(m_IsHighGear == true){
-		double targetVelocityRight = rSpeed * Constants.kHGvelocityConstant;
-		double targetVelocityLeft = lSpeed * Constants.kHGvelocityConstant;
+		double targetVelocityRight = rSpeed *Constants.drivetrain.kHGvelocityConstant;
+		double targetVelocityLeft = lSpeed * Constants.drivetrain.kHGvelocityConstant;
 		m_RightMaster.set(ControlMode.Velocity, targetVelocityRight);
         m_LeftMaster.set(ControlMode.Velocity, targetVelocityLeft);
       }else{
-        double targetVelocityRight = rSpeed * Constants.kLGvelocityConstant;
-		double targetVelocityLeft = lSpeed * Constants.kLGvelocityConstant;
+        double targetVelocityRight = rSpeed * Constants.drivetrain.kLGvelocityConstant;
+		double targetVelocityLeft = lSpeed * Constants.drivetrain.kLGvelocityConstant;
 		m_RightMaster.set(ControlMode.Velocity, targetVelocityRight);
         m_LeftMaster.set(ControlMode.Velocity, targetVelocityLeft);
         }
@@ -177,11 +178,19 @@ public class Drivetrain extends Subsystem {
     public void curvatureDrive(double throttle, double turn)
 	{
 		drive.curvatureDrive(throttle, turn, true);	//curvature drive from WPILIB libraries.
-	}
+    }
+    
+    public static Drivetrain getInstance()
+    {
+        if (instance == null)
+            instance = new Drivetrain();
 
-    /*if(Constants.kWillToLive <= 0){
-     * m_LeftMaster.set(1);
-     * m_RightMaster.set(1);
-     * }
-     */
+        return instance;
+    }
+    public void meirl(){
+    if(Constants.kWillToLive <= 0){
+        m_LeftMaster.set(1);
+        m_RightMaster.set(1);
+        }
+    }
 }

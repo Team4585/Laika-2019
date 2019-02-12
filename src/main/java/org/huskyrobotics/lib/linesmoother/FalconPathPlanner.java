@@ -1,4 +1,4 @@
-package FaclonPath;
+package org.huskyrobotics.lib.linesmoother;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.util.LinkedList;

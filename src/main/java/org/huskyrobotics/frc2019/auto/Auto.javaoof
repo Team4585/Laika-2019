@@ -1,7 +1,9 @@
+package org.huskyrobotics.frc2019.auto;
+
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.lang.Math;
-import lineSmoother.FalconPathPlanner;
+import org.huskyrobotics.lib.linesmoother.*;
 
 public class Auto {
 	double seconds = 15.0; //the amount of seconds to run bot

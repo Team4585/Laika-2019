@@ -1,4 +1,4 @@
-package lineSmoother;
+package org.huskyrobotics.lib.linesmoother;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
