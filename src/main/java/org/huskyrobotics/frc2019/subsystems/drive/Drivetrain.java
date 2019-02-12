@@ -66,6 +66,7 @@ public class Drivetrain extends Subsystem {
     // Configure Right Side 
        m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.setSensorPhase(true);
+
        m_RightMaster.configNominalOutputForward(0, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.configNominalOutputReverse(0, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.configPeakOutputForward(1, Constants.drivetrain.kTimeoutMs);
