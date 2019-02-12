@@ -13,15 +13,8 @@ public class OI {
   private Joystick m_WeaponStick;
   
   private HashMap<String, Integer> controlsH = new HashMap<String, Integer>();//holds info for helm driver's mapping
-  controlsH.put("RobotForward", 1);
-  controlsH.put("RobotTwist", 0);
   
   private HashMap<String, Integer> controlsW = new HashMap<String, Integer>();//holds info for weapon driver's mapping
-  controlsW.put("ArmAxis", 1);
-  controlsW.put("CargoActivate", 0);
-  controlsW.put("HatchPush", 1);
-  controlsW.put("Climb", 2);
-  controlsW.put("TeleopSwitch", 7);
   
   public OI (int khsp, int kwsp) {
     HELMSTICKPORT = khsp;
@@ -29,10 +22,9 @@ public class OI {
     m_HelmStick = new Joystick(HELMSTICKPORT);
     m_WeaponStick = new Joystick(WEAPONSTICKPORT);
 
-    controlsH = new HashMap<String, Integer>();
     controlsH.put("RobotForward", 1);
     controlsH.put("RobotTwist", 0);
-    controlsW = new HashMap<String, Integer>();
+
     controlsW.put("ArmAxis", 1);
     controlsW.put("CargoActivate", 0);
     controlsW.put("HatchPush", 1);
@@ -41,13 +33,16 @@ public class OI {
   } 
   //These functions will be used by robot.java to get the input
   public double GetRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
-    return m_HelmStick.getRawAxis(controlsH.get("RobotForward"));
+    if(Math.abs(m_HelmStick.getRawAxis(controlsH.put("RobotForward", 1))) < 0.1) return 0;
+    else return m_HelmStick.getRawAxis(controlsH.put("RobotForward", 1));
   }
   public double GetRobotTwist () {//The value used for robot motors twisting. Should be put into Drive
-    return m_HelmStick.getRawAxis(controlsH.get("RobotTwist"));
+    if(Math.abs(m_HelmStick.getRawAxis(controlsH.put("RobotTwist", 0))) < 0.1) return 0;
+    else return m_HelmStick.getRawAxis(controlsH.put("RobotTwist", 0));
   }
   public double GetArmAxis () {//The value used for moving the arm up and down. Should be put into PivotArm
-    return m_WeaponStick.getRawAxis(controlsW.get("ArmAxis"));
+    if(Math.abs(m_WeaponStick.getRawAxis(controlsW.put("ArmAxis", 1))) < 0.1) return 0;
+    else return m_WeaponStick.getRawAxis(controlsW.put("ArmAxis", 1));
   }
   public boolean GetCargoActivate () {//The value used for controlling the cargo intake. Should be put into CargoIO
     return m_WeaponStick.getRawButton(controlsW.get("ArmAxis"));

@@ -1,29 +1,54 @@
 package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 
 public class Constants {
-    public static final double kLooperDt = 0.01;
-    /* Physical Constants */
 
-    //Wheels
-    public static final double kWheelTrackWidth = 0; //change when Drivetrain is built
-    public static final double kWheelDiameter = 6; //change if we end up using 6" wheels
-    public static final double kWheelRadius = kWheelDiameter / 2.0;
-    public static final double kTrackScrubFactor = 0; //Tune this with the drivetrain
-    /*Scrub Radius is defined as the amount of friction resisting the turning motion
-      The best way to overcome friction from the wheels is to have a center of gravity
-      closer to the middle of the drivetrain*/
-    public static final double kNativeUnitModel = 0;
-    //Dynamics we can calculate if we want
-    /*These would include things like intertia (linear and angular), 
-      velocity in terms of rad/s, and acceleration in terms of rad/s^2*/
+    public class controls{
+        public static final double kLooperDt = 0.01;
+    }
+    public class path{
+
+    }
+    public class physical{
+        
+    }
+
+    public static class drivetrain{
+            /** Drivetrain width in feet */
+    public static final double wheel_base = 0.0; // TODO
+    public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+    public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+
+    public static final Length left_radius = LengthKt.getInch(2);
+    public static final Length right_radius = LengthKt.getInch(2);
+
+    //Gearing and mechanical gains
+    /*This is where we put our robot velocity and angular velocity, as well as any required pathing constants*/
+
+    // Set speeds for teleop
+    public static final double kMaxforwardHigh = 0; // Feet per second forward velocity
+    public static final double kMaxturnHigh = 0; // Max turn speed in degrees per second
+    public static final double kMaxforwardLow = 0; // Feet per second forward velocity
+    public static final double kMaxturnLow = 0; // Max turn speed in degrees per second
     
-    //Geometry
-    public static final double kCenterToFrontBumper = 0; //This needs to be done by dividing the total length of the robot include bumpers divided by 2
-    public static final double kCenterToBackBumper = 0; //Same calculation as c_CenterToFrontBumper
-    public static final double kCenterToSideBumper = 0; //This is done by taking the width of the robot including bumpers divided by 2
+    //Encoder resolution stuff for our Quad encoders
+    public static final double kPPR = 4096;
+    public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+    public static final NativeUnitLengthModel kLeftNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
+    public static final NativeUnitLengthModel kRightNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+
+    //Stuff for pathfinding
+      public static final double kleftstatickv = 0.0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+      public static final double krightstatickv = 0.0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+
 
     /* CONTROL LOOP GAINS */
     //Motor Controller Config
@@ -31,25 +56,57 @@ public class Constants {
     public static final int drivePIDIdx = 0;
     public static final int kLGvelocityConstant = 10; //We need to tune this to find our velocity
     public static final int kHGvelocityConstant = 10;
-    //Gearing and mechanical gains
-    /*This is where we put our robot velocity and angular velocity, as well as any required pathing constants*/
 
     //PID gains for drive velocity loop (LOW GEAR)
     // Units: setpoint, error, and output are in ticks per second.
-    public static final double kDriveLowGearVelocityKp = 0; //Tune 
-    public static final double kDriveLowGearVelocityKi = 0.0; //Tune 
-    public static final double kDriveLowGearVelocityKd = 0.0; //Tune 
-    public static final double kDriveLowGearVelocityKf = 0.0; //Tune 
-    public static final int kDriveLowGearVelocityIZone = 0; //Tune 
-    public static final double kDriveVoltageRampRate = 0.0; //Tune 
+    
+    //Left Side of the above controls
+    public static final double kLGleftKp = 0; //TODO Tune
+    public static final double kLGleftKi = 0; //TODO Tune
+    public static final double kLGleftKd = 0; //TODO Tune
+    public static final double kLGleftKf = 0; //TODO Tune
+    public static final double kLGleftIzone = 0; //TODO Tune
+    public static final double kLGleftIntMax = 0; //TODO Tune
+
+
+    //Right Side of the above Controls
+    public static final double kLGrightKp = 0; //TODO Tune
+    public static final double kLGrightKi = 0; //TODO Tune
+    public static final double kLGrightKd = 0; //TODO Tune
+    public static final double kLGrightKf = 0; //TODO Tune
+    public static final double kLGrightIzone = 0; //TODO Tune
+    public static final double kLGrightIntMax = 0; //TODO Tune
 
     //PID gains for drive velocity loop (HIGH GEAR)
     // Units: setpoint, error, and output are in ticks per second.
-    public static final double kDriveHighGearVelocityKp = 0; //Tune
-    public static final double kDriveHighGearVelocityKi = 0.0; //Tune
-    public static final double kDriveHighGearVelocityKd = 0.0; //Tune
-    public static final double kDriveHighGearVelocityKf = 0.0; //Tune
-    public static final int kDriveHighGearVelocityIZone = 0; //Tune
+    
+    //Left Side of the above controls
+    public static final double kHGleftKp = 0; //TODO Tune
+    public static final double kHGleftKi = 0; //TODO Tune
+    public static final double kHGleftKd = 0; //TODO Tune
+    public static final double kHGleftKf = 0; //TODO Tune
+    public static final double kHGleftIzone = 0; //TODO Tune
+    public static final double kHGleftIntMax = 0; //TODO Tune
+
+
+    //Right Side of the above Controls
+    public static final double kHGrightKp = 0; //TODO Tune
+    public static final double kHGrightKi = 0; //TODO Tune
+    public static final double kHGrightKd = 0; //TODO Tune
+    public static final double kHGrightKf = 0; //TODO Tune
+    public static final double kHGrightIzone = 0; //TODO Tune
+    public static final double kHGrightIntMax = 0; //TODO Tune
+
+
+    }
+
+    public class pathfinder {
+        public static final double gyro_correct_kp = 0.2;
+      }
+
+    public class limelight {
+        public static final double kpGain = 0.0;
+    }
 
     public static final int kShifterSolenoidID = 12;
     public static Solenoid makeSolenoidForId(int solenoidId) {
