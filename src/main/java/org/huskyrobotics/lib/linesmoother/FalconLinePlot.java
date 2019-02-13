@@ -1,4 +1,4 @@
-package org.huskyrobotics.frc2018.auto;
+package org.huskyrobotics.lib.linesmoother;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

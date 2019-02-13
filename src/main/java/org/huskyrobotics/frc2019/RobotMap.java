@@ -35,11 +35,17 @@ public class RobotMap {
   public static final int kLeftSlave = 0;
   public static final int kRightSlave = 1;
   public static final int kWinch = 4;
-  public static final int kTell_Me_What_We_Need = 4585;
+  public static final int kCargo = -1;
 
   //PigeonIMU
   public static final int kCANPigeon = 0;
 
   // Compressor
   public static final int COMPRESSOR = 0;
+
+  //Encoders
+  public static final int kArmEncoder = -1;
+
+  //Hatch Encoders
+  public static final int[] kHatchActuators = {-1, -1, -1, -1};
 }

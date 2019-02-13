@@ -1,4 +1,3 @@
-
 package org.huskyrobotics.frc2019.subsystems.superstructure;
 
 //import org.huskyrobotics.frc2019.subsystems.*;
@@ -30,7 +29,7 @@ public class PivotArm extends Subsystem {
 	}
 
       public PivotArm(int motorPort, int sensorPort) {
-		m_motor = new TalonSRX(motorPort);
+            m_motor = new TalonSRX(motorPort);
             m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
             m_motor.setSensorPhase(true);
             m_motor.configNominalOutputForward(0, kTimeoutMs);

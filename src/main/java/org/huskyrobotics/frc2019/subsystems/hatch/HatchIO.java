@@ -3,7 +3,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class HatchIO {
-	private VictorSPX[] m_linearActuators;
+    private VictorSPX[] m_linearActuators;
     private double m_outSpeed = 1.0;
     private double m_inSpeed = 1.0;
 

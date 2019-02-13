@@ -8,7 +8,7 @@ public class CargoIO {
 	private double maxSpeed = 1.0;
 
 	//private SomeSensor _CheckSensor;
-	public CargoIO (int MotorPort, int SensorPort) {
+	public CargoIO (int MotorPort) {
 		m_motor = new VictorSPX(MotorPort);
 	}
 	public void setCargoAxis (double input) {

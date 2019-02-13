@@ -13,10 +13,15 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.huskyrobotics.frc2019.subsystems.*;
-import org.huskyrobotics.frc2019.subsystems.drive.*;
-//import org.huskyrobotics.frc2019.subsystems.hatch.*;
 import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.subsystems.hatch.*;
+import org.huskyrobotics.frc2019.subsystems.climber.*;
+import org.huskyrobotics.frc2019.subsystems.superstructure.*;
+import org.huskyrobotics.frc2019.subsystems.drive.*;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
+//import org.huskyrobotics.frc2019.subsystems.hatch.*;
+
+//import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 /**
@@ -27,11 +32,14 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public static OI m_oi;
+  public OI m_oi;
   private PivotArm m_arm;
-  private CargoIO m_cargo;
-  private HatchIO m_hatch;
-  private VisionController Limelight;
+  private CargoIO m_sputnik;
+  private HatchIO m_kennedy;
+  private IsaiahFlipper m_armstrong;
+  //private VisionController Limelight;
+  public static FalconDrive m_rover;
+  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -41,10 +49,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    //m_oi = new OI();                                                                                    These all 
-    //m_arm = new PivotArm(RobotMap.armMotorPWM, RobotMap.armMotorDIO, RobotMap.armSensor);               error out
-    //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
-    //m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
+    m_oi = new OI(0, 1);
+    m_arm = new PivotArm(RobotMap.kPivotMaster, RobotMap.kArmEncoder);
+    m_sputnik = new CargoIO(RobotMap.kCargo);
+    m_kennedy = new HatchIO(RobotMap.kHatchActuators);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -128,7 +136,21 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    Limelight.center(0.3,0.4,0.2,0.2);
+    m_oi.periodic();
+
+    m_arm.periodic();
+    m_arm.setArmAxis(m_oi.GetArmAxis());
+    m_arm.setIsClimbActive(m_oi.GetIsClimbActive());
+
+    m_sputnik.setCargoAxis(m_oi.GetCargoAxis());
+
+    m_kennedy.setHatchPush(m_oi.GetHatchPush());
+
+    m_armstrong.periodic();
+    m_armstrong.setWinchAxis(m_oi.GetWinchAxis());
+    m_armstrong.setIsClimbActive(m_oi.GetIsClimbActive());
+
+    m_rover.curvatureDrive(m_oi.GetRobotForward(), m_oi.GetRobotTwist(), false);
   }
 
   /**
@@ -136,5 +158,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    m_oi.periodic();
+
+    m_arm.periodic();
+    m_arm.setArmAxis(m_oi.GetArmAxis());
+    m_arm.setIsClimbActive(m_oi.GetIsClimbActive());
+
+    m_sputnik.setCargoAxis(m_oi.GetCargoAxis());
+
+    m_kennedy.setHatchPush(m_oi.GetHatchPush());
+
+    m_armstrong.periodic();
+    m_armstrong.setWinchAxis(m_oi.GetWinchAxis());
+    m_armstrong.setIsClimbActive(m_oi.GetIsClimbActive());
+
+    m_rover.curvatureDrive(m_oi.GetRobotForward(), m_oi.GetRobotTwist(), false);
   }
 }

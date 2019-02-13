@@ -1,13 +1,10 @@
-﻿package org.huskyrobotics.frc2019;
+package org.huskyrobotics.frc2019;
 import edu.wpi.first.wpilibj.Joystick;
 import java.util.HashMap;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OI {
-  private int HELMSTICKPORT;
-  private int WEAPONSTICKPORT;
-  
   private Joystick m_HelmStick;
   private Joystick m_WeaponStick;
 
@@ -24,9 +21,7 @@ public class OI {
 
   private boolean isClimbActive = false;
   
-  public OI (int khsp, int kwsp) {
-    HELMSTICKPORT = khsp;
-    WEAPONSTICKPORT = kwsp;
+  public OI (int HELMSTICKPORT, int WEAPONSTICKPORT) {
     m_HelmStick = new Joystick(HELMSTICKPORT);
     m_WeaponStick = new Joystick(WEAPONSTICKPORT);
 
@@ -75,6 +70,10 @@ public class OI {
 
     weaponsControls = new HashMap[] {controlsMic, controlsAhn};
   }
+  public void periodic () {
+    isClimbActive = m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("ToggleClimb"));
+  }
+
   //These functions will be used by robot.java to get the input
   public double GetRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
     return m_HelmStick.getRawAxis((int) helmControls[m_helm.getSelected()].get("RobotForward"));
@@ -128,7 +127,7 @@ public class OI {
     return m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("HatchPush"));
   }
   public boolean GetIsClimbActive () {//The value used to activate the clamps. Should be put into Flipper and PivotArm
-    isClimbActive = m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("ToggleClimb"));
     return(isClimbActive);
   }
 }
+
