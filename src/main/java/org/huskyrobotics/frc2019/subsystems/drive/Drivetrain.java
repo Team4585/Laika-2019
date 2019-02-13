@@ -9,6 +9,7 @@ package org.huskyrobotics.frc2019.subsystems.drive;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Solenoid;
 
 
 import org.huskyrobotics.lib.subsystems.*;
@@ -29,58 +30,65 @@ public class Drivetrain extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
 	}
    //Defining Master Talon SRXs
-   private WPI_TalonSRX LeftMaster = new WPI_TalonSRX(RobotMap.kLeftMaster);
-   private WPI_TalonSRX RightMaster = new WPI_TalonSRX(RobotMap.kRightMaster);
+   private WPI_TalonSRX m_LeftMaster = new WPI_TalonSRX(RobotMap.kLeftMaster);
+   private WPI_TalonSRX m_RightMaster = new WPI_TalonSRX(RobotMap.kRightMaster);
 
    //Defining Slave Victor SPXs
-   private VictorSPX LeftSlave = new VictorSPX(RobotMap.kLeftSlave);
-   private VictorSPX RightSlave = new VictorSPX(RobotMap.kRightMaster);
+   private VictorSPX m_LeftSlave = new VictorSPX(RobotMap.kLeftSlave);
+   private VictorSPX m_RightSlave = new VictorSPX(RobotMap.kRightSlave);
    
    //Creates a double to keep track of the angle gathered by the Pigeon
    public double supposedAngle;
 
 
    //Defining Control from WPI Talon SRXs
-   public DifferentialDrive drive = new DifferentialDrive(LeftMaster, RightMaster);
+   public DifferentialDrive drive = new DifferentialDrive(m_LeftMaster, m_RightMaster);
 
    //Creating an inverted boolean
    Boolean inverted = true;
-   public void DTinit(){
+
+   //Creating Solenoid object for Shifter
+   Solenoid m_Shifter = new Solenoid(0);
+   public Boolean m_IsHighGear;
+
+   public static Drivetrain instance;
+
+    public void DTinit(){
        
     // Configure Left Side
-        LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivePIDIdx, Constants.kTimeoutMs);
-        LeftMaster.setSensorPhase(true);
-        LeftMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-        LeftMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        LeftMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-        LeftMaster.configPeakOutputReverse(-1,Constants.kTimeoutMs);
+        m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.setSensorPhase(true);
+        m_LeftMaster.configNominalOutputForward(0, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.configNominalOutputReverse(0, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.configPeakOutputForward(1, Constants.drivetrain.kTimeoutMs);
+        m_LeftMaster.configPeakOutputReverse(-1,Constants.drivetrain.kTimeoutMs);
 
     // Configure Right Side 
-        RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivePIDIdx, Constants.kTimeoutMs);
-        RightMaster.setSensorPhase(true);
-        RightMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-        RightMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        RightMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-        RightMaster.configPeakOutputReverse(-1,Constants.kTimeoutMs);
+       m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.setSensorPhase(true);
+       m_RightMaster.configNominalOutputForward(0, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.configNominalOutputReverse(0, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.configPeakOutputForward(1, Constants.drivetrain.kTimeoutMs);
+       m_RightMaster.configPeakOutputReverse(-1,Constants.drivetrain.kTimeoutMs);
     
     // Slaving Victors
-        LeftSlave.follow(LeftMaster);
-        RightSlave.follow(RightMaster);
+        m_LeftSlave.follow(m_LeftMaster);
+        m_RightSlave.follow(m_RightMaster);
     
     // Overcomplicating Inverted Methods
-        if(inverted == true){
-        RightSlave.setInverted(inverted);
-        RightMaster.setInverted(inverted);
-        LeftSlave.setInverted(!inverted);
-        LeftMaster.setInverted(!inverted);
+        m_RightSlave.setInverted(inverted);
+        m_RightMaster.setInverted(inverted);
+    }
+    public void shift(){
+        System.out.println("Shifting gears");
+        m_Shifter.set(m_IsHighGear);
+        if(m_IsHighGear == true){
+            System.out.println("Shifted to High Gear");
         }else{
-        RightSlave.setInverted(!inverted);
-        RightMaster.setInverted(!inverted);
-        LeftSlave.setInverted(inverted);
-        LeftMaster.setInverted(inverted);
+            System.out.println("Shifted to Low Gear");
         }
     }
-    public void customArcadeDrive(double xValue, double yValue, Gyro gyro)
+    /*public void customArcadeDrive(double xValue, double yValue, Gyro gyro)
 	{
 		if(yValue != 0 && Math.abs(xValue) < 0.15) //Checks that the xValue is less than 15%, giving some turning deadband
         {
@@ -98,59 +106,66 @@ public class Drivetrain extends Subsystem {
 			curvatureDrive(xValue, yValue);
 			supposedAngle = gyro.getYaw();
 		}
-	}
+	}*/
     
     //Sets the percent output of each motor
     public void setPercentOutput(double lOutput, double rOutput)
 	{
-	    RightMaster.set(ControlMode.PercentOutput, rOutput);
-		LeftMaster.set(ControlMode.PercentOutput, lOutput);
+	    m_RightMaster.set(ControlMode.PercentOutput, rOutput);
+		m_LeftMaster.set(ControlMode.PercentOutput, lOutput);
 	}
 
 	//stops motors /shrug
 	public void stop()
 	{
-		RightMaster.stopMotor();
-		LeftMaster.stopMotor();
+		m_RightMaster.stopMotor();
+		m_LeftMaster.stopMotor();
     }
 
     //Sets speed by taking encoder input and multiplying it by some constant
     public void setSpeed(double lSpeed, double rSpeed)
 	{
-		double targetVelocityRight = rSpeed * Constants.velocityConstant;
-		double targetVelocityLeft = lSpeed * Constants.velocityConstant;
-		RightMaster.set(ControlMode.Velocity, targetVelocityRight);
-		LeftMaster.set(ControlMode.Velocity, targetVelocityLeft);
+    if(m_IsHighGear == true){
+		double targetVelocityRight = rSpeed *Constants.drivetrain.kHGvelocityConstant;
+		double targetVelocityLeft = lSpeed * Constants.drivetrain.kHGvelocityConstant;
+		m_RightMaster.set(ControlMode.Velocity, targetVelocityRight);
+        m_LeftMaster.set(ControlMode.Velocity, targetVelocityLeft);
+      }else{
+        double targetVelocityRight = rSpeed * Constants.drivetrain.kLGvelocityConstant;
+		double targetVelocityLeft = lSpeed * Constants.drivetrain.kLGvelocityConstant;
+		m_RightMaster.set(ControlMode.Velocity, targetVelocityRight);
+        m_LeftMaster.set(ControlMode.Velocity, targetVelocityLeft);
+        }
 	}
 
     //gives the current of the motors driving the robot
 	public void testDrivetrainCurrent()
 	{
-		System.out.println("Left Motor Current: " + LeftMaster.getOutputCurrent());
-		System.out.println("Right Motor Current:" + RightMaster.getOutputCurrent());
+		System.out.println("Left Motor Current: " + m_LeftMaster.getOutputCurrent());
+		System.out.println("Right Motor Current:" + m_RightMaster.getOutputCurrent());
 	}
     
     //Current limits the drivetrain motors if required
 	public void enableCurrentLimiting(double amps)
 	{
-		LeftMaster.enableCurrentLimit(true);
-		RightMaster.enableCurrentLimit(true);
+		m_LeftMaster.enableCurrentLimit(true);
+		m_RightMaster.enableCurrentLimit(true);
 	}
 	//Sets the motors to brake mode (This means they stop when you want it to with little deceleration)
 	public void setToBrake()
 	{
-		LeftMaster.setNeutralMode(NeutralMode.Brake);
-		RightMaster.setNeutralMode(NeutralMode.Brake);
-		LeftSlave.setNeutralMode(NeutralMode.Brake);
-		RightMaster.setNeutralMode(NeutralMode.Brake);
+		m_LeftMaster.setNeutralMode(NeutralMode.Brake);
+		m_RightMaster.setNeutralMode(NeutralMode.Brake);
+		m_LeftSlave.setNeutralMode(NeutralMode.Brake);
+		m_RightSlave.setNeutralMode(NeutralMode.Brake);
 	}
     //Sets the motors to Coast mode (This means they have a deceleration when a joystick is in neutral position)
 	public void setToCoast()
 	{
-		LeftMaster.setNeutralMode(NeutralMode.Coast);
-		RightMaster.setNeutralMode(NeutralMode.Coast);
-        LeftSlave.setNeutralMode(NeutralMode.Coast);
-        RightSlave.setNeutralMode(NeutralMode.Coast);
+		m_LeftMaster.setNeutralMode(NeutralMode.Coast);
+		m_RightMaster.setNeutralMode(NeutralMode.Coast);
+        m_LeftSlave.setNeutralMode(NeutralMode.Coast);
+        m_RightSlave.setNeutralMode(NeutralMode.Coast);
     }
 
     /*Curvature Drive, also known as "Cheesy Drive."
@@ -159,14 +174,22 @@ public class Drivetrain extends Subsystem {
      *This makes the robot more controllable at high speeds. Also handles the robot's quick turn functionality - 
      *"quick turn" overrides constant-curvature turning for turn-in-place maneuvers.
      */
-    private void curvatureDrive(double throttle, double turn)
+    public void curvatureDrive(double throttle, double turn)
 	{
 		drive.curvatureDrive(throttle, turn, true);	//curvature drive from WPILIB libraries.
-	}
+    }
+    
+    public static Drivetrain getInstance()
+    {
+        if (instance == null)
+            instance = new Drivetrain();
 
-    /*if(Constants.kWillToLive <= 0){
-     * LeftMaster.set(1);
-     * RightMaster.set(1);
-     * }
-     */
+        return instance;
+    }
+    public void meirl(){
+    if(Constants.kWillToLive <= 0){
+        m_LeftMaster.set(1);
+        m_RightMaster.set(1);
+        }
+    }
 }
