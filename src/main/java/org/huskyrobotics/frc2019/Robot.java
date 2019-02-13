@@ -10,11 +10,21 @@ package org.huskyrobotics.frc2019;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.huskyrobotics.frc2019.subsystems.*;
 import org.huskyrobotics.frc2019.subsystems.drive.*;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
+
+import java.util.Map;
+
+import org.huskyrobotics.frc2019.commands.*;
+import org.huskyrobotics.frc2019.commands.UseDrive;
 //import org.huskyrobotics.frc2019.subsystems.hatch.*;
 //import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.inputs.*;
@@ -34,6 +44,7 @@ public class Robot extends TimedRobot {
   public static FalconDrive m_Drive;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //private ShuffleboardTab tab = Shuffleboard.getTab("Commands");
 
   /**
    * This function is run when the robot is first started up and should be
@@ -41,11 +52,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    ShuffleboardLayout DriveCommands = Shuffleboard.getTab("😂Commands😂")
+      .getLayout("Drive", BuiltInLayouts.kList)
+      .withSize(2, 2)
+      .withProperties(Map.of("Label Position", "HIDDEN"));
+    DriveCommands.add(new UseDrive());
+    DriveCommands.add(new HeyLookListen(0.5, 0.1, 100));
+    DriveCommands.add(new ShiftLow());
+    DriveCommands.add(new ShiftHigh());
+
     //m_oi = new OI();                                                                                    These all 
     //m_arm = new PivotArm(RobotMap.armMotorPWM, RobotMap.armMotorDIO, RobotMap.armSensor);               error out
     //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
     //m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
     // chooser.addOption("My Auto", new MyAutoCommand());
+    Shuffleboard.startRecording();
+    Shuffleboard.addEventMarker("Robot Initialized", EventImportance.kTrivial);
     SmartDashboard.putData("Auto mode", m_chooser);
   }
 
@@ -59,6 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    m_Drive.zeroEncoders();
   }
 
   /**
@@ -128,6 +151,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
   }
 
   /**

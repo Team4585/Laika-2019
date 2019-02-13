@@ -9,10 +9,8 @@ package org.huskyrobotics.frc2019.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.huskyrobotics.frc2019.Robot;
-import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 import org.huskyrobotics.frc2019.inputs.Vision;
 import org.huskyrobotics.lib.Util;
-import org.huskyrobotics.frc2019.Constants;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -24,9 +22,7 @@ public class HeyLookListen extends Command {
   angleDeltaX,
   angleDeltaY,
   forwardSpeed,
-  turnSpeed,
-  leftSpeedRaw,
-  rightSpeedRaw;
+  turnSpeed;
   boolean followRange = false;
 
   double targetSizeSetpoint = 6;
@@ -91,7 +87,8 @@ public class HeyLookListen extends Command {
       if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
 
       System.out.println("forward speed: " + forwardSpeed + " Turn speed: " + turnSpeed);
-
+      
+      Robot.m_Drive.curvatureDrive(forwardSpeed, turnSpeed, false);
     } else {
       noCurrentTarget = true;
     }
@@ -111,6 +108,7 @@ public class HeyLookListen extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("done finding a vision target.");
   }
 
   // Called when another command which requires one or more of the same

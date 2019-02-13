@@ -8,17 +8,21 @@
 package org.huskyrobotics.frc2019.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive.Gear;
 
 /**
  * Add your docs here.
  */
-public class Shift extends InstantCommand {
+public class ShiftHigh extends InstantCommand {
   /**
    * Add your docs here.
    */
-  Drivetrain m_Drive = new Drivetrain();
-  public Shift() {
+  FalconDrive m_Drive;
+  Boolean m_isHigh;
+  public ShiftHigh() {
     super();
     requires(m_Drive);
     // Use requires() here to declare subsystem dependencies
@@ -28,7 +32,9 @@ public class Shift extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    m_Drive.shift();
+    m_Drive.setGear(Gear.High);
+    m_isHigh = true;
+    SmartDashboard.putBoolean("Okay now THIS is epic 😂😂😂", m_isHigh);
   }
 
 }

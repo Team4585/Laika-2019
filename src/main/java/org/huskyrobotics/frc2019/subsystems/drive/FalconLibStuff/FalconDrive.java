@@ -34,7 +34,6 @@ import org.huskyrobotics.frc2019.autonomous.*;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
@@ -240,8 +239,6 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             break;
           case Low:
             setLowGear();
-            break;
-          default:
             break;
         }
       }
