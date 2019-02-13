@@ -13,7 +13,7 @@ public class OI {
 
   private HashMap[] helmControls;
   private HashMap<String, Integer> controlsHar;//holds info for Harold's driver mapping
-  private HashMap<String, Integer> controlsMan;//holds info for Man's driver mapping
+  private HashMap<String, Integer> controlsMan;//holds info for Manvith's driver mapping
 
   private HashMap[] weaponsControls;
   private HashMap<String, Integer> controlsMic;//holds info for Micaela's driver mapping
