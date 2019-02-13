@@ -1,14 +1,15 @@
+package org.huskyrobotics.frc2018.auto;
 import edu.wpi.first.wpilibj.Encoder;
 
 class CalcPos{
   double[] getPos(){
-    
+    return (new double [] {0});
   }
   void addData(double step){
   
   }
   void initPos(){
     Encoder lEncoder = new Encoder(5, 5);
-    Encoder lEncoder = new Encoder(6, 6);
+    Encoder rEncoder = new Encoder(6, 6);
   }
 }

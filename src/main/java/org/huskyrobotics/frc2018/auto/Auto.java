@@ -1,13 +1,17 @@
+package org.huskyrobotics.frc2018.auto;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.lang.Math;
-import lineSmoother.FalconPathPlanner;
+import org.huskyrobotics.frc2018.auto.FalconPathPlanner;
 
 public class Auto {
 	double seconds = 15.0; //the amount of seconds to run bot
 	double step = 0.1; //the period of time between each change of speed (smaller step is more accurate)
 	double robotWidth = 0.1; //distance in feet between wheels
 	//seconds divided by step must be an integer
+	double[][] empty = new double[][]{
+		{0, 0},
+	}; 
 	double[][] l2l = new double[][]{
 			{1, 1},
 			{5, 1},
@@ -62,33 +66,34 @@ public class Auto {
 			{19, 12}
 			//TODO make path
 		}; 
+	Ultrasonic lUltra = new Ultrasonic(1,1);
+	Ultrasonic rUltra = new Ultrasonic(1,1);
 	public void doAuto(int startLoc, int end) { // for startLoc 0 = left, 1 = middle, 2 = right; for end 0 = left, 1 = right
-		Ultrasonic lUltra = new Ultrasonic(1,1);
-		Ultrasonic rUltra = new Ultrasonic(1,1);
+		FalconPathPlanner path = new FalconPathPlanner(empty);
 		switch (startLoc) {
 		case 0: driveOffHab();
 			if(end == 0) {
-				FalconPathPlanner path = new FalconPathPlanner(l2l);
+				path = new FalconPathPlanner(l2l);
 			} else {
-				FalconPathPlanner path = new FalconPathPlanner(l2r);
+				path = new FalconPathPlanner(l2r);
 			}
 			break;
 		case 1: if(end == 0) {
-				FalconPathPlanner path = new FalconPathPlanner(m2l);
+				path = new FalconPathPlanner(m2l);
 			} else {
-				FalconPathPlanner path = new FalconPathPlanner(m2r);
+				path = new FalconPathPlanner(m2r);
 			}
 			break;
 		case 2:	driveOffHab();
 			if(end == 0) {
-				FalconPathPlanner path = new FalconPathPlanner(r2l);
+				path = new FalconPathPlanner(r2l);
 			} else {
-				FalconPathPlanner path = new FalconPathPlanner(r2r);
+				path = new FalconPathPlanner(r2r);
 			}
 			break;
 		}
-		path.calculate(seconds, step, robotwidth);
-		path.drivebot();
+		path.calculate(seconds, step, robotWidth);
+		path.driveBot(seconds, step);
 		//TODO place thing
 	}
 		void allignRobot(int placeholdDis2, int placeholdDis1) {
@@ -103,15 +108,9 @@ public class Auto {
 	}
 	void driveOffHab() {
 		//TODO drive bot forward by x dis to get bot off hab
-		allignRobot(lUltra.getRangeInches(), rUltra.getRangeInches());
+		allignRobot((int) lUltra.getRangeInches(), (int) rUltra.getRangeInches());
 		//TODO drive robot back by placeholdDis1 - Desired dis away from hab
 	}
 	
-	void driveBot() {
-		for(int i = 0; i < (seconds * step); i++) {
-			//set rightmotor to ((this.smoothRightVelocity[i][1]));
-			//set rightmotor to ((this.smoothLeftVelocity[i][1]));
-			//sleep(step*1000)
-		}
-	}
+	
 }

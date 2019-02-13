@@ -1,4 +1,4 @@
-package lineSmoother;
+package org.huskyrobotics.frc2018.auto;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

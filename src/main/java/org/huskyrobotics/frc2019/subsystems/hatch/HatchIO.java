@@ -11,6 +11,14 @@ public class HatchIO {
         m_linearActuators = new VictorSPX[] {new VictorSPX(ActuatorPorts[0]), new VictorSPX(ActuatorPorts[1]), new VictorSPX(ActuatorPorts[2]), new VictorSPX(ActuatorPorts[3])};
     }
 
+    public void setHatchPush (boolean input) {
+        if(input) {
+            release();
+        } else {
+            reset();
+        }
+    }
+
     public void release () {
         SetActuatorsOut();
     }

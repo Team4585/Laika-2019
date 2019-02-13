@@ -1,4 +1,4 @@
-package FaclonPath;
+package org.huskyrobotics.frc2018.auto;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.util.LinkedList;
@@ -93,10 +93,18 @@ public class FalconPathPlanner
 		pathAlpha = 0.7;
 		pathBeta = 0.3;
 		pathTolerance = 0.0000001;
-
+		
 		velocityAlpha = 0.1;
 		velocityBeta = 0.3;
 		velocityTolerance = 0.0000001;
+	}
+
+	void driveBot(double seconds, double step) {
+		for(int i = 0; i < (seconds * step); i++) {
+			//set rightmotor to ((this.smoothRightVelocity[i][1]));
+			//set rightmotor to ((this.smoothLeftVelocity[i][1]));
+			//sleep(step*1000)
+		}
 	}
 
 	public static void print(double[] path)

@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.huskyrobotics.frc2019.subsystems.*;
 
-public class Flipper implements HuskySubsystem {
+public class Flipper {
 
     // the channel of the solenoids(should be the same)
     private int c_channel = 0;
