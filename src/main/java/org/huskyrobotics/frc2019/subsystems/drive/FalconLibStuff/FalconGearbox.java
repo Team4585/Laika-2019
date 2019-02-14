@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -24,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class FalconGearbox {
     public static enum EncoderMode {
-        None, QuadEncoder
+        None, QuadEncoder, CTRE_MagEncoder_Relative, CTRE_MagEncoder_Absolute
     }
     public enum TransmissionSide {
         Left, Right;
@@ -32,12 +34,21 @@ public class FalconGearbox {
 
     private FalconSRX<Length> m_Master;
 
-    private FalconSRX<Length> m_Slave;
+    private VictorSPX m_Slave;
 
     private TransmissionSide side;
 
     NativeUnitLengthModel lengthModel = Constants.drivetrain.kLeftNativeunitLengthmodel;
 
+    /**
+     * Creates a gearbox object using a Talon SRX master and Victor SPX slave.
+     * 
+     * @param masterPort Master Talon SRX port on the CAN line
+     * @param slavePort Slave Victor SPX port on the CAN line
+     * @param mode The kind of encoder connected to the Gearbox. Look in enums and CTRE docs for more info.
+     * @param side The side of the Tank Drive gearbox
+     * @param isInverted Determines if something is inverted (Good to know that one gearbox will always be inverted in tank drive)
+     */
     public FalconGearbox(int masterPort, int slavePort, EncoderMode mode, TransmissionSide side, boolean isInverted) {
         if (side == TransmissionSide.Left){
             lengthModel = Constants.drivetrain.kLeftNativeunitLengthmodel;
@@ -46,7 +57,7 @@ public class FalconGearbox {
         };
         
         m_Master = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
-        m_Slave = new FalconSRX<Length>(slavePort, lengthModel, TimeUnitsKt.getMillisecond(10));
+        m_Slave = new VictorSPX(slavePort);
 
         this.side = side;
 
@@ -69,10 +80,15 @@ public class FalconGearbox {
             return m_Master;
           }
         
-          public List<FalconSRX<Length>> getAll() {
+          public List<FalconSRX<Length>> getAllMasters() {
+            return Arrays.asList(
+              m_Master
+            );
+          }
+          public List<BaseMotorController> getAll(){
             return Arrays.asList(
               m_Master, m_Slave
-            );
+              );
           }
         
   public NativeUnitLengthModel getModel() {
@@ -109,7 +125,7 @@ public class FalconGearbox {
   }
 
   public void setNeutralMode(NeutralMode mode) {
-    for( FalconSRX<Length> motor : getAll() ) {
+    for( BaseMotorController motor : getAll() ) {
       motor.setNeutralMode(mode);
     }
   }

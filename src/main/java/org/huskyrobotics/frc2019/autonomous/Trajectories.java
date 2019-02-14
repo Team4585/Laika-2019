@@ -54,9 +54,9 @@ public class Trajectories {
     public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, boolean reversed){
         return generateTrajectory(waypoints, constraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false);
       }
-      public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, 
+    public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, 
                                 List<TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed){
-    return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
+        return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
           waypoints,
           constraints_,
           startVelocity,

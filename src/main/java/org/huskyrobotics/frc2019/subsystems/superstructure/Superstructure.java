@@ -7,7 +7,6 @@
 
 package org.huskyrobotics.frc2019.subsystems.superstructure;
 
-import org.huskyrobotics.frc2019.subsystems.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
