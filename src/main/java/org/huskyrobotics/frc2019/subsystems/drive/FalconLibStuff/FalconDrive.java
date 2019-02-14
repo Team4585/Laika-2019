@@ -284,7 +284,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
       public double getGyro(boolean inverted) {
         double kgyroang;
         if(inverted) { kgyroang = getGyro() * (-1); } else { kgyroang = getGyro(); }
-        System.out.println("Gyroangle: " + kgyroang);
+        //System.out.println("Gyroangle: " + kgyroang);
         return kgyroang;
       }
     

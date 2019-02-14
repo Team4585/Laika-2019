@@ -9,7 +9,6 @@ package org.huskyrobotics.frc2019.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.huskyrobotics.frc2019.Robot;
-import org.huskyrobotics.frc2019.subsystems.*;
 
 /**
  * An example command.  You can replace me with your own command.

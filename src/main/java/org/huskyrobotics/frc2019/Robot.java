@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.huskyrobotics.frc2019.subsystems.*;
 import org.huskyrobotics.frc2019.subsystems.drive.*;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 
@@ -37,8 +36,6 @@ import java.util.Map;
 import org.huskyrobotics.frc2019.autonomous.Trajectories;
 import org.huskyrobotics.frc2019.commands.*;
 import org.huskyrobotics.frc2019.commands.UseDrive;
-//import org.huskyrobotics.frc2019.subsystems.hatch.*;
-//import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 import org.huskyrobotics.frc2019.subsystems.cargo.*;
@@ -72,6 +69,7 @@ public class Robot extends TimedRobot {
 
     m_Drive.init();
     m_Drive.zeroGyro();
+    m_arm.getCurrentAngle();
 
     m_oi = new OI(0,1);                                                                                          
     //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
