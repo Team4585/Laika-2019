@@ -2,11 +2,13 @@ package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
-
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 
 public class Constants {
@@ -27,8 +29,8 @@ public class Constants {
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
 
-    public static final Length left_radius = LengthKt.getInch(2);
-    public static final Length right_radius = LengthKt.getInch(2);
+    public static final Length left_radius = LengthKt.getInch(3);
+    public static final Length right_radius = LengthKt.getInch(3);
 
     //Gearing and mechanical gains
     /*This is where we put our robot velocity and angular velocity, as well as any required pathing constants*/
@@ -44,6 +46,7 @@ public class Constants {
     public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
     public static final NativeUnitLengthModel kLeftNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
     public static final NativeUnitLengthModel kRightNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+
 
     //Stuff for pathfinding
       public static final double kleftstatickv = 0.0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
@@ -99,7 +102,10 @@ public class Constants {
 
 
     }
-
+    public static class PivotArm{
+        public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+        public static final NativeUnitRotationModel kArmNativeunitRotationmodel = new NativeUnitRotationModel(kDriveSensorUnitsPerRotation);
+    }
     public class pathfinder {
         public static final double gyro_correct_kp = 0.2;
       }

@@ -1,6 +1,7 @@
 package org.huskyrobotics.frc2019.subsystems.climber;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -8,8 +9,14 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.huskyrobotics.frc2019.subsystems.*;
 
-public class Flipper implements HuskySubsystem {
+public class Flipper extends Subsystem {
 
+    public void initDefaultCommand() 
+	{
+        //setDefaultCommand(new UseDrivetrain());
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+	}
     // the channel of the solenoids(should be the same)
     private int c_channel = 0;
     private int c_winchMotorPort = 0;
@@ -18,23 +25,6 @@ public class Flipper implements HuskySubsystem {
     private boolean m_status = false;
     private Clamp c_clamp = new Clamp(c_channel, m_status);
     private Winch c_winch = new Winch(c_winchMotorPort, c_deviceNumber);
-
-    public void autoInit() {
-
-    }
-
-    public void doAuto() {
-
-    }
-
-    public void teleopInit() {
-
-    }
-
-    public void doTeleop() {
-
-    }
-
     /**
      * Extends the clamps so they can clamp on.
      */

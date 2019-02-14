@@ -41,6 +41,8 @@ import org.huskyrobotics.frc2019.commands.UseDrive;
 //import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
+import org.huskyrobotics.frc2019.subsystems.cargo.*;
+import org.huskyrobotics.frc2019.subsystems.hatch.*;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -49,10 +51,10 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public static OI m_oi;
-  private PivotArm m_arm;
-  //private CargoIO m_cargo;
-  //private HatchIO m_hatch;
+  public static OI m_oi;
+  private PivotArm m_arm = PivotArm.getInstance();
+  private CargoIO m_cargo;
+  private HatchIO m_hatch;
   public static FalconDrive m_Drive = FalconDrive.getInstance();
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
@@ -71,8 +73,7 @@ public class Robot extends TimedRobot {
     m_Drive.init();
     m_Drive.zeroGyro();
 
-    //m_oi = new OI();                                                                                    These all 
-    //m_arm = new PivotArm(RobotMap.armMotorPWM, RobotMap.armMotorDIO, RobotMap.armSensor);               error out
+    m_oi = new OI(0,1);                                                                                          
     //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
     //m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
     // chooser.addOption("My Auto", new MyAutoCommand());

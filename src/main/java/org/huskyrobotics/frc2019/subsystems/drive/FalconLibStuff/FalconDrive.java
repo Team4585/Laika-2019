@@ -101,6 +101,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         Ramsete, PurePursuit, FeedForward, PID
     }
 
+    
     private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
     public void setTrackerMode(TrajectoryTrackerMode mode) {
         trackerMode = mode;
@@ -123,8 +124,6 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             () -> getLeft().getDistance(),
             () -> getRight().getDistance()
         );
-
-            /* set the robot pose to 0,0,0 */
         localization.reset( new Pose2d() );
     // create a notifier to update localization and start it every 10ms
     // localizationNotifier = new Notifier(() ->{
@@ -242,6 +241,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         gear = Gear.Low;
       }
     
+      /**
+       * Sets the gear position of the drivebase gearboxes
+       * @param gear Low or High gear parameter
+       */
       public void setGear(Gear gear) {
         switch (gear) {
           case High:
@@ -253,6 +256,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         }
       }
     
+      /**
+       * Sets the Master Talon control mode
+       * @param mode The control mode of the drivebase (Brake or Coast)
+       */
       public void setNeutralMode(NeutralMode mode) {
         getLeft().getMaster().setNeutralMode(mode);
         getRight().getMaster().setNeutralMode(mode);
@@ -277,7 +284,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
       public double getGyro(boolean inverted) {
         double kgyroang;
         if(inverted) { kgyroang = getGyro() * (-1); } else { kgyroang = getGyro(); }
-        // Logger.log("Gyroangle: " + gyroang);
+        System.out.println("Gyroangle: " + kgyroang);
         return kgyroang;
       }
     
@@ -332,6 +339,9 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         rightTransmission.getMaster().set(ControlMode.PercentOutput, right_power);
       }
     
+      /**
+       * @return The robot's position in a Pose2d Object
+       */
       public Pose2d getRobotPosition(){
         return getLocalization().getRobotPosition();
       }
@@ -457,6 +467,12 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent);
         getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
       }
+
+      /**
+       * 
+       * @param trajectory A trajectory object created in the Trajectories.java file
+       * @return A followed trajectory using Ramsete nonlinear control
+       */
       public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory){
         return followTrajectory(trajectory, false);
     }
@@ -465,14 +481,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
     }
   
-    /**
-     * I need to do some testing on this before I can document this
-     * 
-     * @param trajectory 
-     * @param mode
-     * @param reset
-     * @return
-     */
+
     public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, TrajectoryTrackerMode mode, boolean reset){
       kDefaulTrajectoryTrackerMode = mode;
       return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
