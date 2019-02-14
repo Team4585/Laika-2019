@@ -42,16 +42,34 @@ import kotlin.ranges.RangesKt;
 public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBase{
     private static FalconDrive m_instance;
 
+
+    public synchronized static FalconDrive getInstance() {
+        if (m_instance == null) m_instance = new FalconDrive();
+        return m_instance;
+      }
+
+    
     public List<Double> lastCommandedVoltages;
     public List<Double> lastVelocity = Arrays.asList(0d, 0d);
 
     public PigeonIMU m_gyro = new PigeonIMU(0);
     double m_gyroZero;
 
+    private Localization localization;
+
+    public Localization getLocalization() {
+        return localization;
+    }
 
     private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
     private static int high = 0;
     private static int low = 1;
+
+    /** 
+     * Shifts the gearbox
+     * 
+     * @param HighorLow The gear to shift to
+     */
     private static void shift(int HighorLow){
         if(HighorLow == high){
         shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
@@ -61,12 +79,11 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             System.out.println(HighorLow + "is not a valid shifting choice");
         }
     }
-    
-    private Localization localization;
-
-    public Localization getLocalization() {
-        return localization;
+    public static enum Gear {
+        Low, High;
     }
+    Gear gear;
+    
 
     private static double kQuickStopThreshold = 0.0; 
     private static double kQuickStopAlpha = 0.0;
@@ -76,10 +93,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     private FeedForwardTracker feedForwardTracker;
     private PurePursuitTracker purePursuitTracker;
 
-    public static enum Gear {
-        Low, High;
-    }
-    Gear gear;
+
 
     Notifier localizationNotifier;
 
@@ -96,7 +110,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     private DifferentialDrive m_differentialDrive;
     private FalconGearbox leftTransmission, rightTransmission;
 
-    private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.FeedForward;
+    private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.Ramsete;
 
     private FalconDrive(){
         leftTransmission = new FalconGearbox(RobotMap.kLeftMaster, RobotMap.kLeftSlave, FalconGearbox.EncoderMode.QuadEncoder, FalconGearbox.TransmissionSide.Left, false);
@@ -154,11 +168,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
       public FalconSRX<Length> getRightMotor() {
         return getRight().getMaster();
       }
-    
-      public synchronized static FalconDrive getInstance() {
-        if (m_instance == null) m_instance = new FalconDrive();
-        return m_instance;
-      }
+
       
       public RamseteTracker getRamseteTracker() {
         return ramseteTracker;
@@ -261,6 +271,9 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     public double getGyro() {
         return m_gyro.getCompassHeading() - m_gyroZero;
       }
+      public void zeroGyro() {
+		m_gyroZero = m_gyro.getCompassHeading();
+	}
       public double getGyro(boolean inverted) {
         double kgyroang;
         if(inverted) { kgyroang = getGyro() * (-1); } else { kgyroang = getGyro(); }
@@ -330,7 +343,12 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
       public void arcadeDrive(double linear, double rotation) {
         arcadeDrive(linear, rotation, true);
       }
-    
+      /**
+       * Traditional arcade drive
+       * @param linearPercent The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+       * @param rotationPercent The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
+       * @param squareInputs If set, decreases the input sensitivity at low speeds.
+       */
       public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs){
         linearPercent = Util.limit(linearPercent,1);
         linearPercent = Util.deadband(linearPercent, 0.1);
@@ -372,6 +390,13 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         tankDrive(leftMotorOutput, rightMotorOutput);
       }
     
+      /**
+       * Mimics the WPI Curvature Drive using Falcon Library
+       * 
+       * @param linearPercent Forward Direction (converts Percent to control loop speed)
+       * @param curvaturePercent Amount of Curvature (Converts Percent to control loop speed)
+       * @param isQuickTurn If set, overrides constant-curvature turning for turn-in-place maneuvers.
+       */
       public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {
           double angularPower;
           boolean overPower;
@@ -440,6 +465,14 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
     }
   
+    /**
+     * I need to do some testing on this before I can document this
+     * 
+     * @param trajectory 
+     * @param mode
+     * @param reset
+     * @return
+     */
     public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, TrajectoryTrackerMode mode, boolean reset){
       kDefaulTrajectoryTrackerMode = mode;
       return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);

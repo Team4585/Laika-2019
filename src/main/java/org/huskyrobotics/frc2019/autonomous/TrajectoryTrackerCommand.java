@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.huskyrobotics.frc2019.Robot;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 
-// @SuppressWarnings({"WeakerAccess", "unused"})
 public class TrajectoryTrackerCommand extends Command {
   private TrajectoryTracker trajectoryTracker;
   private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
@@ -88,7 +87,7 @@ public class TrajectoryTrackerCommand extends Command {
       LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
       LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
     }
-    // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
+    System.out.println("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
     driveBase.setOutput(output);
 
     long elapsed = System.currentTimeMillis() - now;
