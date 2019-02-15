@@ -78,71 +78,76 @@ public class FalconGearbox {
 
 
     }
+      /* Utility Methods */
         public FalconSRX<Length> getMaster() {
             return m_Master;
-          }
+        }
         
-          public List<FalconSRX<Length>> getAllMasters() {
+        public List<FalconSRX<Length>> getAllMasters() {
             return Arrays.asList(
               m_Master
             );
-          }
-          public List<BaseMotorController> getAll(){
+        }
+        public List<BaseMotorController> getAll(){
             return Arrays.asList(
               m_Master, m_Slave
               );
-          }
+        }
         
-  public NativeUnitLengthModel getModel() {
-    return lengthModel;
-  }
+        public NativeUnitLengthModel getModel() {
+            return lengthModel;
+        }
 
-  public Length getDistance() {
-    return m_Master.getSensorPosition();
-  }
+        /* Drive Base Practicality */
+        
+        public void zeroEncoder() {
+          m_Master.setSensorPosition(LengthKt.getMeter(0));
+        }
+      
+        public void setNeutralMode(NeutralMode mode) {
+          for( BaseMotorController motor : getAll() ) {
+            motor.setNeutralMode(mode);
+          }
+        }
+      
+        public void stop() {
+          getMaster().set(ControlMode.PercentOutput, 0);
+        }
+      
+        public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
+          m_Master.config_kP(0, kp, 10);
+          m_Master.config_kI(0, ki, 10);
+          m_Master.config_kD(0, kd, 10);
+          m_Master.config_kF(0, kf, 10);
+          m_Master.config_IntegralZone(0, (int)Math.round(lengthModel.fromModel(LengthKt.getMeter(iZone)).getValue()), 30);
+          m_Master.configMaxIntegralAccumulator(0, maxIntegral, 0);
+        }
 
-  public Velocity<Length> getVelocity() {
-    return m_Master.getSensorVelocity();
-  }
+        /* Length/Velocity Methods */
 
-  public double getFeetPerSecond() {
-    return VelocityKt.getFeetPerSecond(getVelocity());
-  }
+        public Length getDistance() {
+            return m_Master.getSensorPosition();
+        }
 
-  public double getFeet() {
-    return getDistance().getFeet();
-  }
+        public Velocity<Length> getVelocity() {
+            return m_Master.getSensorVelocity();
+        }
 
-  public Length getClosedLoopError() {
-    if (getMaster().getControlMode() != ControlMode.PercentOutput) {
-      return lengthModel.toModel(NativeUnitKt.getSTU(m_Master.getClosedLoopError()));
-    }
-    else {
-      return LengthKt.getFeet(0);
-    }
-  }
+        public double getFeetPerSecond() {
+            return VelocityKt.getFeetPerSecond(getVelocity());
+        }
 
-  public void zeroEncoder() {
-    m_Master.setSensorPosition(LengthKt.getMeter(0));
-  }
+        public double getFeet() {
+            return getDistance().getFeet();
+        }
 
-  public void setNeutralMode(NeutralMode mode) {
-    for( BaseMotorController motor : getAll() ) {
-      motor.setNeutralMode(mode);
-    }
-  }
-
-  public void stop() {
-    getMaster().set(ControlMode.PercentOutput, 0);
-  }
-
-  public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
-    m_Master.config_kP(0, kp, 10);
-    m_Master.config_kI(0, ki, 10);
-    m_Master.config_kD(0, kd, 10);
-    m_Master.config_kF(0, kf, 10);
-    m_Master.config_IntegralZone(0, (int)Math.round(lengthModel.fromModel(LengthKt.getMeter(iZone)).getValue()), 30);
-    m_Master.configMaxIntegralAccumulator(0, maxIntegral, 0);
-  }
+        public Length getClosedLoopError() {
+            if (getMaster().getControlMode() != ControlMode.PercentOutput) {
+              return lengthModel.toModel(NativeUnitKt.getSTU(m_Master.getClosedLoopError()));
+            }
+            else {
+              return LengthKt.getFeet(0);
+            }
+        }
 
 }
