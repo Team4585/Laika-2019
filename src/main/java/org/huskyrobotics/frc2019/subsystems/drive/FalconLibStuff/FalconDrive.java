@@ -60,17 +60,17 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     public Localization getLocalization() {
         return localization;
     }
-
+/*
     private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
     private static int high = 0;
     private static int low = 1;
-
+*/
     /** 
      * Shifts the gearbox
      * 
      * @param HighorLow The gear to shift to
      */
-    private static void shift(int HighorLow){
+    /*private static void shift(int HighorLow){
         if(HighorLow == high){
         shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
         }else if(HighorLow == low){
@@ -83,7 +83,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         Low, High;
     }
     Gear gear;
-    
+    */
 
     private static double kQuickStopThreshold = 0.0; 
     private static double kQuickStopAlpha = 0.0;
@@ -194,10 +194,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     
       public void init() {
         zeroEncoders();
-        setHighGear();
+        //setHighGear();
       }
     
-      public void setHighGear() {
+      /*public void setHighGear() {
         leftTransmission.setClosedLoopGains(
                 Constants.drivetrain.kHGleftKp,
                 Constants.drivetrain.kHGleftKi,
@@ -240,12 +240,12 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         shift(low);
         gear = Gear.Low;
       }
-    
+    */
       /**
        * Sets the gear position of the drivebase gearboxes
        * @param gear Low or High gear parameter
        */
-      public void setGear(Gear gear) {
+      /*public void setGear(Gear gear) {
         switch (gear) {
           case High:
             setHighGear();
@@ -255,7 +255,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             break;
         }
       }
-    
+    */
       /**
        * Sets the Master Talon control mode
        * @param mode The control mode of the drivebase (Brake or Coast)

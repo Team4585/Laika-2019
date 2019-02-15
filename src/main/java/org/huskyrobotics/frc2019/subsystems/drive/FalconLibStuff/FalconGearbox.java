@@ -65,7 +65,8 @@ public class FalconGearbox {
             m_Master.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
             m_Master.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 10);
         }
-        m_Slave.set(ControlMode.Follower, m_Master.getDeviceID());
+        //m_Slave.set(ControlMode.Follower, m_Master.getDeviceID());
+        m_Slave.follow(m_Master);
 
         m_Master.configPeakOutputForward(+1.0, 10);
         m_Master.configPeakOutputReverse(-1.0, 10);
@@ -74,6 +75,7 @@ public class FalconGearbox {
          
         m_Master.setInverted(isInverted);
         m_Slave.setInverted(InvertType.FollowMaster);
+
 
     }
         public FalconSRX<Length> getMaster() {

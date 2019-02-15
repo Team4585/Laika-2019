@@ -49,8 +49,8 @@ import org.huskyrobotics.frc2019.subsystems.hatch.*;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
-  private PivotArm m_arm = PivotArm.getInstance();
-  private CargoIO m_cargo;
+  //private PivotArm m_arm = PivotArm.getInstance();
+  //private CargoIO m_cargo;
   private HatchIO m_hatch;
   public static FalconDrive m_Drive = FalconDrive.getInstance();
   Command m_autonomousCommand;
@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
 
     m_Drive.init();
     m_Drive.zeroGyro();
-    m_arm.getCurrentAngle();
+    //m_arm.getCurrentAngle();
 
     m_oi = new OI(0,1);                                                                                          
     //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
@@ -196,6 +196,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    m_Drive.curvatureDrive(m_oi.GetRobotForward(), m_oi.GetRobotTwist(), true);
 
   }
 
