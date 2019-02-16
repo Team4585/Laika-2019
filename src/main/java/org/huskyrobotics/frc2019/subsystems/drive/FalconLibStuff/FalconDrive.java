@@ -6,7 +6,6 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.sensors.*;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
 
@@ -30,9 +29,10 @@ import org.huskyrobotics.frc2019.ConstantsAuto;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconGearbox;
 import org.huskyrobotics.lib.Util;
 import org.huskyrobotics.lib.DriveSignal;
-import org.huskyrobotics.frc2019.autonomous.*;
+import org.huskyrobotics.frc2019.FalconAuto.*;
+import org.huskyrobotics.frc2019.inputs.Gyro;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -52,7 +52,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     public List<Double> lastCommandedVoltages;
     public List<Double> lastVelocity = Arrays.asList(0d, 0d);
 
-    public PigeonIMU m_gyro = new PigeonIMU(0);
+    public Gyro m_gyro;
     double m_gyroZero;
 
     private Localization localization;
@@ -102,10 +102,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     }
 
     
-    private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
+    /*private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
     public void setTrackerMode(TrajectoryTrackerMode mode) {
         trackerMode = mode;
-    }
+    }*/
 
     private DCMotorTransmission m_Transmission;
     private DifferentialDrive m_differentialDrive;
@@ -239,7 +239,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      * @return gyro heading
      */
       public double getGyro() {
-        return m_gyro.getCompassHeading() - m_gyroZero;
+        return m_gyro.getHeading();
       }
     /**
      * Gets the Gyro value of an element of the drivebase
@@ -264,7 +264,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      * Zeroes the gyro heading. This is done by setting the gyro heading equal to itself so it creates a relative zero value.
      */
       public void zeroGyro() {
-		m_gyroZero = m_gyro.getCompassHeading();
+        m_gyro.resetAngle();
 	  }
     /**
      * Stops the Drivebase

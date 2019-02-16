@@ -7,18 +7,14 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 
 
-import org.huskyrobotics.frc2019.subsystems.drive.*;
-import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
+
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 import org.huskyrobotics.lib.DriveSignal;
-import org.huskyrobotics.frc2019.Robot;
 import org.huskyrobotics.frc2019.OI;
 
 public class UseDrive extends Command {
@@ -30,7 +26,6 @@ public class UseDrive extends Command {
   FalconDrive m_Drive;
   DriveSignal m_Signal;
   OI m_OI = new OI(0,1);
-  private ShuffleboardTab tab = Shuffleboard.getTab("Drive status");
 
   // Called just before this Command runs the first time
   @Override

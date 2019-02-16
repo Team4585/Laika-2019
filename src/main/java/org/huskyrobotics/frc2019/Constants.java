@@ -2,14 +2,11 @@ package org.huskyrobotics.frc2019;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
-import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 
 public class Constants {
 

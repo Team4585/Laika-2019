@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.autonomous;
+package org.huskyrobotics.frc2019.FalconAuto;
 
 import java.util.function.Supplier;
 

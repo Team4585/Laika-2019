@@ -29,7 +29,7 @@ public class CargoIO {
 	public void stop () {
 		m_motor.set(ControlMode.PercentOutput, 0);
 	}
-
+	@SuppressWarnings("unused")
 	private void init() {
 		m_motor.set(ControlMode.PercentOutput, 0);
 	}
