@@ -30,6 +30,7 @@ public class RobotMap {
   public static final int kRightMaster = 1;
   public static final int kPivotMaster = 2;
   public static final int kWhateveridk = 3;
+  public static final int kHatchMotor = 4;
 
   // VictorSPXs
   public static final int kLeftSlave = 0;
@@ -46,6 +47,4 @@ public class RobotMap {
   //Encoders
   public static final int kArmEncoder = -1;
 
-  //Hatch Encoders
-  public static final int[] kHatchActuators = {-1, -1, -1, -1};
 }

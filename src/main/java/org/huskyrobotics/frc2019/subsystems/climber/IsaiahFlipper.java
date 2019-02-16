@@ -22,7 +22,6 @@ public class IsaiahFlipper {
 		} else {
 			m_winchMotor.set(ControlMode.PercentOutput, 0);
 		}
-        
     }
     public void setIsClimbActive(boolean input) {
         clamp(input);

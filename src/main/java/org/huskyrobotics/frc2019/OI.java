@@ -54,7 +54,7 @@ public class OI {
     controlsMic.put("WinchOut", 2);
     controlsMic.put("CargoIn", 0);
     controlsMic.put("CargoOut", 0);
-    controlsMic.put("HatchPush", 1);
+    controlsMic.put("HatchToggle", 1);
     controlsMic.put("ToggleClimb", 3);
 
     controlsAhn = new HashMap<String, Integer>();
@@ -65,7 +65,7 @@ public class OI {
     controlsAhn.put("WinchOut", 0);
     controlsAhn.put("CargoIn", 3);
     controlsAhn.put("CargoOut", 4);
-    controlsAhn.put("HatchPush", 12);
+    controlsAhn.put("HatchToggle", 12);
     controlsAhn.put("ToggleClimb", 1);
 
     weaponsControls = new HashMap[] {controlsMic, controlsAhn};
@@ -75,21 +75,21 @@ public class OI {
   }
 
   //These functions will be used by robot.java to get the input
-  public double GetRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
+  public double getRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
     return m_HelmStick.getRawAxis((int) helmControls[m_helm.getSelected()].get("RobotForward"));
   }
-  public double GetRobotTwist () {//The value used for robot motors twisting. Should be put into Drive
+  public double getRobotTwist () {//The value used for robot motors twisting. Should be put into Drive
     return m_HelmStick.getRawAxis((int) helmControls[m_helm.getSelected()].get("RobotTwist"));
   }
-  public boolean GetTeleopSwitch () {//The value used to switch to teleop incase auto fails. Should be put somewhere? ¯\_(ツ)_/¯
+  public boolean getTeleopSwitch () {//The value used to switch to teleop incase auto fails. Should be put somewhere? ¯\_(ツ)_/¯
     return m_HelmStick.getRawButton((int) helmControls[m_helm.getSelected()].get("TeleopSwitch"));
   }
 
 
-  public double GetArmAxis () {//The value used for moving the arm up and down. Should be put into PivotArm
+  public double getArmAxis () {//The value used for moving the arm up and down. Should be put into PivotArm
     return m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("ArmAxis"));
   }
-  public double GetCargoAxis () {//The value used for controlling the cargo intake. Should be put into CargoIO
+  public double getCargoAxis () {//The value used for controlling the cargo intake. Should be put into CargoIO
     if(!isClimbActive) {
       if ((int) weaponsControls[m_weapon.getSelected()].get("CargoIn") > 0) {
         if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("CargoIn"))) {
@@ -106,7 +106,7 @@ public class OI {
     }
     return(0);
   }
-  public double GetWinchAxis () {
+  public double getWinchAxis () {
     if(isClimbActive) {
       if ((int) weaponsControls[m_weapon.getSelected()].get("WinchIn") > 0) {
         if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("WinchIn"))) {
@@ -123,10 +123,10 @@ public class OI {
     }
     return(0);
   }
-  public boolean GetHatchPush () {//The value used for pushing out hatch panels. Should be put into HatchIO
-    return m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("HatchPush"));
+  public boolean getHatchToggle () {//The value used for pushing out hatch panels. Should be put into HatchIO
+    return m_WeaponStick.getRawButtonReleased((int) weaponsControls[m_weapon.getSelected()].get("HatchToggle"));
   }
-  public boolean GetIsClimbActive () {//The value used to activate the clamps. Should be put into Flipper and PivotArm
+  public boolean getIsClimbActive () {//The value used to activate the clamps. Should be put into Flipper and PivotArm
     return(isClimbActive);
   }
 }
