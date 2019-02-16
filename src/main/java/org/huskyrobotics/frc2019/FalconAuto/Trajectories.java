@@ -1,11 +1,9 @@
-package org.huskyrobotics.frc2019.autonomous;
+package org.huskyrobotics.frc2019.FalconAuto;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.wpi.first.wpilibj.Timer;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;

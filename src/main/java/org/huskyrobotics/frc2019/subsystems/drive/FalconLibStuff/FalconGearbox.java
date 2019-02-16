@@ -18,12 +18,12 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 import org.huskyrobotics.frc2019.Constants;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+@SuppressWarnings("unused")
 public class FalconGearbox {
     public static enum EncoderMode {
         None, QuadEncoder, CTRE_MagEncoder_Relative, CTRE_MagEncoder_Absolute
