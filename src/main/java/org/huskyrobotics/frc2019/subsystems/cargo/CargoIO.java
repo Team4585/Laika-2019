@@ -11,6 +11,11 @@ public class CargoIO {
 	public CargoIO (int MotorPort) {
 		m_motor = new VictorSPX(MotorPort);
 	}
+
+	/**
+	 * Sets the speed of the rollers based on the user input
+	 * @param input user-controlled input
+	 */
 	public void setCargoAxis (double input) {
 		if(Math.abs(input) > 0.1) {
 			m_motor.set(ControlMode.PercentOutput, input);
@@ -19,16 +24,27 @@ public class CargoIO {
 		}
 	}
 
+	/**
+	 * Sets the intake speed to max
+	 */
 	public void intake () {
 		m_motor.set(ControlMode.PercentOutput, maxSpeed);
 	}
+
+	/**
+	 * Sets the output speed to max
+	 */
 	public void output () {
 		m_motor.set(ControlMode.PercentOutput, -maxSpeed);
 	}
 
+	/**
+	 * Completly stops the rollers
+	 */
 	public void stop () {
 		m_motor.set(ControlMode.PercentOutput, 0);
 	}
+
 
 	private void init() {
 		m_motor.set(ControlMode.PercentOutput, 0);

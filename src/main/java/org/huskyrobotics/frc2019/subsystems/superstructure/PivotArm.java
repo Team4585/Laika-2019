@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class PivotArm extends Subsystem {
       public void initDefaultCommand() 
 	{
-        //setDefaultCommand(new UseDrivetrain());
+        // setDefaultCommand(new UseDrivetrain());
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
       }
@@ -43,6 +43,11 @@ public class PivotArm extends Subsystem {
             m_motor.config_kD(0, kD, kTimeoutMs);
             m_motor.config_IntegralZone(0, 100, kTimeoutMs);
       }
+
+      /**
+       * Raises or lowers the arm based on user input
+       * @param input the user-controlled input
+       */
       public void setArmAxis(double input) {
             if(input > 0.1) {
                   goUp();
@@ -52,35 +57,65 @@ public class PivotArm extends Subsystem {
                   stop();
             }
       }
+
+      /**
+       * Disables the arm while climbing is active
+       * @param input
+       */
 	public void setIsClimbActive (boolean input) {
 		if (input) {
 			setTarget(0);
 		}
 	}
-      //To be called by Robot.java. Will move the arm towards the target position.
+
+      /**
+       * To be called by Robot.java. Will move the arm towards the target position.
+       */
       public void periodic() {
             calculateAngle();
             m_motor.set(ControlMode.Position, m_targetAngle);
       }
 
+      /**
+       * Gets the current arm angle
+       * @return arm angle
+       */
       public double getCurrentAngle() {
             return m_currentAngle;
       }
 
+      /**
+       * Sets the target angle
+       * @param angle the target angle
+       */
       public void setTarget(double angle) {
             m_targetAngle = angle;
       }
 
+      /**
+       * Raises the arm by 90 degrees
+       */
       public void goUp() {
             setTarget(90);
       }
+
+      /**
+       * Lowers the arm completly
+       */
       public void goDown() {
             setTarget(0);
       }
+
+      /**
+       * Stops the arm at the current angle
+       */
       public void stop() {
             setTarget(m_currentAngle);
       }
-      //Used to calculate the current angle of the arm
+
+      /**
+       * Used to calculate the current angle of the arm
+       */
       private void calculateAngle() {
             m_currentAngle = m_motor.getSelectedSensorPosition()/360;
       }
