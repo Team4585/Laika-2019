@@ -25,7 +25,7 @@ public class Constants {
 
     public static class drivetrain{
             /** Drivetrain width in feet */
-    public static final double wheel_base = 0.0; // TODO
+    public static final double wheel_base = 2.5; // TODO
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
 
@@ -42,8 +42,8 @@ public class Constants {
     public static final double kMaxturnLow = 0; // Max turn speed in degrees per second
     
     //Encoder resolution stuff for our Quad encoders
-    public static final double kPPR = 4096;
-    public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+    public static final double kPPR = 80;
+    public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(80*10.71);
     public static final NativeUnitLengthModel kLeftNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
     public static final NativeUnitLengthModel kRightNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
 

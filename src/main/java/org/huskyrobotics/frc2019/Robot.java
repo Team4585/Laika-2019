@@ -132,7 +132,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    m_Drive.setNeutralMode(NeutralMode.Coast);
+
   }
 
   @Override
@@ -167,6 +167,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
+    m_Drive.followTrajectory(Trajectories.Hatch);
   }
 
   /**
@@ -175,7 +176,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    m_Drive.followTrajectory(Trajectories.Hatch);
+
   }
 
   @Override

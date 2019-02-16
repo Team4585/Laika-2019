@@ -239,7 +239,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      * @return gyro heading
      */
       public double getGyro() {
-        return m_gyro.getCompassHeading() - m_gyroZero;
+        return m_gyro.getFusedHeading();
       }
     /**
      * Gets the Gyro value of an element of the drivebase
@@ -264,7 +264,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      * Zeroes the gyro heading. This is done by setting the gyro heading equal to itself so it creates a relative zero value.
      */
       public void zeroGyro() {
-		m_gyroZero = m_gyro.getCompassHeading();
+		m_gyro.setFusedHeading(0);
 	  }
     /**
      * Stops the Drivebase
@@ -340,7 +340,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
        * @param mode The control mode of the drivebase (Brake or Coast)
        */
 
-    /* Drivetrain Motion */
+    /* Drivetrain Motion Methods */
 
       public void setNeutralMode(NeutralMode mode) {
         getLeft().getMaster().setNeutralMode(mode);

@@ -33,12 +33,10 @@ public class OI {
   } 
   //These functions will be used by robot.java to get the input
   public double GetRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
-    if(Math.abs(m_HelmStick.getRawAxis(controlsH.put("RobotForward", 1))) < 0.1) return 0;
-    else return m_HelmStick.getRawAxis(controlsH.put("RobotForward", 1));
+    return m_HelmStick.getRawAxis(controlsH.put("RobotForward", 1));
   }
   public double GetRobotTwist () {//The value used for robot motors twisting. Should be put into Drive
-    if(Math.abs(m_HelmStick.getRawAxis(controlsH.put("RobotTwist", 0))) < 0.1) return 0;
-    else return m_HelmStick.getRawAxis(controlsH.put("RobotTwist", 0));
+    return m_HelmStick.getRawAxis(controlsH.put("RobotTwist", 0));
   }
   public double GetArmAxis () {//The value used for moving the arm up and down. Should be put into PivotArm
     if(Math.abs(m_WeaponStick.getRawAxis(controlsW.put("ArmAxis", 1))) < 0.1) return 0;
