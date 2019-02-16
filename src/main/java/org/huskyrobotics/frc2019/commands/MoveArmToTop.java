@@ -7,34 +7,26 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.huskyrobotics.frc2019.subsystems.drive.*;
-import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
-import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
-import org.huskyrobotics.frc2019.Robot;
-import org.huskyrobotics.frc2019.OI;
+import org.huskyrobotics.frc2019.subsystems.superstructure.PivotArm;
 
-public class UseDrive extends Command {
-  public UseDrive() {
-    requires(m_Falcon);
+public class MoveArmToTop extends Command {
+  public MoveArmToTop() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(m_arm);
   }
-
-  FalconDrive m_Falcon;
-  OI m_OI = new OI(0,1);
+  PivotArm m_arm;
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_Falcon.init();
+    m_arm.setTarget(90);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_Falcon.curvatureDrive(m_OI.getRobotForward(), m_OI.getRobotTwist(), true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -46,7 +38,7 @@ public class UseDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    m_Falcon.curvatureDrive(0, 0, true);
+    
   }
 
   // Called when another command which requires one or more of the same

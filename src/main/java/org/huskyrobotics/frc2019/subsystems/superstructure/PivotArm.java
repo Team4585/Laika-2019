@@ -2,13 +2,19 @@ package org.huskyrobotics.frc2019.subsystems.superstructure;
 
 //import org.huskyrobotics.frc2019.subsystems.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
 //import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class PivotArm extends Subsystem {
+      public void initDefaultCommand() 
+	{
+        //setDefaultCommand(new UseDrivetrain());
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+      }
+      
       private double m_targetAngle;
       private double m_currentAngle;
 
@@ -20,13 +26,6 @@ public class PivotArm extends Subsystem {
       private final double kD = 1;//Slow down constant
       private final int kTimeoutMs = 100;
       private final int kF = 1;
-
-      public void initDefaultCommand() 
-	{
-        //setDefaultCommand(new UseDrivetrain());
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
-	}
 
       public PivotArm(int motorPort, int sensorPort) {
             m_motor = new TalonSRX(motorPort);
@@ -80,15 +79,10 @@ public class PivotArm extends Subsystem {
       }
       public void stop() {
             setTarget(m_currentAngle);
-            resetEncoder();
       }
       //Used to calculate the current angle of the arm
       private void calculateAngle() {
             m_currentAngle = m_motor.getSelectedSensorPosition()/360;
-      }
-      //Used when target is reached or when it should stop for any reason
-      public void resetEncoder() {
-            m_motor.setSelectedSensorPosition(0, 0, kTimeoutMs);
       }
 }
  

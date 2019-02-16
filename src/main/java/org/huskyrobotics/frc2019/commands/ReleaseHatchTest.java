@@ -7,46 +7,41 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.huskyrobotics.frc2019.subsystems.drive.*;
-import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
-import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
-import org.huskyrobotics.frc2019.Robot;
-import org.huskyrobotics.frc2019.OI;
+import org.huskyrobotics.frc2019.subsystems.hatch.HatchIO;;
 
-public class UseDrive extends Command {
-  public UseDrive() {
-    requires(m_Falcon);
+public class ReleaseHatchTest extends Command {
+  public ReleaseHatchTest() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(m_kennedy);
   }
-
-  FalconDrive m_Falcon;
-  OI m_OI = new OI(0,1);
+  HatchIO m_kennedy;
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_Falcon.init();
+    m_kennedy.init();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_Falcon.curvatureDrive(m_OI.getRobotForward(), m_OI.getRobotTwist(), true);
+    
+    m_kennedy.release();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    m_Falcon.curvatureDrive(0, 0, true);
+    m_kennedy.reset();
   }
 
   // Called when another command which requires one or more of the same

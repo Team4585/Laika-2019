@@ -20,7 +20,7 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 import org.huskyrobotics.frc2019.subsystems.drive.*;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 //import org.huskyrobotics.frc2019.subsystems.hatch.*;
-
+import org.huskyrobotics.frc2019.commands.UseDrive;
 //import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
@@ -33,12 +33,13 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
  */
 public class Robot extends TimedRobot {
   public OI m_oi;
-  private PivotArm m_arm;
-  private CargoIO m_sputnik;
-  private HatchIO m_kennedy;
-  private IsaiahFlipper m_armstrong;
+  private PivotArm m_Arm;
+  private CargoIO m_Sputnik;
+  private HatchIO m_Kennedy;
+  private IsaiahFlipper m_Armstrong;
   //private VisionController Limelight;
-  public static FalconDrive m_rover;
+  public static FalconDrive m_Drive;
+  public UseDrive m_DriveTrain;
   
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -50,9 +51,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI(0, 1);
-    m_arm = new PivotArm(RobotMap.kPivotMaster, RobotMap.kArmEncoder);
-    m_sputnik = new CargoIO(RobotMap.kCargo);
-    m_kennedy = new HatchIO(RobotMap.kHatchActuators);
+    m_Arm = new PivotArm(RobotMap.kPivotMaster, RobotMap.kArmEncoder);
+    m_Sputnik = new CargoIO(RobotMap.kCargo);
+    m_Kennedy = new HatchIO(RobotMap.kHatchMotor);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -117,6 +118,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    
+    m_DriveTrain.start();
   }
 
   @Override
@@ -138,19 +141,23 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     m_oi.periodic();
 
-    m_arm.periodic();
-    m_arm.setArmAxis(m_oi.GetArmAxis());
-    m_arm.setIsClimbActive(m_oi.GetIsClimbActive());
+    m_Arm.periodic();
+    m_Arm.setArmAxis(m_oi.getArmAxis());
+    m_Arm.setIsClimbActive(m_oi.getIsClimbActive());
 
-    m_sputnik.setCargoAxis(m_oi.GetCargoAxis());
+    m_Sputnik.setCargoAxis(m_oi.getCargoAxis());
+    
+    m_Kennedy.periodic();
+    if(m_oi.getHatchToggle()) {
+      m_Kennedy.setHatchToggle();
+    }
 
-    m_kennedy.setHatchPush(m_oi.GetHatchPush());
+    m_Armstrong.periodic();
+    m_Armstrong.setWinchAxis(m_oi.getWinchAxis());
+    m_Armstrong.setIsClimbActive(m_oi.getIsClimbActive());
 
-    m_armstrong.periodic();
-    m_armstrong.setWinchAxis(m_oi.GetWinchAxis());
-    m_armstrong.setIsClimbActive(m_oi.GetIsClimbActive());
-
-    m_rover.curvatureDrive(m_oi.GetRobotForward(), m_oi.GetRobotTwist(), false);
+    m_DriveTrain.start();
+    // m_Drive.curvatureDrive(m_oi.getRobotForward(), m_oi.getRobotTwist(), false);
   }
 
   /**
@@ -158,20 +165,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    Scheduler.getInstance().run();
     m_oi.periodic();
 
-    m_arm.periodic();
-    m_arm.setArmAxis(m_oi.GetArmAxis());
-    m_arm.setIsClimbActive(m_oi.GetIsClimbActive());
+    m_Arm.periodic();
+    m_Arm.setArmAxis(m_oi.getArmAxis());
+    m_Arm.setIsClimbActive(m_oi.getIsClimbActive());
 
-    m_sputnik.setCargoAxis(m_oi.GetCargoAxis());
+    m_Sputnik.setCargoAxis(m_oi.getCargoAxis());
+    
+    m_Kennedy.periodic();
+    if(m_oi.getHatchToggle()) {
+      m_Kennedy.setHatchToggle();
+    }
 
-    m_kennedy.setHatchPush(m_oi.GetHatchPush());
+    m_Armstrong.periodic();
+    m_Armstrong.setWinchAxis(m_oi.getWinchAxis());
+    m_Armstrong.setIsClimbActive(m_oi.getIsClimbActive());
 
-    m_armstrong.periodic();
-    m_armstrong.setWinchAxis(m_oi.GetWinchAxis());
-    m_armstrong.setIsClimbActive(m_oi.GetIsClimbActive());
-
-    m_rover.curvatureDrive(m_oi.GetRobotForward(), m_oi.GetRobotTwist(), false);
+    m_DriveTrain.start();
   }
 }
