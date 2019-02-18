@@ -4,8 +4,12 @@ package org.huskyrobotics.frc2019.subsystems.superstructure;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
+
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
+
 //import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PivotArm extends Subsystem {
       public void initDefaultCommand() 
@@ -15,8 +19,10 @@ public class PivotArm extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
       }
       
+      
       private double m_targetAngle;
       private double m_currentAngle;
+      private double m_startAngle = 90;
 
       private TalonSRX m_motor;
       //private AnalogPotentiometer m_potent;
@@ -27,9 +33,19 @@ public class PivotArm extends Subsystem {
       private final int kTimeoutMs = 100;
       private final int kF = 1;
 
-      public PivotArm(int motorPort, int sensorPort) {
+      private boolean m_controlActive = true;
+
+      /**
+       * Calls the robot pivot arm
+       * @param motorPort Talon SRX arm motor port
+       * @param mode Type of encoder used
+       */
+      public PivotArm(int motorPort, EncoderMode mode) {
             m_motor = new TalonSRX(motorPort);
+
+            if(mode == EncoderMode.QuadEncoder){
             m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
+            }
             m_motor.setSensorPhase(true);
             m_motor.configNominalOutputForward(0, kTimeoutMs);
             m_motor.configNominalOutputReverse(0, kTimeoutMs);
@@ -42,6 +58,12 @@ public class PivotArm extends Subsystem {
             m_motor.config_kI(0, kI, kTimeoutMs);
             m_motor.config_kD(0, kD, kTimeoutMs);
             m_motor.config_IntegralZone(0, 100, kTimeoutMs);
+
+            m_startAngle = 90;
+            m_currentAngle = m_startAngle;
+            m_targetAngle = m_currentAngle;
+            SmartDashboard.putNumber("Current Arm Angle", m_currentAngle);
+            SmartDashboard.putNumber("Target Arm Angle", m_targetAngle);
       }
       public void setArmAxis(double input) {
             if(input > 0.1) {
@@ -52,19 +74,20 @@ public class PivotArm extends Subsystem {
                   stop();
             }
       }
-	public void setIsClimbActive (boolean input) {
-		if (input) {
-			setTarget(0);
-		}
+	public void setActive (boolean input) {
+		m_controlActive = !input;
 	}
       //To be called by Robot.java. Will move the arm towards the target position.
       public void periodic() {
             calculateAngle();
+            if(!m_controlActive) {
+                  setTarget(m_startAngle);
+            }
             m_motor.set(ControlMode.Position, m_targetAngle);
       }
 
       public double getCurrentAngle() {
-            return m_currentAngle;
+            return m_startAngle - m_currentAngle;
       }
 
       public void setTarget(double angle) {
@@ -72,10 +95,10 @@ public class PivotArm extends Subsystem {
       }
 
       public void goUp() {
-            setTarget(90);
+            setTarget(m_startAngle+30);
       }
       public void goDown() {
-            setTarget(0);
+            setTarget(m_startAngle-90);
       }
       public void stop() {
             setTarget(m_currentAngle);

@@ -7,19 +7,13 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import org.huskyrobotics.frc2019.subsystems.drive.*;
-import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
-import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 import org.huskyrobotics.frc2019.Robot;
 import org.huskyrobotics.frc2019.OI;
 
-public class UseDrive extends Command {
-  public UseDrive(OI oi) {
-    requires(Robot.m_Drive);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+public class UseSputnik extends Command {
+  public UseSputnik(OI oi) {
+    requires(Robot.m_Sputnik);
     m_OI = oi;
   }
   OI m_OI;
@@ -27,13 +21,13 @@ public class UseDrive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_Drive.init();
+    Robot.m_Sputnik.stop();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.m_Drive.curvatureDrive(m_OI.getRobotForward(), m_OI.getRobotTwist(), true);
+    Robot.m_Sputnik.setCargoAxis(m_OI.getCargoAxis());
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,12 +39,13 @@ public class UseDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.m_Drive.curvatureDrive(0, 0, true);
+    Robot.m_Sputnik.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.m_Sputnik.stop();
   }
 }

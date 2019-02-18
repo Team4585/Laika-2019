@@ -18,8 +18,6 @@ public class OI {
 
   SendableChooser<Integer> m_helm = new SendableChooser<>();
   SendableChooser<Integer> m_weapon = new SendableChooser<>();
-
-  private boolean isClimbActive = false;
   
   public OI (int HELMSTICKPORT, int WEAPONSTICKPORT) {
     m_HelmStick = new Joystick(HELMSTICKPORT);
@@ -70,9 +68,6 @@ public class OI {
 
     weaponsControls = new HashMap[] {controlsMic, controlsAhn};
   }
-  public void periodic () {
-    isClimbActive = m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("ToggleClimb"));
-  }
 
   //These functions will be used by robot.java to get the input
   public double getRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
@@ -90,44 +85,37 @@ public class OI {
     return m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("ArmAxis"));
   }
   public double getCargoAxis () {//The value used for controlling the cargo intake. Should be put into CargoIO
-    if(!isClimbActive) {
-      if ((int) weaponsControls[m_weapon.getSelected()].get("CargoIn") > 0) {
-        if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("CargoIn"))) {
-          return (0.5);
-        } else if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("CargoOut"))) {
-          return (-0.5);
-        } else {
-          return (0);
-        }
+    if ((int) weaponsControls[m_weapon.getSelected()].get("CargoIn") > 0) {
+      if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("CargoIn"))) {
+        return (0.5);
+      } else if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("CargoOut"))) {
+        return (-0.5);
+      } else {
+        return (0);
       }
-      if ((int) weaponsControls[m_weapon.getSelected()].get("CargoAxis") > 0) {
-        return (m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("CargoAxis")));
-      }
+    }
+    if ((int) weaponsControls[m_weapon.getSelected()].get("CargoAxis") > 0) {
+      return (m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("CargoAxis")));
     }
     return(0);
   }
   public double getWinchAxis () {
-    if(isClimbActive) {
-      if ((int) weaponsControls[m_weapon.getSelected()].get("WinchIn") > 0) {
-        if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("WinchIn"))) {
-          return (0.5);
-        } else if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("WinchOut"))) {
-          return (-0.5);
-        } else {
-          return (0);
-        }
+    if ((int) weaponsControls[m_weapon.getSelected()].get("WinchIn") > 0) {
+      if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("WinchIn"))) {
+        return (0.5);
+      } else if (m_WeaponStick.getRawButton((int) weaponsControls[m_weapon.getSelected()].get("WinchOut"))) {
+        return (-0.5);
+      } else {
+        return (0);
       }
-      if ((int) weaponsControls[m_weapon.getSelected()].get("WinchAxis") > 0) {
-        return (m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("WinchAxis")));
-      }
+    }
+    if ((int) weaponsControls[m_weapon.getSelected()].get("WinchAxis") > 0) {
+      return (m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("WinchAxis")));
     }
     return(0);
   }
   public boolean getHatchToggle () {//The value used for pushing out hatch panels. Should be put into HatchIO
     return m_WeaponStick.getRawButtonReleased((int) weaponsControls[m_weapon.getSelected()].get("HatchToggle"));
-  }
-  public boolean getIsClimbActive () {//The value used to activate the clamps. Should be put into Flipper and PivotArm
-    return(isClimbActive);
   }
 }
 

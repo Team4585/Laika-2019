@@ -23,6 +23,7 @@ import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 import org.huskyrobotics.frc2019.commands.UseDrive;
 //import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.inputs.*;
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
 import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,11 +33,11 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public OI m_oi;
-  private PivotArm m_Arm;
-  private CargoIO m_Sputnik;
-  private HatchIO m_Kennedy;
-  private IsaiahFlipper m_Armstrong;
+  public static OI m_oi;
+  public static PivotArm m_Arm;
+  public static CargoIO m_Sputnik;
+  public static HatchIO m_Kennedy;
+  public static IsaiahFlipper m_Armstrong;
   //private VisionController Limelight;
   public static FalconDrive m_Drive;
   public UseDrive m_DriveTrain;
@@ -51,7 +52,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI(0, 1);
-    m_Arm = new PivotArm(RobotMap.kPivotMaster, RobotMap.kArmEncoder);
+    m_Arm = new PivotArm(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
     m_Sputnik = new CargoIO(RobotMap.kCargo);
     m_Kennedy = new HatchIO(RobotMap.kHatchMotor);
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -142,8 +143,6 @@ public class Robot extends TimedRobot {
     m_oi.periodic();
 
     m_Arm.periodic();
-    m_Arm.setArmAxis(m_oi.getArmAxis());
-    m_Arm.setIsClimbActive(m_oi.getIsClimbActive());
 
     m_Sputnik.setCargoAxis(m_oi.getCargoAxis());
     
@@ -153,8 +152,6 @@ public class Robot extends TimedRobot {
     }
 
     m_Armstrong.periodic();
-    m_Armstrong.setWinchAxis(m_oi.getWinchAxis());
-    m_Armstrong.setIsClimbActive(m_oi.getIsClimbActive());
 
     m_DriveTrain.start();
     // m_Drive.curvatureDrive(m_oi.getRobotForward(), m_oi.getRobotTwist(), false);
@@ -169,8 +166,6 @@ public class Robot extends TimedRobot {
     m_oi.periodic();
 
     m_Arm.periodic();
-    m_Arm.setArmAxis(m_oi.getArmAxis());
-    m_Arm.setIsClimbActive(m_oi.getIsClimbActive());
 
     m_Sputnik.setCargoAxis(m_oi.getCargoAxis());
     
@@ -180,8 +175,6 @@ public class Robot extends TimedRobot {
     }
 
     m_Armstrong.periodic();
-    m_Armstrong.setWinchAxis(m_oi.getWinchAxis());
-    m_Armstrong.setIsClimbActive(m_oi.getIsClimbActive());
 
     m_DriveTrain.start();
   }

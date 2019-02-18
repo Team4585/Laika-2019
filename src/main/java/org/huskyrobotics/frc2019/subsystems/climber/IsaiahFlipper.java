@@ -11,22 +11,29 @@ public class IsaiahFlipper {
 
     private boolean m_solActive;
 
+    private boolean m_controlActive = false;
+
     public IsaiahFlipper (int winchMotorPort, int solenoidChannel) {
         m_winchMotor = new TalonSRX(winchMotorPort);
         m_sol = new Solenoid(solenoidChannel);
     }
     //releases the winch rope
     public void setWinchAxis(double input) {
-		if(Math.abs(input) > 0.1) {
-			m_winchMotor.set(ControlMode.PercentOutput, input);
-		} else {
-			m_winchMotor.set(ControlMode.PercentOutput, 0);
-		}
+        if(m_controlActive) {
+            if(Math.abs(input) > 0.1) {
+                m_winchMotor.set(ControlMode.PercentOutput, input);
+            } else {
+                m_winchMotor.set(ControlMode.PercentOutput, 0);
+            }
+        }
     }
-    public void setIsClimbActive(boolean input) {
-        clamp(input);
-    }
+	public void setActive (boolean input) {
+		m_controlActive = !input;
+	}
     public void periodic() {
+        if(m_controlActive) {
+            clamp(true);
+        }
         m_sol.set(m_solActive);
     }
 

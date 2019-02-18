@@ -1,11 +1,18 @@
 package org.huskyrobotics.frc2019.subsystems.cargo;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class CargoIO {
+public class CargoIO extends Subsystem {
+    public void initDefaultCommand() 
+    {
+      //setDefaultCommand(new UseDrivetrain());
+      // Set the default command for a subsystem here.
+      // setDefaultCommand(new MySpecialCommand());
+    }
 	private VictorSPX m_motor;
 
-	private double maxSpeed = 1.0;
+	private double maxSpeed = 0.2;
 
 	//private SomeSensor _CheckSensor;
 	public CargoIO (int MotorPort) {
