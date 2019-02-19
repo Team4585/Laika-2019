@@ -5,19 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
+package org.huskyrobotics.frc2019.commands.Auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.huskyrobotics.frc2019.commands.*;
 
-public class DrivetrainTeleOp extends CommandGroup {
+public class ReleaseCargo extends CommandGroup {
   /**
    * Add your docs here.
    */
-  UseDrive m_UseDrive = new UseDrive();
-  //ShiftLow m_Shift = new ShiftLow();
-  public DrivetrainTeleOp() {
-    addSequential(m_UseDrive);
-    //addSequential(m_Shift);
+  public ReleaseCargo() {
+      addSequential(new RunIntake(-1, 1));
+      addSequential(new Pivot(15));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

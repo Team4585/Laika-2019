@@ -5,19 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
-
-import org.huskyrobotics.frc2019.Robot;
-import org.huskyrobotics.frc2019.FalconAuto.Trajectories;
+package org.huskyrobotics.frc2019.commands.Auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.huskyrobotics.frc2019.commands.*;
 
-public class TestAuto extends CommandGroup {
+public class GrabCargo extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public TestAuto() {
-    addParallel(Robot.m_Drive.followTrajectory(Trajectories.generatedTrajectories.get("Hatch")));
+  public GrabCargo() {
+    addSequential(new Pivot(0));
+    addSequential(new RunIntake(1, 1));
+    addSequential(new Pivot(45));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

@@ -26,10 +26,12 @@ public class OI {
     controlsH.put("RobotTwist", 0);
 
     controlsW.put("ArmAxis", 1);
-    controlsW.put("CargoActivate", 0);
-    controlsW.put("HatchPush", 1);
-    controlsW.put("Climb", 2);
+    controlsW.put("CargoIn", 1);
+    controlsW.put("CargoOut", 2);
+    //controlsW.put("HatchPush", 1);
+    controlsW.put("Climb", 3);
     controlsW.put("TeleopSwitch", 7);
+    controlsW.put("ArmRotate", 5);
   } 
   //These functions will be used by robot.java to get the input
   public double GetRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
@@ -42,8 +44,12 @@ public class OI {
     if(Math.abs(m_WeaponStick.getRawAxis(controlsW.put("ArmAxis", 1))) < 0.1) return 0;
     else return m_WeaponStick.getRawAxis(controlsW.put("ArmAxis", 1));
   }
-  public boolean GetCargoActivate () {//The value used for controlling the cargo intake. Should be put into CargoIO
-    return m_WeaponStick.getRawButton(controlsW.get("ArmAxis"));
+  public boolean GetCargoIn () {//The value used for controlling the cargo intake. Should be put into CargoIO
+    return m_WeaponStick.getRawButton(controlsW.get("CargoIn"));
+  }
+  public boolean GetCargoOut() {
+    return m_WeaponStick.getRawButton(controlsW.get("CargoOut"));
+
   }
   public boolean GetHatchPush () {//The value used for pushing out hatch panels. Should be put into HatchIO
     return m_WeaponStick.getRawButton(controlsW.get("HatchPush"));
@@ -53,5 +59,8 @@ public class OI {
   }
   public boolean GetTeleopSwitch () {//The value used to switch to teleop incase auto fails. Should be put somewhere? ¯\_(ツ)_/¯
     return m_WeaponStick.getRawButton(controlsW.get("TeleopSwitch"));
+  }
+  public boolean getRotate(){
+    return m_WeaponStick.getRawButton(controlsW.get("ArmRotate"));
   }
 }

@@ -67,8 +67,6 @@ public class Trajectories {
         new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(0.3)))
     );
 
-    public static TimedTrajectory<Pose2dWithCurvature> Hatch;
-
 
     public static void generateAllTrajectories() {
 		generateAllTrajectories(true);
@@ -80,7 +78,7 @@ public class Trajectories {
 		if (isReal){
             startTime = Timer.getFPGATimestamp();
         }
-        generatedTrajectories.put("Hatch", generateTrajectory(new  ArrayList<Pose2d>(
+        generatedTrajectories.put("Test", generateTrajectory(new  ArrayList<Pose2d>(
             Arrays.asList(
                     new Pose2d(LengthKt.getFeet(5), LengthKt.getFeet(17), Rotation2dKt.getDegree(0)),
                     new Pose2d(LengthKt.getFeet(7), LengthKt.getFeet(17), Rotation2dKt.getDegree(0))
@@ -88,7 +86,7 @@ public class Trajectories {
             false       
             ));
             
-        generatedTrajectories.put("leftFLCargoBay", generateTrajectory(new  ArrayList<Pose2d>(
+        /*generatedTrajectories.put("leftFLCargoBay", generateTrajectory(new  ArrayList<Pose2d>(
         Arrays.asList(
             new Pose2d(LengthKt.getFeet(5), LengthKt.getFeet(17), Rotation2dKt.getDegree(0)),
             new Pose2d(LengthKt.getFeet(17.475), LengthKt.getFeet(17), Rotation2dKt.getDegree(0)),
@@ -226,7 +224,7 @@ public class Trajectories {
             new Pose2d(LengthKt.getFeet(24.971), LengthKt.getFeet(10), Rotation2dKt.getDegree(90))
         )),
         false       
-        ));
+        ));*/
 
     System.out.println("Out of first round of generation");
 		double now = 0;

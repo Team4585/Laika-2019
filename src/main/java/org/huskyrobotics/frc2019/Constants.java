@@ -39,7 +39,7 @@ public class Constants {
     public static final double kMaxturnLow = 0; // Max turn speed in degrees per second
     
     //Encoder resolution stuff for our Quad encoders
-    public static final double kPPR = 80;
+    public static final double kPPR = 4096;
     public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
     public static final NativeUnitLengthModel kLeftNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
     public static final NativeUnitLengthModel kRightNativeunitLengthmodel = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);

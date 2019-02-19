@@ -5,19 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
+package org.huskyrobotics.frc2019.commands.Auto;
+
+import org.huskyrobotics.frc2019.commands.HeyLookListen;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DrivetrainTeleOp extends CommandGroup {
+public class VisionTest extends CommandGroup {
   /**
    * Add your docs here.
    */
-  UseDrive m_UseDrive = new UseDrive();
-  //ShiftLow m_Shift = new ShiftLow();
-  public DrivetrainTeleOp() {
-    addSequential(m_UseDrive);
-    //addSequential(m_Shift);
+  public VisionTest() {
+    addSequential(new HeyLookListen(0.5, 10), 10);
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
