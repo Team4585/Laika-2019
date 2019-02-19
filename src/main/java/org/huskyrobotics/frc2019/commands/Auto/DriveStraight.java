@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
+package org.huskyrobotics.frc2019.commands.Auto;
 
 
 
@@ -20,15 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 
 
-/**
- * Drive straight ahead. The target angle is set based on the current robot angle.
- * This uses a position PID loop to set drivetrain speeds. The left and right speeds
- * are manipulated based on a turn PID loop such that the angle remains constant.
- * Distance is in feet.
- * // TODO determine how the difference in encoder positions if the angle is changed will affect pid
- * 
- * @author Matthew Morley
- */
 public class DriveStraight extends Command {
 	double distance;
 	double actionMaxSpeed;
@@ -118,7 +109,8 @@ public class DriveStraight extends Command {
 		// right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
 		//   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
-		Robot.m_Drive.setClosedLoop(DriveSignal.BRAKE);
+		Robot.m_Drive.setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(forward_speed + turn_speed)),
+				VelocityKt.getVelocity(LengthKt.getFeet(forward_speed - turn_speed)));
 
 		// System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeft().getFeet() + 
 		// " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());

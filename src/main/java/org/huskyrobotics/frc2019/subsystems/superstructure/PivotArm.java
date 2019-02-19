@@ -1,18 +1,44 @@
 package org.huskyrobotics.frc2019.subsystems.superstructure;
 
+import java.util.concurrent.TimeUnit;
+
 //import org.huskyrobotics.frc2019.subsystems.*;
-import org.huskyrobotics.frc2019.RobotMap;
-import org.huskyrobotics.frc2019.subsystems.superstructure.PivotArmObject.EncoderMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.*;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
+import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+import org.huskyrobotics.frc2019.Constants;
+import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
+import org.huskyrobotics.lib.DriveSignal;
 
 //import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PivotArm extends Subsystem {
+    @Override
+    public void initDefaultCommand() 
+	{
+        // setDefaultCommand(new UseDrivetrain());
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+      }
+      
+      
       private double m_targetAngle;
       private double m_currentAngle;
-      private PivotArmObject Pivot;
-      private static PivotArm m_instance;
-      
+      private double m_startAngle = 90;
+      private NativeUnitRotationModel rotationModel = Constants.PivotArm.kArmNativeunitRotationmodel;
+      private FalconSRX<Rotation2d> m_motor;
       //private AnalogPotentiometer m_potent;
       //variables used for PID
       private final double kP = 1;//Speed Constant
@@ -20,55 +46,124 @@ public class PivotArm extends Subsystem {
       private final double kD = 1;//Slow down constant
       private final int kTimeoutMs = 100;
       private final int kF = 1;
-      private final int kIzone = 0;
-      private final int kMaxI = 0;
-      
-      public void initDefaultCommand() 
-	{
-        //setDefaultCommand(new UseDrivetrain());
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
-	}
-      public synchronized static PivotArm getInstance() {
-            if (m_instance == null) m_instance = new PivotArm();
-            return m_instance;
-          }
-      private PivotArm(){
-            Pivot = new PivotArmObject(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
-            Pivot.getPivot().configClosedloopRamp(0.4, kTimeoutMs);
-            Pivot.setClosedLoopGains(kP, kI, kD, kF, kIzone, kMaxI);
+
+      private boolean m_controlActive = true;
+
+      /**
+       * Calls the robot pivot arm
+       * @param motorPort Talon SRX arm motor port
+       * @param mode Type of encoder used
+       */
+      public PivotArm(int motorPort, EncoderMode mode) {
+            m_motor = new FalconSRX<Rotation2d>(motorPort, rotationModel, TimeUnitsKt.getMillisecond(10));
+
+            if(mode == EncoderMode.QuadEncoder){
+            m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
+            }
+            m_motor.setSensorPhase(true);
+            m_motor.configNominalOutputForward(0, kTimeoutMs);
+            m_motor.configNominalOutputReverse(0, kTimeoutMs);
+            m_motor.configPeakOutputForward(1, kTimeoutMs);
+            m_motor.configPeakOutputReverse(-1, kTimeoutMs);
+            
+            m_motor.selectProfileSlot(0, 0);
+            m_motor.config_kF(0, kF, kTimeoutMs);
+            m_motor.config_kP(0, kP, kTimeoutMs);
+            m_motor.config_kI(0, kI, kTimeoutMs);
+            m_motor.config_kD(0, kD, kTimeoutMs);
+            m_motor.config_IntegralZone(0, 100, kTimeoutMs);
+
+            m_startAngle = 90;
+            m_currentAngle = m_startAngle;
+            m_targetAngle = m_currentAngle;
+            SmartDashboard.putNumber("Current Arm Angle", m_currentAngle);
       }
+
+      private Rotation2d getDistance(){
+        return m_motor.getSensorPosition();
+    }
+      private double getAngle(){
+          return getDistance().getDegree();
+      }
+      public void init(){
+        m_motor.setSensorPosition(Rotation2dKt.getDegree(m_startAngle));
+      }
+      /**
+       * Raises or lowers the arm based on user input
+       * @param input the user-controlled input
+       */
       public void setArmAxis(double input) {
-            if(input > 0.1) {
+        m_motor.setSensorPosition(Rotation2dKt.getDegree(input));
+        
+        /*if(input > 0.1) {
                   goUp();
             } else if(input < -0.1) {
                   goDown();
             } else {
-                  Pivot.stop();
-            }
+                  stop();
+            }*/
       }
+      /**
+       * Disables the arm while climbing is active
+       * @param input
+       */
 	public void setIsClimbActive (boolean input) {
 		if (input) {
-			setTarget(90);
+            setTarget(m_startAngle);
+            m_controlActive = false;
 		}
 	}
-      //To be called by Robot.java. Will move the arm towards the target position.
+
+      /**
+       * To be called by Robot.java. Will move the arm towards the target position.
+       */
       public void periodic() {
-            Pivot.getDegree();
+            if(!m_controlActive) {
+                  setTarget(m_targetAngle);
+                  m_motor.setSensorPosition(Rotation2dKt.getDegree(m_targetAngle));
+                  SmartDashboard.putNumber("Target Arm Angle", m_targetAngle);
+            }
+            if(Robot.m_Oi.getRotate() == true){
+                setTarget(45);
+            }
       }
 
+      /**
+       * Gets the current arm angle
+       * @return arm angle
+       */
       public double getCurrentAngle() {
-            return m_currentAngle;
+            return m_startAngle - m_currentAngle;
       }
+      
 
+      /**
+       * Sets the target angle
+       * @param angle the target angle
+       */
       public void setTarget(double angle) {
             m_targetAngle = angle;
       }
 
+      /**
+       * Raises the arm by 90 degrees
+       */
       public void goUp() {
-            setTarget(m_targetAngle);
+            setTarget(m_startAngle+30);
       }
+
+      /**
+       * Lowers the arm completly
+       */
       public void goDown() {
-            setTarget(0);
+            setTarget(m_startAngle-90);
       }
-}
+
+      /**
+       * Stops the arm at the current angle
+       */
+      public void stop() {
+            setTarget(m_currentAngle);
+            m_motor.setNeutralMode(NeutralMode.Coast);
+      }
+    }

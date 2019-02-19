@@ -3,6 +3,8 @@ package org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff;
 import java.util.Arrays;
 import java.util.List;
 
+import org.huskyrobotics.frc2019.inputs.*;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -25,9 +27,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @SuppressWarnings("unused")
 public class FalconGearbox {
-    public static enum EncoderMode {
-        None, QuadEncoder, CTRE_MagEncoder_Relative, CTRE_MagEncoder_Absolute
-    }
     public enum TransmissionSide {
         Left, Right;
     }
@@ -49,7 +48,7 @@ public class FalconGearbox {
      * @param side The side of the Tank Drive gearbox
      * @param isInverted Determines if something is inverted (Good to know that one gearbox will always be inverted in tank drive)
      */
-    public FalconGearbox(int masterPort, int slavePort, EncoderMode mode, TransmissionSide side, boolean isInverted) {
+    public FalconGearbox(int masterPort, int slavePort, Encoder.EncoderMode mode, TransmissionSide side, boolean isInverted) {
         if (side == TransmissionSide.Left){
             lengthModel = Constants.drivetrain.kLeftNativeunitLengthmodel;
         }else{ 
@@ -61,7 +60,7 @@ public class FalconGearbox {
 
         this.side = side;
 
-        if(mode == EncoderMode.QuadEncoder) {
+        if(mode == Encoder.EncoderMode.QuadEncoder) {
             m_Master.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
             m_Master.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 10);
         }

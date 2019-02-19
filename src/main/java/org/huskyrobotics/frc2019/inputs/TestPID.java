@@ -11,7 +11,7 @@ package org.huskyrobotics.frc2019.inputs;
  * Add your docs here.
  */
 public class TestPID {
-    
+
 	public enum FeedForwardMode {
 		LINEAR, SINE, COSINE;
 	}

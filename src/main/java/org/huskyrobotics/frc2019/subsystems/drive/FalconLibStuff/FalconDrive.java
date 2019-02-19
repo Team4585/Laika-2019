@@ -32,6 +32,8 @@ import org.huskyrobotics.lib.Util;
 import org.huskyrobotics.lib.DriveSignal;
 import org.huskyrobotics.frc2019.FalconAuto.*;
 import org.huskyrobotics.frc2019.inputs.Gyro;
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
+import org.huskyrobotics.frc2019.commands.*;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
@@ -46,6 +48,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new UseDrive());
+        setDefaultCommand(new UseDrive());
     }
     
     private static FalconDrive m_instance;
@@ -106,13 +109,13 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     private FalconDrive(){
         leftTransmission = new FalconGearbox(RobotMap.kLeftMaster, 
             RobotMap.kLeftSlave, 
-            FalconGearbox.EncoderMode.QuadEncoder, 
+            EncoderMode.QuadEncoder, 
             FalconGearbox.TransmissionSide.Left, 
             false
         );
         rightTransmission = new FalconGearbox(RobotMap.kRightMaster, 
             RobotMap.kRightSlave, 
-            FalconGearbox.EncoderMode.QuadEncoder, 
+            EncoderMode.QuadEncoder, 
             FalconGearbox.TransmissionSide.Right, 
             true
         );
@@ -318,13 +321,13 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             Constants.drivetrain.kLGrightIntMax
         );
       }
+
+    /* Drivetrain Motion Methods */
+
       /**
        * Sets the Master Talon control mode
        * @param mode The control mode of the drivebase (Brake or Coast)
        */
-
-    /* Drivetrain Motion Methods */
-
       public void setNeutralMode(NeutralMode mode) {
         getLeft().getMaster().setNeutralMode(mode);
         getRight().getMaster().setNeutralMode(mode);
@@ -479,7 +482,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      */
       public void death(){
         if(Constants.kWillToLive <= 0){
-          //Sets left and right sides of the drivetrain to 100% (presumably into my (Copinga's) shins)
+          //Sets left and right sides of the drivetrain to 100% (presumably into my shins)
           tankDrive(1, 1);
         }
       }

@@ -5,19 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
+package org.huskyrobotics.frc2019.commands.Auto;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DrivetrainTeleOp extends CommandGroup {
+public class AutoCommandGroup extends CommandGroup {
   /**
    * Add your docs here.
    */
-  UseDrive m_UseDrive = new UseDrive();
-  //ShiftLow m_Shift = new ShiftLow();
-  public DrivetrainTeleOp() {
-    addSequential(m_UseDrive);
-    //addSequential(m_Shift);
+    double start = 0;
+
+    @Override
+    public synchronized void start() {
+      super.start();
+      start = Timer.getFPGATimestamp();
+    }
+  
+    @Override
+    protected void end() {
+      System.out.println("Path ran in " + (Timer.getFPGATimestamp() - start) + " seconds!");
+    }
+  
+    public AutoCommandGroup() {}
+  
+    public boolean done() {
+      return this.isFinished();
+    }
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
@@ -35,4 +49,3 @@ public class DrivetrainTeleOp extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
   }
-}

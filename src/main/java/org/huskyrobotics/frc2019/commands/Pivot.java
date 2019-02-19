@@ -7,36 +7,29 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-
 import edu.wpi.first.wpilibj.command.Command;
-
-import org.huskyrobotics.lib.DriveSignal;
 import org.huskyrobotics.frc2019.Robot;
 
-public class UseDrive extends Command {
-  public UseDrive() {
-    requires(Robot.m_Drive);
+public class Pivot extends Command {
+  double Angle;
+  public Pivot(double Angle) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-  }
+    requires(Robot.m_Pivot);
+    this.Angle = Angle;
 
-  DriveSignal m_Signal;
-  Boolean isQuickTurn = (Robot.m_Oi.GetRobotForward() < 0.1);
+
+  }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_Drive.curvatureDrive(0, 0, false);
-    Robot.m_Drive.setClosedLoop(DriveSignal.BRAKE);
-
+    Robot.m_Pivot.setArmAxis(Angle);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //SmartDashboard.putNumber("Gyro", m_Drive.getGyro(true));
-
-    Robot.m_Drive.curvatureDrive(Robot.m_Oi.GetRobotForward(), Robot.m_Oi.GetRobotTwist(), isQuickTurn);
     
   }
 
@@ -49,13 +42,11 @@ public class UseDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.m_Drive.curvatureDrive(0, 0, false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.m_Drive.curvatureDrive(0, 0, isQuickTurn);
   }
 }

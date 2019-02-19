@@ -5,19 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
+package org.huskyrobotics.frc2019.commands.Auto;
+
+import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.FalconAuto.Trajectories;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DrivetrainTeleOp extends CommandGroup {
+public class TestAuto extends CommandGroup {
   /**
    * Add your docs here.
    */
-  UseDrive m_UseDrive = new UseDrive();
-  //ShiftLow m_Shift = new ShiftLow();
-  public DrivetrainTeleOp() {
-    addSequential(m_UseDrive);
-    //addSequential(m_Shift);
+  public TestAuto() {
+    addParallel(Robot.m_Drive.followTrajectory(Trajectories.generatedTrajectories.get("Hatch")));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
