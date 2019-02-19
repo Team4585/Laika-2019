@@ -49,18 +49,34 @@ public class HatchIO extends Subsystem {
             setTarget(0);
         }
     }
+
+    /**
+     * Sets the target angle
+     * @param angle the target angle
+     */
     public void setTarget(double angle) {
         m_targetAngle = angle;
     }
+
+    /**
+     * Gets the current angle
+     * @return the current angle
+     */
     public double getCurrentAngle() {
         return m_currentAngle;
     }
 
+    /**
+     * Moves the hatch to its target position and updates its current angle
+     */
     public void periodic() {
           calculateAngle();
           m_motor.set(ControlMode.Position, m_targetAngle);
     }
-    //Used to calculate the current angle of the arm
+
+    /**
+     * Used to calculate the current angle of the arm
+     */
     private void calculateAngle() {
         m_currentAngle = m_motor.getSelectedSensorPosition()/360;
     }
