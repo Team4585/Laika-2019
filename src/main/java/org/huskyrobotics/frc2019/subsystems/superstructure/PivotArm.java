@@ -1,29 +1,8 @@
 package org.huskyrobotics.frc2019.subsystems.superstructure;
 
 //import org.huskyrobotics.frc2019.subsystems.*;
-import org.huskyrobotics.frc2019.Constants;
 import org.huskyrobotics.frc2019.RobotMap;
 import org.huskyrobotics.frc2019.subsystems.superstructure.PivotArmObject.EncoderMode;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SensorTerm;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitModel;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 //import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -41,6 +20,8 @@ public class PivotArm extends Subsystem {
       private final double kD = 1;//Slow down constant
       private final int kTimeoutMs = 100;
       private final int kF = 1;
+      private final int kIzone = 0;
+      private final int kMaxI = 0;
       
       public void initDefaultCommand() 
 	{
@@ -54,7 +35,8 @@ public class PivotArm extends Subsystem {
           }
       private PivotArm(){
             Pivot = new PivotArmObject(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
-            Pivot.getPivot().configClosedloopRamp(0.4, 10);
+            Pivot.getPivot().configClosedloopRamp(0.4, kTimeoutMs);
+            Pivot.setClosedLoopGains(kP, kI, kD, kF, kIzone, kMaxI);
       }
       public void setArmAxis(double input) {
             if(input > 0.1) {
@@ -67,7 +49,7 @@ public class PivotArm extends Subsystem {
       }
 	public void setIsClimbActive (boolean input) {
 		if (input) {
-			setTarget(0);
+			setTarget(90);
 		}
 	}
       //To be called by Robot.java. Will move the arm towards the target position.
@@ -84,7 +66,7 @@ public class PivotArm extends Subsystem {
       }
 
       public void goUp() {
-            setTarget(90);
+            setTarget(m_targetAngle);
       }
       public void goDown() {
             setTarget(0);

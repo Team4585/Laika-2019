@@ -1,7 +1,6 @@
 package org.huskyrobotics.lib.loops;
 //254 Loop system
 
-import org.huskyrobotics.frc2019.Constants;
 import org.huskyrobotics.lib.util.RunCrashTracker;
 
 

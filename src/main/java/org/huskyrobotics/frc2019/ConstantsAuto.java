@@ -2,8 +2,8 @@ package org.huskyrobotics.frc2019;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Mass;
-import org.ghrobotics.lib.mathematics.units.MassKt;
+//import org.ghrobotics.lib.mathematics.units.Mass;
+//import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 
@@ -22,8 +22,8 @@ public class ConstantsAuto {
 
   
   public static final double kStaticFrictionVoltage = 1.8; // Volts TODO tune
-  public static final double kVDrive =0.9; // Volts per radians per second - Calculated with https://docs.google.com/spreadsheets/d/1I2WgbKy0QJsedhJbi41485n7QCGcKez666ui2kPl23I/edit#gid=0 for 15ft/sec (high gear)
-  public static final double kADrive = 0.11; // Volts per radians per second per second TODO tune
+  public static final double kVDrive = 0.16; // Volts per radians per second
+  public static final double kADrive = 0.0716; // Volts per radians per second per second TODO tune
 
   /* Ramsete constants */
   public static final double kDriveBeta = 1.5; // Inverse meters squared

@@ -6,7 +6,7 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.sensors.*;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
 
@@ -30,10 +30,12 @@ import org.huskyrobotics.frc2019.ConstantsAuto;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconGearbox;
 import org.huskyrobotics.lib.Util;
 import org.huskyrobotics.lib.DriveSignal;
-import org.huskyrobotics.frc2019.autonomous.*;
+import org.huskyrobotics.frc2019.FalconAuto.*;
+import org.huskyrobotics.frc2019.inputs.Gyro;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
@@ -52,7 +54,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     public List<Double> lastCommandedVoltages;
     public List<Double> lastVelocity = Arrays.asList(0d, 0d);
 
-    public PigeonIMU m_gyro = new PigeonIMU(0);
+    public PigeonIMU m_Gyro = new PigeonIMU(0);
     double m_gyroZero;
 
     private Localization localization;
@@ -60,30 +62,12 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     public Localization getLocalization() {
         return localization;
     }
-/*
-    private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
-    private static int high = 0;
-    private static int low = 1;
-*/
-    /** 
-     * Shifts the gearbox
-     * 
-     * @param HighorLow The gear to shift to
-     */
-    /*private static void shift(int HighorLow){
-        if(HighorLow == high){
-        shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        }else if(HighorLow == low){
-            shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-        }else{
-            System.out.println(HighorLow + "is not a valid shifting choice");
-        }
-    }
+
+    private static Solenoid m_Shift = new Solenoid(0);
     public static enum Gear {
         Low, High;
     }
     Gear gear;
-    */
 
     private static double kQuickStopThreshold = 0.0; 
     private static double kQuickStopAlpha = 0.0;
@@ -102,10 +86,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     }
 
     
-    private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
+    /*private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
     public void setTrackerMode(TrajectoryTrackerMode mode) {
         trackerMode = mode;
-    }
+    }*/
 
     private DCMotorTransmission m_Transmission;
     private DifferentialDrive m_differentialDrive;
@@ -132,6 +116,8 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             FalconGearbox.TransmissionSide.Right, 
             true
         );
+        leftTransmission.setClosedLoopGains(10, 0, 0, 10, 0, 0);
+        rightTransmission.setClosedLoopGains(3, 0, 0, 10, 0, 0);
 
         getLeft().getMaster().configClosedloopRamp(0.4, 10);
         getRight().getMaster().configClosedloopRamp(0.4, 10);
@@ -239,7 +225,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      * @return gyro heading
      */
       public double getGyro() {
-        return m_gyro.getFusedHeading();
+        return m_Gyro.getFusedHeading();
       }
     /**
      * Gets the Gyro value of an element of the drivebase
@@ -264,7 +250,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
      * Zeroes the gyro heading. This is done by setting the gyro heading equal to itself so it creates a relative zero value.
      */
       public void zeroGyro() {
-		m_gyro.setFusedHeading(0);
+		m_Gyro.setFusedHeading(0);
 	  }
     /**
      * Stops the Drivebase
@@ -280,7 +266,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
        * Sets the gear position of the drivebase gearboxes
        * @param gear Low or High gear parameter
        */
-      /*public void setGear(Gear gear) {
+      public void setGear(Gear gear) {
         switch (gear) {
           case High:
             setHighGear();
@@ -290,9 +276,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             break;
         }
       }
-    */
+    
 
-      /*public void setHighGear() {
+      public void setHighGear() {
+        m_Shift.set(true);
         leftTransmission.setClosedLoopGains(
                 Constants.drivetrain.kHGleftKp,
                 Constants.drivetrain.kHGleftKi,
@@ -310,11 +297,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
                 Constants.drivetrain.kHGrightIntMax
         );
         // Trigger solenoids
-        shift(high);
-        gear = Gear.High;
       }
     
       public void setLowGear() {
+        m_Shift.set(false);
         leftTransmission.setClosedLoopGains(
             Constants.drivetrain.kLGleftKp,
             Constants.drivetrain.kLGleftKi,
@@ -331,9 +317,6 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             Constants.drivetrain.kLGrightIzone,
             Constants.drivetrain.kLGrightIntMax
         );
-        // Trigger solenoids
-        shift(low);
-        gear = Gear.Low;
       }
       /**
        * Sets the Master Talon control mode

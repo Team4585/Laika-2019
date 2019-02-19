@@ -26,9 +26,9 @@ public class HatchIO {
         SetActuatorsIn();
     }
 
-    private void init () {
+    /*private void init() {
 		ResetActuators();
-    }
+    }*/
 
     private void SetActuatorsIn() {
         for (VictorSPX actuator : m_linearActuators) { 
@@ -38,11 +38,6 @@ public class HatchIO {
     private void SetActuatorsOut() {
         for (VictorSPX actuator : m_linearActuators) { 
             actuator.set(ControlMode.PercentOutput, m_outSpeed);
-        } 
-    }
-    private void ResetActuators() {
-        for (VictorSPX actuator : m_linearActuators) { 
-            actuator.set(ControlMode.PercentOutput, 0);
         } 
     }
 }
