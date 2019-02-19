@@ -7,46 +7,43 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import org.huskyrobotics.frc2019.subsystems.hatch.HatchIO;;
+import edu.wpi.first.wpilibj.command.TimedCommand;
+import org.huskyrobotics.frc2019.Robot;
 
-public class ReleaseHatchTest extends Command {
-  public ReleaseHatchTest() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(m_kennedy);
+/**
+ * Add your docs here.
+ */
+public class IntakeCargo extends TimedCommand {
+  /**
+   * Add your docs here.
+   */
+  public IntakeCargo(double timeout) {
+    super(timeout);
+    requires(Robot.m_Sputnik);
   }
-  HatchIO m_kennedy;
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_kennedy.init();
+    Robot.m_Sputnik.stop();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
-    m_kennedy.release();
+    Robot.m_Sputnik.intake();
   }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-
-    return false;
-  }
-
-  // Called once after isFinished returns true
+  // Called once after timeout
   @Override
   protected void end() {
-    m_kennedy.reset();
+    Robot.m_Sputnik.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.m_Sputnik.stop();
   }
 }

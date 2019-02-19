@@ -64,7 +64,7 @@ public class FalconGearbox {
         m_Master.setInverted(isInverted);
         m_Slave.setInverted(InvertType.FollowMaster);
 
-    }
+      }
         public FalconSRX<Length> getMaster() {
             return m_Master;
           }
