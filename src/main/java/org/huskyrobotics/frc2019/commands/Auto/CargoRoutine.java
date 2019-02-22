@@ -33,11 +33,19 @@ public class CargoRoutine extends AutoCommandGroup {
       TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(Start + " to " + "cargoM" + side); //Generated using the Locs map in Trajectories.java
       trajects.add(traject);
       this.addSequential(m_Drive.followTrajectory(traject, true)); //drive to goal
-      this.addSequential(new Turn(Trajectories.locations.get("cargo" + side + '1').component2()));
+      /*this.addSequential(new Turn(Trajectories.locations.get("cargo" + side + '1').component2()));
       //this.addParallel(new VisionTest());
       this.addSequential(new WaitCommand(0.5));
-      this.addSequential(new ReleaseCargo());
+      //this.addSequential(new ReleaseCargo());
   
+      Start = "CargoM" + side;
+
+      traject = Trajectories.generatedTrajectories.get(Start + " to " + "Depot" + side);
+      this.addSequential(m_Drive.followTrajectory(traject));
+      this.addSequential(new Turn(Trajectories.locations.get("cargo" + side + '1').component2()));
+      //this.addSequential(new GrabCargo());
+      this.addSequential(new Turn(Trajectories.locations.get("Depot" + side + '1').component2()));
+*/
     }
 
   }

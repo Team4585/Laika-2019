@@ -32,8 +32,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.huskyrobotics.frc2019.Constants.limelight;
 import org.huskyrobotics.frc2019.FalconAuto.*;
 import org.huskyrobotics.frc2019.auto.Auto;
-import org.huskyrobotics.frc2019.commands.*;
-import org.huskyrobotics.frc2019.commands.Auto.CargoRoutine;
+import org.huskyrobotics.frc2019.commands.Auto.*;
+//import org.huskyrobotics.frc2019.commands.Auto.CargoRoutine;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
 /**
@@ -44,12 +44,15 @@ import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
  * project.
  */
 public class Robot extends TimedRobot {
+  public Robot(){
+    super(0.025d);
+  }
   public static OI m_Oi = new OI(0,1);
-  public static CargoIO m_Cargo = new CargoIO(RobotMap.kIntake);
+  //public static CargoIO m_Cargo = new CargoIO(RobotMap.kIntake);
   //private HatchIO m_hatch;
   public static FalconDrive m_Drive = FalconDrive.getInstance();
   public static Vision m_Limelight = new Vision();
-  public static PivotArm m_Pivot = new PivotArm(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
+  //public static PivotArm m_Pivot = new PivotArm(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
   private Compressor m_Compressor = new Compressor();
   private Boolean m_HasTarget;
   Command m_autonomousCommand;
@@ -76,6 +79,8 @@ public class Robot extends TimedRobot {
     //m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
     Auto = new SendableChooser<Command>();
     Auto.addOption("My Auto", new CargoRoutine('m', 'l'));
+    Auto.addOption("Test", new TestAuto());
+    Auto.addOption("Drive Straight", new DriveStraight(2));
     SmartDashboard.putData("Auto", Auto);
 
 
@@ -172,7 +177,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = Auto.getSelected();
     m_Drive.zeroEncoders();
 
     /*

@@ -22,7 +22,7 @@ public class Constants {
 
     public static class drivetrain{
             /** Drivetrain width in feet */
-    public static final double wheel_base = 2.5; // TODO
+    public static final double wheel_base = 24/12; // TODO
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
 
@@ -61,19 +61,19 @@ public class Constants {
     // Units: setpoint, error, and output are in ticks per second.
     
     //Left Side of the above controls
-    public static final double kLGleftKp = 0; //TODO Tune
+    public static final double kLGleftKp = 5; //TODO Tune
     public static final double kLGleftKi = 0; //TODO Tune
-    public static final double kLGleftKd = 0; //TODO Tune
-    public static final double kLGleftKf = 0; //TODO Tune
+    public static final double kLGleftKd = 3; //TODO Tune
+    public static final double kLGleftKf = 20; //TODO Tune
     public static final double kLGleftIzone = 0; //TODO Tune
     public static final double kLGleftIntMax = 0; //TODO Tune
 
 
     //Right Side of the above Controls
-    public static final double kLGrightKp = 0; //TODO Tune
+    public static final double kLGrightKp = 10; //TODO Tune
     public static final double kLGrightKi = 0; //TODO Tune
-    public static final double kLGrightKd = 0; //TODO Tune
-    public static final double kLGrightKf = 0; //TODO Tune
+    public static final double kLGrightKd = 3; //TODO Tune
+    public static final double kLGrightKf = 20; //TODO Tune
     public static final double kLGrightIzone = 0; //TODO Tune
     public static final double kLGrightIntMax = 0; //TODO Tune
 
@@ -81,19 +81,19 @@ public class Constants {
     // Units: setpoint, error, and output are in ticks per second.
     
     //Left Side of the above controls
-    public static final double kHGleftKp = 0; //TODO Tune
+    public static final double kHGleftKp = 7; //TODO Tune
     public static final double kHGleftKi = 0; //TODO Tune
-    public static final double kHGleftKd = 0; //TODO Tune
-    public static final double kHGleftKf = 0; //TODO Tune
+    public static final double kHGleftKd = 4; //TODO Tune
+    public static final double kHGleftKf = 20; //TODO Tune
     public static final double kHGleftIzone = 0; //TODO Tune
     public static final double kHGleftIntMax = 0; //TODO Tune
 
 
     //Right Side of the above Controls
-    public static final double kHGrightKp = 0; //TODO Tune
+    public static final double kHGrightKp = 12; //TODO Tune
     public static final double kHGrightKi = 0; //TODO Tune
-    public static final double kHGrightKd = 0; //TODO Tune
-    public static final double kHGrightKf = 0; //TODO Tune
+    public static final double kHGrightKd = 4; //TODO Tune
+    public static final double kHGrightKf = 20; //TODO Tune
     public static final double kHGrightIzone = 0; //TODO Tune
     public static final double kHGrightIntMax = 0; //TODO Tune
 

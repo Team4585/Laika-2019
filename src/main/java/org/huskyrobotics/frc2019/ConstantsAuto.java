@@ -15,10 +15,10 @@ public class ConstantsAuto {
   public static final double kRobotAngularDrag = 12.0; // N*m / (rad/sec)
 
   // public static final double kWheelRadius = Util.toMeters(2f/12f);// meters. TODO tune
-  public static final double kWheelRadius = Util.toMeters(.05);// meters. TODO tune
+  public static final double kWheelRadius = Util.toMeters(0.5);// meters. TODO tune
 
   //public static final double kTrackWidth = Util.toMeters(26f/12f);// meters
-  public static final double kTrackWidth = Util.toMeters(0.74);// meters
+  public static final double kTrackWidth = Util.toMeters(25f/12f);// meters
 
   
   public static final double kStaticFrictionVoltage = 1.8; // Volts TODO tune
@@ -26,7 +26,7 @@ public class ConstantsAuto {
   public static final double kADrive = 0.0716; // Volts per radians per second per second TODO tune
 
   /* Ramsete constants */
-  public static final double kDriveBeta = 1.5; // Inverse meters squared
+  public static final double kDriveBeta = 1.8; // Inverse meters squared
   public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
   /* Pure Pursuit constants */

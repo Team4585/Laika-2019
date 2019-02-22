@@ -9,6 +9,7 @@ package org.huskyrobotics.frc2019.commands.Auto;
 
 import org.huskyrobotics.frc2019.Robot;
 import org.huskyrobotics.frc2019.FalconAuto.Trajectories;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -17,7 +18,7 @@ public class TestAuto extends CommandGroup {
    * Add your docs here.
    */
   public TestAuto() {
-    addParallel(Robot.m_Drive.followTrajectory(Trajectories.generatedTrajectories.get("Hatch")));
+    addSequential(FalconDrive.getInstance().followTrajectory((Trajectories.generatedTrajectories.get("test")), true));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

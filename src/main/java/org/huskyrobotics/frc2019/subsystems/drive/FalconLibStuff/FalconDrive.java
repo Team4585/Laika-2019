@@ -119,8 +119,6 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             FalconGearbox.TransmissionSide.Right, 
             true
         );
-        leftTransmission.setClosedLoopGains(10, 0, 0, 10, 0, 0);
-        rightTransmission.setClosedLoopGains(3, 0, 0, 10, 0, 0);
 
         getLeft().getMaster().configClosedloopRamp(0.4, 10);
         getRight().getMaster().configClosedloopRamp(0.4, 10);
