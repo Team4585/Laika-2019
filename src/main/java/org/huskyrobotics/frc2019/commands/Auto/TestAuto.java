@@ -5,19 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.huskyrobotics.frc2019.commands;
+package org.huskyrobotics.frc2019.commands.Auto;
+
+import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.FalconAuto.Trajectories;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DrivetrainTeleOp extends CommandGroup {
+public class TestAuto extends CommandGroup {
   /**
    * Add your docs here.
    */
-  UseDrive m_UseDrive = new UseDrive();
-  //ShiftLow m_Shift = new ShiftLow();
-  public DrivetrainTeleOp() {
-    addSequential(m_UseDrive);
-    //addSequential(m_Shift);
+  public TestAuto() {
+    addSequential(FalconDrive.getInstance().followTrajectory((Trajectories.generatedTrajectories.get("test")), true));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

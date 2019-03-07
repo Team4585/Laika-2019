@@ -29,12 +29,16 @@ public class RobotMap {
   public static final int kLeftMaster = 0;
   public static final int kRightMaster = 1;
   public static final int kPivotMaster = 2;
+  public static final int kWinchMaster = 3;
   public static final int kWhateveridk = 3;
   public static final int kHatchMotor = 4;
 
   // VictorSPXs
   public static final int kLeftSlave = 0;
   public static final int kRightSlave = 1;
+  public static final int kIntake = 4;
+  public static final int kTell_Me_What_We_Need = 4585;
+
   public static final int kWinch = 4;
   public static final int kCargo = -1;
 

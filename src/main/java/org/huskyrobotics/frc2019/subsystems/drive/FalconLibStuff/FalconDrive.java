@@ -6,7 +6,7 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.sensors.*;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
 
@@ -30,44 +30,47 @@ import org.huskyrobotics.frc2019.ConstantsAuto;
 import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconGearbox;
 import org.huskyrobotics.lib.Util;
 import org.huskyrobotics.lib.DriveSignal;
-import org.huskyrobotics.frc2019.autonomous.*;
+import org.huskyrobotics.frc2019.FalconAuto.*;
+import org.huskyrobotics.frc2019.inputs.Gyro;
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
+import org.huskyrobotics.frc2019.commands.*;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 import kotlin.ranges.RangesKt;
 
 public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBase{
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        //setDefaultCommand(new UseDrive());
+        setDefaultCommand(new UseDrive());
+    }
+    
     private static FalconDrive m_instance;
+
 
     public List<Double> lastCommandedVoltages;
     public List<Double> lastVelocity = Arrays.asList(0d, 0d);
 
-    public PigeonIMU m_gyro = new PigeonIMU(0);
+    public PigeonIMU m_Gyro = new PigeonIMU(0);
     double m_gyroZero;
 
-
-    private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
-    private static int high = 0;
-    private static int low = 1;
-    private static void shift(int HighorLow){
-        if(HighorLow == high){
-        shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        }else if(HighorLow == low){
-            shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-        }else{
-            System.out.println(HighorLow + "is not a valid shifting choice");
-        }
-    }
-    
     private Localization localization;
 
     public Localization getLocalization() {
         return localization;
     }
+
+    private static Solenoid m_Shift = new Solenoid(0);
+    public static enum Gear {
+        Low, High;
+    }
+    Gear gear;
 
     private static double kQuickStopThreshold = 0.0; 
     private static double kQuickStopAlpha = 0.0;
@@ -77,10 +80,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     private FeedForwardTracker feedForwardTracker;
     private PurePursuitTracker purePursuitTracker;
 
-    public static enum Gear {
-        Low, High;
-    }
-    Gear gear;
+
 
     Notifier localizationNotifier;
 
@@ -88,20 +88,38 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         Ramsete, PurePursuit, FeedForward, PID
     }
 
-    private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
+    
+    /*private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.Ramsete;
     public void setTrackerMode(TrajectoryTrackerMode mode) {
         trackerMode = mode;
-    }
+    }*/
 
     private DCMotorTransmission m_Transmission;
     private DifferentialDrive m_differentialDrive;
     private FalconGearbox leftTransmission, rightTransmission;
 
-    private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.FeedForward;
+    private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.Ramsete;
 
+    /* FalconDrive Instance */
+
+    public synchronized static FalconDrive getInstance() {
+        if (m_instance == null) m_instance = new FalconDrive();
+        return m_instance;
+      }
     private FalconDrive(){
-        leftTransmission = new FalconGearbox(RobotMap.kLeftMaster, RobotMap.kLeftSlave, FalconGearbox.EncoderMode.QuadEncoder, FalconGearbox.TransmissionSide.Left, false);
-        rightTransmission = new FalconGearbox(RobotMap.kRightMaster, RobotMap.kRightSlave, FalconGearbox.EncoderMode.QuadEncoder, FalconGearbox.TransmissionSide.Right, true);
+        leftTransmission = new FalconGearbox(RobotMap.kLeftMaster, 
+            RobotMap.kLeftSlave, 
+            EncoderMode.QuadEncoder, 
+            FalconGearbox.TransmissionSide.Left, 
+            false
+        );
+        rightTransmission = new FalconGearbox(RobotMap.kRightMaster, 
+            RobotMap.kRightSlave, 
+            EncoderMode.QuadEncoder, 
+            FalconGearbox.TransmissionSide.Right, 
+            true
+        );
+
         getLeft().getMaster().configClosedloopRamp(0.4, 10);
         getRight().getMaster().configClosedloopRamp(0.4, 10);
 
@@ -110,19 +128,12 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             () -> getLeft().getDistance(),
             () -> getRight().getDistance()
         );
-
-            /* set the robot pose to 0,0,0 */
         localization.reset( new Pose2d() );
-    // create a notifier to update localization and start it every 10ms
-    // localizationNotifier = new Notifier(() ->{
-    //   localization.update();
-    // });
-    // localizationNotifier.startPeriodic(0.01);
 
         m_Transmission = new DCMotorTransmission(
-        1 / ConstantsAuto.kVDrive,
-        ConstantsAuto.kWheelRadius * ConstantsAuto.kWheelRadius * ConstantsAuto.kRobotMass / (2.0 * ConstantsAuto.kADrive),
-        ConstantsAuto.kStaticFrictionVoltage
+            1 / ConstantsAuto.kVDrive,
+            ConstantsAuto.kWheelRadius * ConstantsAuto.kWheelRadius * ConstantsAuto.kRobotMass / (2.0 * ConstantsAuto.kADrive),
+            ConstantsAuto.kStaticFrictionVoltage
         );
 
         m_differentialDrive = new DifferentialDrive(
@@ -131,8 +142,8 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             ConstantsAuto.kRobotAngularDrag,
             ConstantsAuto.kWheelRadius,
             ConstantsAuto.kTrackWidth / 2.0,
-        m_Transmission,
-        m_Transmission
+            m_Transmission,
+            m_Transmission
         );
 
         ramseteTracker = new RamseteTracker(ConstantsAuto.kDriveBeta, ConstantsAuto.kDriveZeta);
@@ -140,14 +151,24 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         feedForwardTracker = new FeedForwardTracker();
 
     }
-    public DifferentialDrive getDifferentialDrive() {
+      /* Utility related Methods */
+
+      public DifferentialDrive getDifferentialDrive() {
         return m_differentialDrive;
       }
     
       public DCMotorTransmission getTransmissionModel() {
         return m_Transmission;
       }
+          
+      public FalconGearbox getLeft() {
+        return leftTransmission;
+      }
     
+      public FalconGearbox getRight() {
+        return rightTransmission;
+      }
+
       public FalconSRX<Length> getLeftMotor() {
         return getLeft().getMaster();
       }
@@ -155,12 +176,7 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
       public FalconSRX<Length> getRightMotor() {
         return getRight().getMaster();
       }
-    
-      public synchronized static FalconDrive getInstance() {
-        if (m_instance == null) m_instance = new FalconDrive();
-        return m_instance;
-      }
-      
+
       public RamseteTracker getRamseteTracker() {
         return ramseteTracker;
       }
@@ -177,19 +193,94 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             return feedForwardTracker;
           case PurePursuit:
             return purePursuitTracker;
-          case PID:
-            return null;
           default:
             return ramseteTracker;
         }
       }
-    
-      public void init() {
-        zeroEncoders();
-        setHighGear();
+          
+      /**
+       * @return The robot's position in a Pose2d Object using the Localization method
+       */
+      public Pose2d getRobotPosition(){
+        return getLocalization().getRobotPosition();
+      }
+      /**
+       * Sets the robot's position in a Pose2d Object using the Localization method
+       * @param pose2d 3 parameters (x, y, theta), using x and y as length objects, and theta as a rotation2d object
+       */
+      public void setRobotPosition(Pose2d pose2d){
+        getLocalization().reset(pose2d);
       }
     
+      /* Practical Methods */
+      
+      /**
+       * Initializes the Drivetrain by setting high gear and zeroing the encoders
+       */
+      public void init() {
+        zeroEncoders();
+        //setHighGear();
+      }
+    /**
+     * Gets gyro heading
+     * @return gyro heading
+     */
+      public double getGyro() {
+        return m_Gyro.getFusedHeading();
+      }
+    /**
+     * Gets the Gyro value of an element of the drivebase
+     * @param inverted Whether or not the location required is inverted, which multiplies the getGyro() method by -1
+     * @return New angle accounting for if its inverted 
+     */
+      public double getGyro(boolean inverted) {
+        double kgyroang;
+        if(inverted) { kgyroang = getGyro() * (-1); } else { kgyroang = getGyro(); }
+        //System.out.println("Gyroangle: " + kgyroang);
+        return kgyroang;
+      }
+    
+    /**
+     * Sets the encoder output to zero, useful for when a method needs to use clean encoder outputs
+     */
+      public void zeroEncoders() {
+        leftTransmission.zeroEncoder();
+        rightTransmission.zeroEncoder();
+      }
+    /**
+     * Zeroes the gyro heading. This is done by setting the gyro heading equal to itself so it creates a relative zero value.
+     */
+      public void zeroGyro() {
+		m_Gyro.setFusedHeading(0);
+	  }
+    /**
+     * Stops the Drivebase
+     */
+      public void stop() {
+        getLeft().stop();
+        getRight().stop();
+      }
+
+      /*Shifting Methods*/
+
+      /**
+       * Sets the gear position of the drivebase gearboxes
+       * @param gear Low or High gear parameter
+       */
+      public void setGear(Gear gear) {
+        switch (gear) {
+          case High:
+            setHighGear();
+            break;
+          case Low:
+            setLowGear();
+            break;
+        }
+      }
+    
+
       public void setHighGear() {
+        m_Shift.set(true);
         leftTransmission.setClosedLoopGains(
                 Constants.drivetrain.kHGleftKp,
                 Constants.drivetrain.kHGleftKi,
@@ -207,11 +298,10 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
                 Constants.drivetrain.kHGrightIntMax
         );
         // Trigger solenoids
-        shift(high);
-        gear = Gear.High;
       }
     
       public void setLowGear() {
+        m_Shift.set(false);
         leftTransmission.setClosedLoopGains(
             Constants.drivetrain.kLGleftKp,
             Constants.drivetrain.kLGleftKi,
@@ -228,90 +318,45 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
             Constants.drivetrain.kLGrightIzone,
             Constants.drivetrain.kLGrightIntMax
         );
-        // Trigger solenoids
-        shift(low);
-        gear = Gear.Low;
       }
-    
-      public void setGear(Gear gear) {
-        switch (gear) {
-          case High:
-            setHighGear();
-            break;
-          case Low:
-            setLowGear();
-            break;
-          default:
-            break;
-        }
-      }
-    
+
+    /* Drivetrain Motion Methods */
+
+      /**
+       * Sets the Master Talon control mode
+       * @param mode The control mode of the drivebase (Brake or Coast)
+       */
       public void setNeutralMode(NeutralMode mode) {
         getLeft().getMaster().setNeutralMode(mode);
         getRight().getMaster().setNeutralMode(mode);
       }
-    public FalconGearbox getLeft() {
-        return leftTransmission;
-    }
-    
-      public FalconGearbox getRight() {
-        return rightTransmission;
-    }
-    public void zeroEncoders() {
-        leftTransmission.zeroEncoder();
-        rightTransmission.zeroEncoder();
-      }
-    public double getGyro() {
-        return m_gyro.getCompassHeading() - m_gyroZero;
-      }
-      public double getGyro(boolean inverted) {
-        double kgyroang;
-        if(inverted) { kgyroang = getGyro() * (-1); } else { kgyroang = getGyro(); }
-        // Logger.log("Gyroangle: " + gyroang);
-        return kgyroang;
-      }
-    
-    public void stop() {
-        getLeft().stop();
-        getRight().stop();
-    }
-    public void setVoltages(double left_voltage, double right_voltage) {
+      public void setVoltages(double left_voltage, double right_voltage) {
         getLeft().getMaster().set(ControlMode.PercentOutput, left_voltage / 12);
         getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
       }
     
       public void setClosedLoop(DriveSignal signal) {
-        setCLosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(), signal.getBrakeMode());
+        setClosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(), signal.getBrakeMode());
       }
     
-      /**
-       * Set the drivetrain talons to closed loop velocity mode, given a Velocity<Length>
-       * object to represent a unit-signed speed for the left and right spides.
-       * @param left velocity in a Velocity<Length> Falconlib object
-       * @param right velocity in a Velocity<Length> Falconlib object
-       */
-      public void setCLosedLoop( Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent, boolean brakeMode) {
+    /**
+     * Set the drivetrain talons to closed loop velocity mode, given a Velocity<Length>
+     * object to represent a unit-signed speed for the left and right spides.
+     * @param left velocity in a Velocity<Length> Falconlib object
+     * @param right velocity in a Velocity<Length> Falconlib object
+     */
+      public void setClosedLoop( Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent, boolean brakeMode) {
         setNeutralMode((brakeMode) ? NeutralMode.Brake : NeutralMode.Coast);
         getLeft().getMaster().set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, leftPercent);
         getRight().getMaster().set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, rightPercent);
       }
     
       public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
-        setCLosedLoop(left, right, 0, 0, true);
+        setClosedLoop(left, right, 0, 0, true);
       }
     
       /**
-       * Set the raw speeds of the talons. Use setClosedLoop() instead.
-       * @deprecated
-       */
-      @Deprecated
-      public void setRawSpeeds(double leftRaw, double rightRaw) {
-        getLeftMotor().set(ControlMode.Velocity, leftRaw);
-        getRightMotor().set(ControlMode.Velocity, rightRaw);
-      }
-    
-      /**
-       * setPowers is an even more lazy version of set speeds. This will literally set the
+       * setPowers is an even more lazy verssion of set speeds. This will literally set the
        * throttle of the left and right talons (from -1 to 1 ofc, like normal)
        * 
        * @param left_power
@@ -321,63 +366,20 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
         leftTransmission.getMaster().set(ControlMode.PercentOutput, left_power);
         rightTransmission.getMaster().set(ControlMode.PercentOutput, right_power);
       }
-    
-      public Pose2d getRobotPosition(){
-        return getLocalization().getRobotPosition();
-      }
-    
-      public void setRobotPosition(Pose2d pose2d){
-        getLocalization().reset(pose2d);
-      }
-    
-      public void arcadeDrive(double linear, double rotation) {
-        arcadeDrive(linear, rotation, true);
-      }
-    
-      public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs){
-        linearPercent = Util.limit(linearPercent,1);
-        linearPercent = Util.deadband(linearPercent, 0.1);
-    
-        rotationPercent = Util.limit(rotationPercent,1);
-        rotationPercent = Util.deadband(rotationPercent, 0.1);
-    
-        // Square the inputs (while preserving the sign) to increase fine control
-        // while permitting full power.
-        if (squareInputs) {
-          linearPercent = Math.copySign(linearPercent * linearPercent, linearPercent);
-          rotationPercent = Math.copySign(rotationPercent * rotationPercent, rotationPercent);
-        }
-    
-        double leftMotorOutput;
-        double rightMotorOutput;
-    
-        double maxInput = Math.copySign(Math.max(Math.abs(linearPercent), Math.abs(rotationPercent)), linearPercent);
-    
-        if (linearPercent >= 0.0) {
-            // First quadrant, else second quadrant
-            if (rotationPercent >= 0.0) {
-                leftMotorOutput = maxInput;
-                rightMotorOutput = linearPercent - rotationPercent;
-            } else {
-                leftMotorOutput = linearPercent + rotationPercent;
-                rightMotorOutput = maxInput;
-            }
-        } else {
-            // Third quadrant, else fourth quadrant
-            if (rotationPercent >= 0.0) {
-                leftMotorOutput = linearPercent + rotationPercent;
-                rightMotorOutput = maxInput;
-            } else {
-                leftMotorOutput = maxInput;
-                rightMotorOutput = linearPercent - rotationPercent;
-            }
-        }
-        tankDrive(leftMotorOutput, rightMotorOutput);
-      }
-    
+      /**
+       * Mimics the WPI Curvature Drive using Falcon Library
+       * 
+       * @param linearPercent Forward Direction (converts Percent to control loop speed)
+       * @param curvaturePercent Amount of Curvature (Converts Percent to control loop speed)
+       * @param isQuickTurn If set, overrides constant-curvature turning for turn-in-place maneuvers.
+       */
       public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {
           double angularPower;
           boolean overPower;
+          linearPercent = Util.limit(linearPercent,1);
+          linearPercent = Util.deadband(linearPercent, 0.1);
+      
+          curvaturePercent = Util.deadband(curvaturePercent, 0.1);
     
           if (isQuickTurn) {
               if (Math.abs(linearPercent) < kQuickStopThreshold) {
@@ -429,27 +431,57 @@ public class FalconDrive extends Subsystem implements DifferentialTrackerDriveBa
     
           tankDrive(leftMotorOutput, rightMotorOutput);
       }
-    
+      /**
+       * Creates a tank drive object
+       * @param leftPercent Percent output of the left side of the drivebase
+       * @param rightPercent Percent output of the right side of the drivebase
+       */
       public void tankDrive(double leftPercent, double rightPercent){
         lastCommandedVoltages = Arrays.asList(leftPercent * 12, rightPercent * 12);
         getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent);
         getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
       }
+
+
+      /* Path Finding related methods */
+
+      /**
+       * 
+       * @param trajectory A trajectory object created in the Trajectories.java file using FalconDashboard
+       * @return A followed trajectory using Ramsete nonlinear control
+       */
       public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory){
         return followTrajectory(trajectory, false);
-    }
+      }
   
-    public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset){
+    /**
+     * Follows a path
+     * @param trajectory A trajectory object created in the Trajectories.java file using FalconDashboard
+     * @param reset Whether or not the trajectory is reset
+     * @return A followed trajectory using Ramsete nonlinear control
+     */
+      public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset){
         return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
-    }
+      }
   
-    public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, TrajectoryTrackerMode mode, boolean reset){
-      kDefaulTrajectoryTrackerMode = mode;
-      return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
-    }
-    @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    //setDefaultCommand(new UseDrive());
-  }
+    /**
+     * Follows a path
+     * @param trajectory A trajectory object created in the Trajectories.java file using FalconDashboard
+     * @param mode Method in which the robot controls its trajectory following
+     * @param reset Whether or not the trajectory is reset
+     * @return A followed trajectory using the mode control method
+     */
+      public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, TrajectoryTrackerMode mode, boolean reset){
+        kDefaulTrajectoryTrackerMode = mode;
+        return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
+      }
+    /**
+     * I've put too much time into this team, just fucking end me
+     */
+      public void death(){
+        if(Constants.kWillToLive <= 0){
+          //Sets left and right sides of the drivetrain to 100% (presumably into my shins)
+          tankDrive(1, 1);
+        }
+      }
 }

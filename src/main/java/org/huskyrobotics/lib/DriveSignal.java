@@ -12,11 +12,11 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
  * the brake mode is enabled.
  */
 public class DriveSignal {
-    protected Velocity<Length> mLeftMotor;
-    protected Velocity<Length> mRightMotor;
-    protected double mLeftPercent;
-    protected double mRightPercent;
-    protected boolean mBrakeMode;
+    protected Velocity<Length> m_LeftMotor;
+    protected Velocity<Length> m_RightMotor;
+    protected double m_LeftPercent;
+    protected double m_RightPercent;
+    protected boolean m_BrakeMode;
 
     public DriveSignal(Velocity<Length> left, Velocity<Length> right) {
         this(left, right, false);
@@ -35,11 +35,11 @@ public class DriveSignal {
     }
 
     public DriveSignal(Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent, boolean brakeMode) {
-        mLeftMotor = left;
-        mRightMotor = right;
-        mLeftPercent = leftPercent;
-        mRightPercent = rightPercent;
-        mBrakeMode = brakeMode;
+        m_LeftMotor = left;
+        m_RightMotor = right;
+        m_LeftPercent = leftPercent;
+        m_RightPercent = rightPercent;
+        m_BrakeMode = brakeMode;
     }
 
     public static DriveSignal NEUTRAL = new DriveSignal(VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(0f)));
@@ -47,27 +47,27 @@ public class DriveSignal {
     private static final Velocity<Length> zeroSpeed = VelocityKt.getVelocity(LengthKt.getFeet(0f));
 
     public Velocity<Length> getLeft() {
-        return mLeftMotor;
+        return m_LeftMotor;
     }
 
     public Velocity<Length> getRight() {
-        return mRightMotor;
+        return m_RightMotor;
     }
 
     public double getLeftPercent() {
-        return mLeftPercent;
+        return m_LeftPercent;
     }
 
     public double getRightPercent() {
-        return mRightPercent;
+        return m_RightPercent;
     }
 
     public boolean getBrakeMode() {
-        return mBrakeMode;
+        return m_BrakeMode;
     }
 
     @Override
     public String toString() {
-        return "L: " + mLeftMotor + ", R: " + mRightMotor + (mBrakeMode ? ", BRAKE" : "");
+        return "L: " + m_LeftMotor + ", R: " + m_RightMotor + (m_BrakeMode ? ", BRAKE" : "");
     }
 }

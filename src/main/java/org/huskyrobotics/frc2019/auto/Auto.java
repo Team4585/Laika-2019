@@ -93,10 +93,12 @@ public class Auto {
 			break;
 		}
 		path.calculate(seconds, step, robotWidth);
-		path.driveBot(seconds, step);
+		//path.driveBot(seconds, step); This is broken, and I'm not sure where it's trying to get  data
 		//TODO place thing
 	}
-		void allignRobot(int placeholdDis2, int placeholdDis1) {
+	@SuppressWarnings("unused")	
+	void allignRobot(int placeholdDis2, int placeholdDis1) {
+
 		int disBetSen = 2;
 		double degrees = 0;
 		if(placeholdDis1 > placeholdDis2 ) {

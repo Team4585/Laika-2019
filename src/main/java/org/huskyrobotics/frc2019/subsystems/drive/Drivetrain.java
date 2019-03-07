@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 
 
-import org.huskyrobotics.lib.subsystems.*;
 import org.huskyrobotics.frc2019.Constants;
 import org.huskyrobotics.frc2019.RobotMap;
-import org.huskyrobotics.frc2019.inputs.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
