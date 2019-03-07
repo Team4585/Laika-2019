@@ -17,10 +17,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.huskyrobotics.frc2019.subsystems.cargo.CargoIO;
-import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
-import org.huskyrobotics.frc2019.subsystems.superstructure.PivotArm;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -36,6 +32,19 @@ import org.huskyrobotics.frc2019.commands.Auto.*;
 //import org.huskyrobotics.frc2019.commands.Auto.CargoRoutine;
 import org.huskyrobotics.frc2019.inputs.*;
 import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
+import org.huskyrobotics.frc2019.subsystems.*;
+import org.huskyrobotics.frc2019.subsystems.cargo.*;
+import org.huskyrobotics.frc2019.subsystems.hatch.*;
+import org.huskyrobotics.frc2019.subsystems.climber.*;
+import org.huskyrobotics.frc2019.subsystems.superstructure.*;
+import org.huskyrobotics.frc2019.subsystems.drive.*;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
+//import org.huskyrobotics.frc2019.subsystems.hatch.*;
+import org.huskyrobotics.frc2019.commands.UseDrive;
+//import org.huskyrobotics.frc2019.subsystems.cargo.*;
+import org.huskyrobotics.frc2019.inputs.*;
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
+import org.huskyrobotics.frc2019.subsystems.superstructure.*;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -47,14 +56,16 @@ public class Robot extends TimedRobot {
   public Robot(){
     super(0.025d);
   }
-  public static OI m_Oi = new OI(0,1);
-  //public static CargoIO m_Cargo = new CargoIO(RobotMap.kIntake);
-  //private HatchIO m_hatch;
-  public static FalconDrive m_Drive = FalconDrive.getInstance();
-  public static Vision m_Limelight = new Vision();
-  //public static PivotArm m_Pivot = new PivotArm(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
-  private Compressor m_Compressor = new Compressor();
-  private Boolean m_HasTarget;
+
+  public static OI m_oi;
+  public static PivotArm m_Arm;
+  public static CargoIO m_Sputnik;
+  public static HatchIO m_Kennedy;
+  public static IsaiahFlipper m_Armstrong;
+  //private VisionController Limelight;
+  public static FalconDrive m_Drive;
+  public UseDrive m_DriveTrain;
+  
   Command m_autonomousCommand;
   SendableChooser<Command> Auto;
   //private ShuffleboardTab tab = Shuffleboard.getTab("Commands");
@@ -75,16 +86,13 @@ public class Robot extends TimedRobot {
 
     Trajectories.generateAllTrajectories();
     m_Compressor.setClosedLoopControl(true);                                                                                        
-    //m_cargo = new CargoIO(RobotMap.cargoMotorPWM, RobotMap.cargoMotorDIO, RobotMap.cargoSensor);
-    //m_hatch = new HatchIO(RobotMap.actuatorPortsPWM, RobotMap.actuatorPortsDIO);
-    Auto = new SendableChooser<Command>();
-    Auto.addOption("My Auto", new CargoRoutine('m', 'l'));
-    Auto.addOption("Test", new TestAuto());
-    Auto.addOption("Drive Straight", new DriveStraight(2));
-    SmartDashboard.putData("Auto", Auto);
 
-
-
+    m_oi = new OI(0, 1);
+    m_Arm = new PivotArm(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
+    m_Sputnik = new CargoIO(RobotMap.kCargo);
+    m_Kennedy = new HatchIO(RobotMap.kHatchMotor);
+    // chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Auto mode", m_chooser);
   }
 
   /**
@@ -199,7 +207,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-   
+    m_DriveTrain.start();
   }
 
   @Override
@@ -220,7 +228,21 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     
+    m_oi.periodic();
 
+    m_Arm.periodic();
+
+    m_Sputnik.setCargoAxis(m_oi.getCargoAxis());
+    
+    m_Kennedy.periodic();
+    if(m_oi.getHatchToggle()) {
+      m_Kennedy.setHatchToggle();
+    }
+
+    m_Armstrong.periodic();
+
+    m_DriveTrain.start();
+    // m_Drive.curvatureDrive(m_oi.getRobotForward(), m_oi.getRobotTwist(), false);
   }
 
   /**
@@ -228,5 +250,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    Scheduler.getInstance().run();
+    m_oi.periodic();
+
+    m_Arm.periodic();
+
+    m_Sputnik.setCargoAxis(m_oi.getCargoAxis());
+    
+    m_Kennedy.periodic();
+    if(m_oi.getHatchToggle()) {
+      m_Kennedy.setHatchToggle();
+    }
+
+    m_Armstrong.periodic();
+
+    m_DriveTrain.start();
   }
 }

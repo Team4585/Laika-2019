@@ -1,8 +1,8 @@
-package org.huskyrobotics.frc2019.auto;
+/*package org.huskyrobotics.frc2019.auto;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import java.lang.Math;
-import org.huskyrobotics.lib.linesmoother.*;
+import org.huskyrobotics.frc2019.auto.FalconPathPlanner;
 
 public class Auto {
 	double seconds = 15.0; //the amount of seconds to run bot
@@ -98,6 +98,7 @@ public class Auto {
 	}
 	@SuppressWarnings("unused")	
 	void allignRobot(int placeholdDis2, int placeholdDis1) {
+
 		int disBetSen = 2;
 		double degrees = 0;
 		if(placeholdDis1 > placeholdDis2 ) {
@@ -115,3 +116,5 @@ public class Auto {
 	
 	
 }
+
+*/

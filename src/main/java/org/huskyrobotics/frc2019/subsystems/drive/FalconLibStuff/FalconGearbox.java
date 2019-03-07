@@ -78,6 +78,7 @@ public class FalconGearbox {
 
     }
       /* Utility Methods */
+      }
         public FalconSRX<Length> getMaster() {
             return m_Master;
         }

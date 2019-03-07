@@ -21,8 +21,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 public class Drivetrain extends Subsystem {
-    public void initDefaultCommand() 
-	{
+    public void initDefaultCommand() {
         //setDefaultCommand(new UseDrivetrain());
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
@@ -51,7 +50,7 @@ public class Drivetrain extends Subsystem {
 
    public static Drivetrain instance;
 
-    public void DTinit(){
+    public void DTinit() {
        
     // Configure Left Side
         m_LeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
@@ -64,6 +63,7 @@ public class Drivetrain extends Subsystem {
     // Configure Right Side 
        m_RightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.drivetrain.drivePIDIdx, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.setSensorPhase(true);
+
        m_RightMaster.configNominalOutputForward(0, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.configNominalOutputReverse(0, Constants.drivetrain.kTimeoutMs);
        m_RightMaster.configPeakOutputForward(1, Constants.drivetrain.kTimeoutMs);
@@ -77,12 +77,12 @@ public class Drivetrain extends Subsystem {
         m_RightSlave.setInverted(inverted);
         m_RightMaster.setInverted(inverted);
     }
-    public void shift(){
+    public void shift() {
         System.out.println("Shifting gears");
         m_Shifter.set(m_IsHighGear);
-        if(m_IsHighGear == true){
+        if(m_IsHighGear == true) {
             System.out.println("Shifted to High Gear");
-        }else{
+        } else {
             System.out.println("Shifted to Low Gear");
         }
     }
@@ -92,14 +92,11 @@ public class Drivetrain extends Subsystem {
         {
 			setSpeed(yValue, yValue);
 	 	}
-		else if(yValue == 0 && Math.abs(xValue) < 0.15) //Resets the angle when there's no yValue
-		{
+		else if(yValue == 0 && Math.abs(xValue) < 0.15) {//Resets the angle when there's no yValue
 			gyro.resetAngle();
 			stop();
 			supposedAngle = gyro.getYaw();
-		}
-		else
-		{
+		} else {
 			gyro.resetAngle();
 			curvatureDrive(xValue, yValue);
 			supposedAngle = gyro.getYaw();
@@ -107,15 +104,13 @@ public class Drivetrain extends Subsystem {
 	}*/
     
     //Sets the percent output of each motor
-    public void setPercentOutput(double lOutput, double rOutput)
-	{
+    public void setPercentOutput(double lOutput, double rOutput) {
 	    m_RightMaster.set(ControlMode.PercentOutput, rOutput);
 		m_LeftMaster.set(ControlMode.PercentOutput, lOutput);
 	}
 
 	//stops motors /shrug
-	public void stop()
-	{
+	public void stop() {
 		m_RightMaster.stopMotor();
 		m_LeftMaster.stopMotor();
     }
@@ -137,29 +132,25 @@ public class Drivetrain extends Subsystem {
 	}
 
     //gives the current of the motors driving the robot
-	public void testDrivetrainCurrent()
-	{
+	public void testDrivetrainCurrent() {
 		System.out.println("Left Motor Current: " + m_LeftMaster.getOutputCurrent());
 		System.out.println("Right Motor Current:" + m_RightMaster.getOutputCurrent());
 	}
     
     //Current limits the drivetrain motors if required
-	public void enableCurrentLimiting(double amps)
-	{
+	public void enableCurrentLimiting(double amps) {
 		m_LeftMaster.enableCurrentLimit(true);
 		m_RightMaster.enableCurrentLimit(true);
 	}
 	//Sets the motors to brake mode (This means they stop when you want it to with little deceleration)
-	public void setToBrake()
-	{
+	public void setToBrake() {
 		m_LeftMaster.setNeutralMode(NeutralMode.Brake);
 		m_RightMaster.setNeutralMode(NeutralMode.Brake);
 		m_LeftSlave.setNeutralMode(NeutralMode.Brake);
 		m_RightSlave.setNeutralMode(NeutralMode.Brake);
 	}
     //Sets the motors to Coast mode (This means they have a deceleration when a joystick is in neutral position)
-	public void setToCoast()
-	{
+	public void setToCoast() {
 		m_LeftMaster.setNeutralMode(NeutralMode.Coast);
 		m_RightMaster.setNeutralMode(NeutralMode.Coast);
         m_LeftSlave.setNeutralMode(NeutralMode.Coast);
@@ -172,8 +163,7 @@ public class Drivetrain extends Subsystem {
      *This makes the robot more controllable at high speeds. Also handles the robot's quick turn functionality - 
      *"quick turn" overrides constant-curvature turning for turn-in-place maneuvers.
      */
-    public void curvatureDrive(double throttle, double turn)
-	{
+    public void curvatureDrive(double throttle, double turn) {
 		drive.curvatureDrive(throttle, turn, true);	//curvature drive from WPILIB libraries.
     }
     

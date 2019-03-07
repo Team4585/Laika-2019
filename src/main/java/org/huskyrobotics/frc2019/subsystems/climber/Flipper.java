@@ -13,6 +13,19 @@ public class Flipper {
     private boolean m_solActive;
     private boolean m_IsClampActive;
 
+public class Flipper {
+
+    // the channel of the solenoids(should be the same)
+    private int c_channel = 0;
+    private int c_winchMotorPort = 0;
+    private int c_deviceNumber = 66666;
+    // initially set to false untill winch is the correct radius
+    private boolean m_status = false;
+    private Clamp c_clamp = new Clamp(c_channel, m_status);
+    private Winch c_winch = new Winch(c_winchMotorPort, c_deviceNumber);
+
+    public void autoInit() {
+
     public static enum EncoderMode {
         None, QuadEncoder, CTRE_MagEncoder_Relative, CTRE_MagEncoder_Absolute
     }
@@ -72,4 +85,5 @@ public class Flipper {
         m_winchMotor.configMaxIntegralAccumulator(0, maxIntegral, 0);
       }
     
+
 }

@@ -4,6 +4,7 @@ public class Encoder{
     public static enum EncoderMode {
         None, QuadEncoder, CTRE_MagEncoder_Relative, CTRE_MagEncoder_Absolute
     }
+  
     public static double rawToRotation(int rawPosition, double unitsPerRotation) {
 		double rotations = (rawPosition / unitsPerRotation);
 		return rotations;
@@ -92,4 +93,6 @@ public class Encoder{
 		double raw = rotations * unitsPerRotation;
 		return raw;
 	}
+        None, QuadEncoder, CTRE_MagEncoder_Absolute, CTRE_MagEncoder_Relative
+    }
 }

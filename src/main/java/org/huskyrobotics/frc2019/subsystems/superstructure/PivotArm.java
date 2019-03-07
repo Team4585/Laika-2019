@@ -19,13 +19,19 @@ import org.huskyrobotics.frc2019.Constants;
 import org.huskyrobotics.frc2019.Robot;
 import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
 import org.huskyrobotics.lib.DriveSignal;
+//import org.huskyrobotics.frc2019.subsystems.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.*;
+
+import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
 
 //import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PivotArm extends Subsystem {
-    @Override
+
     public void initDefaultCommand() 
 	{
         // setDefaultCommand(new UseDrivetrain());
@@ -39,6 +45,8 @@ public class PivotArm extends Subsystem {
       private double m_startAngle = 90;
       private NativeUnitRotationModel rotationModel = Constants.PivotArm.kArmNativeunitRotationmodel;
       private FalconSRX<Rotation2d> m_motor;
+
+      private TalonSRX m_motor;
       //private AnalogPotentiometer m_potent;
       //variables used for PID
       private final double kP = 1;//Speed Constant
@@ -88,45 +96,7 @@ public class PivotArm extends Subsystem {
       public void init(){
         m_motor.setSensorPosition(Rotation2dKt.getDegree(m_startAngle));
       }
-      /**
-       * Raises or lowers the arm based on user input
-       * @param input the user-controlled input
-       */
-      public void setArmAxis(double input) {
-        m_motor.setSensorPosition(Rotation2dKt.getDegree(input));
-        
-        /*if(input > 0.1) {
-                  goUp();
-            } else if(input < -0.1) {
-                  goDown();
-            } else {
-                  stop();
-            }*/
-      }
-      /**
-       * Disables the arm while climbing is active
-       * @param input
-       */
-	public void setIsClimbActive (boolean input) {
-		if (input) {
-            setTarget(m_startAngle);
-            m_controlActive = false;
-		}
-	}
 
-      /**
-       * To be called by Robot.java. Will move the arm towards the target position.
-       */
-      public void periodic() {
-            if(!m_controlActive) {
-                  setTarget(m_targetAngle);
-                  m_motor.setSensorPosition(Rotation2dKt.getDegree(m_targetAngle));
-                  SmartDashboard.putNumber("Target Arm Angle", m_targetAngle);
-            }
-            if(Robot.m_Oi.getRotate() == true){
-                setTarget(45);
-            }
-      }
 
       /**
        * Gets the current arm angle
@@ -134,7 +104,65 @@ public class PivotArm extends Subsystem {
        */
       public double getCurrentAngle() {
             return m_startAngle - m_currentAngle;
+            m_motor = new TalonSRX(motorPort);
+
+            if(mode == EncoderMode.QuadEncoder){
+            m_motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
+            }
+            m_motor.setSensorPhase(true);
+            m_motor.configNominalOutputForward(0, kTimeoutMs);
+            m_motor.configNominalOutputReverse(0, kTimeoutMs);
+            m_motor.configPeakOutputForward(1, kTimeoutMs);
+            m_motor.configPeakOutputReverse(-1, kTimeoutMs);
+            
+            m_motor.selectProfileSlot(0, 0);
+            m_motor.config_kF(0, kF, kTimeoutMs);
+            m_motor.config_kP(0, kP, kTimeoutMs);
+            m_motor.config_kI(0, kI, kTimeoutMs);
+            m_motor.config_kD(0, kD, kTimeoutMs);
+            m_motor.config_IntegralZone(0, 100, kTimeoutMs);
+
+            m_startAngle = 90;
+            m_currentAngle = m_startAngle;
+            m_targetAngle = m_currentAngle;
+            SmartDashboard.putNumber("Current Arm Angle", m_currentAngle);
+            SmartDashboard.putNumber("Target Arm Angle", m_targetAngle);
       }
+
+      /**
+       * Raises or lowers the arm based on user input
+       * @param input the user-controlled input
+       */
+      public void setArmAxis(double input) {
+            if(input > 0.1) {
+                  goUp();
+            } else if(input < -0.1) {
+                  goDown();
+            } else {
+                  stop();
+            }
+      }
+      /**
+       * Disables the arm while climbing is active
+       * @param input
+       */
+	public void setIsClimbActive (boolean input) {
+		if (input) {
+			setTarget(0);
+		}
+	}
+
+      /**
+       * To be called by Robot.java. Will move the arm towards the target position.
+       */
+      public void periodic() {
+            calculateAngle();
+            if(!m_controlActive) {
+                  setTarget(m_startAngle);
+            }
+            m_motor.set(ControlMode.Position, m_targetAngle);
+      }
+
       
 
       /**
@@ -145,7 +173,6 @@ public class PivotArm extends Subsystem {
             m_targetAngle = angle;
       }
 
-      /**
        * Raises the arm by 90 degrees
        */
       public void goUp() {
@@ -164,6 +191,12 @@ public class PivotArm extends Subsystem {
        */
       public void stop() {
             setTarget(m_currentAngle);
-            m_motor.setNeutralMode(NeutralMode.Coast);
       }
-    }
+
+      /**
+       * Used to calculate the current angle of the arm
+       */
+      private void calculateAngle() {
+            m_currentAngle = m_motor.getSelectedSensorPosition()/360;
+      }
+}
