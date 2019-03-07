@@ -14,10 +14,10 @@ public class DrivetrainTeleOp extends CommandGroup {
    * Add your docs here.
    */
   UseDrive m_UseDrive = new UseDrive();
-  //ShiftLow m_Shift = new ShiftLow();
+  Shift m_Shift = new Shift();
   public DrivetrainTeleOp() {
-    addSequential(m_UseDrive);
-    //addSequential(m_Shift);
+    addParallel(m_UseDrive);
+    addSequential(m_Shift);
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

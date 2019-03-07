@@ -40,7 +40,7 @@ import javax.swing.*;
  * @date 9 Sept 2014
  *
  */
-@SuppressWarnings("unused")
+ 
 class FalconLinePlot extends JPanel implements ClipboardOwner{
   
     
@@ -59,8 +59,7 @@ class FalconLinePlot extends JPanel implements ClipboardOwner{
     private double yMin;
     private double xMax;
     private double xMin;
-
-
+    
     private int yticCount;
     private int xticCount;
     private double xTicStepSize;

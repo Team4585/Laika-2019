@@ -8,20 +8,19 @@
 package org.huskyrobotics.frc2019.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-
-import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
 
 /**
  * Add your docs here.
  */
-public class ShiftLow extends InstantCommand {
+public class Shift extends InstantCommand {
   /**
    * Add your docs here.
    */
-  Boolean m_isHigh;
-  public ShiftLow() {
+  Drivetrain m_Drive = new Drivetrain();
+  public Shift() {
     super();
-    requires(Robot.m_Drive);
+    requires(m_Drive);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -29,8 +28,7 @@ public class ShiftLow extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.m_Drive.setLowGear();
-    m_isHigh = false;
+    m_Drive.shift();
   }
 
 }

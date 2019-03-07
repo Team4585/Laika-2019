@@ -1,5 +1,4 @@
 package org.huskyrobotics.frc2019.auto;
-
 import edu.wpi.first.wpilibj.Encoder;
 
 class CalcPos{
