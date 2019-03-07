@@ -7,11 +7,13 @@
 
 package org.huskyrobotics.frc2019.commands;
 
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-
-import org.huskyrobotics.lib.DriveSignal;
+import org.huskyrobotics.frc2019.subsystems.drive.*;
+import org.huskyrobotics.frc2019.subsystems.drive.Drivetrain;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.FalconDrive;
 import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.OI;
 
 public class UseDrive extends Command {
   public UseDrive(OI oi) {
@@ -20,18 +22,11 @@ public class UseDrive extends Command {
     // eg. requires(chassis);
     m_OI = oi;
   }
-
-  DriveSignal m_Signal;
-  Boolean isQuickTurn = (Robot.m_Oi.GetRobotForward() < 0.1);
-
   OI m_OI;
-
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_Drive.curvatureDrive(0, 0, false);
-    Robot.m_Drive.setClosedLoop(DriveSignal.BRAKE);
     Robot.m_Drive.init();
   }
 
@@ -57,6 +52,5 @@ public class UseDrive extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.m_Drive.curvatureDrive(0, 0, isQuickTurn);
   }
 }

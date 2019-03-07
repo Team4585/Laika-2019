@@ -8,14 +8,11 @@
 package org.huskyrobotics.frc2019.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.huskyrobotics.frc2019.Robot;
+import org.huskyrobotics.frc2019.subsystems.drive.FalconLibStuff.*;
 import org.huskyrobotics.frc2019.inputs.Vision;
 import org.huskyrobotics.lib.Util;
-
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.huskyrobotics.frc2019.Constants;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -27,7 +24,9 @@ public class HeyLookListen extends Command {
   angleDeltaX,
   angleDeltaY,
   forwardSpeed,
-  turnSpeed;
+  turnSpeed,
+  leftSpeedRaw,
+  rightSpeedRaw;
   boolean followRange = false;
 
   double targetSizeSetpoint = 6;
@@ -86,18 +85,13 @@ public class HeyLookListen extends Command {
 
       double forwardSpeed = distanceRatio * 0.2;
 
-      if (sizeData > targetSizeSetpoint) { 
-        tooClose = true; System.out.println("Too close"); 
-      }
+      if (sizeData > targetSizeSetpoint) { tooClose = true; System.out.println("Too close"); }
 
       if ( forwardSpeed > 0.5 ) { forwardSpeed = 0.5;}
       if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
 
-      SmartDashboard.putNumber("forward speed", forwardSpeed);
-      SmartDashboard.putNumber("Turn speed", turnSpeed);
-      
-      //Robot.m_Drive.setPowers(forwardSpeed + turnSpeed, forwardSpeed - turnSpeed);
-      Robot.m_Drive.setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(forwardSpeed + turnSpeed)), VelocityKt.getVelocity(LengthKt.getFeet(forwardSpeed - turnSpeed)));
+      System.out.println("forward speed: " + forwardSpeed + " Turn speed: " + turnSpeed);
+
     } else {
       noCurrentTarget = true;
     }
@@ -117,7 +111,6 @@ public class HeyLookListen extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("done finding a vision target.");
   }
 
   // Called when another command which requires one or more of the same

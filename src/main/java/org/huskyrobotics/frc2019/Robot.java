@@ -7,31 +7,11 @@
 
 package org.huskyrobotics.frc2019;
 
-
-import java.util.Arrays;
-import java.util.List;
-
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.ghrobotics.lib.debug.LiveDashboard;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-import org.huskyrobotics.frc2019.Constants.limelight;
-import org.huskyrobotics.frc2019.FalconAuto.*;
-import org.huskyrobotics.frc2019.auto.Auto;
-import org.huskyrobotics.frc2019.commands.Auto.*;
-//import org.huskyrobotics.frc2019.commands.Auto.CargoRoutine;
-import org.huskyrobotics.frc2019.inputs.*;
-import org.huskyrobotics.frc2019.inputs.Encoder.EncoderMode;
 import org.huskyrobotics.frc2019.subsystems.*;
 import org.huskyrobotics.frc2019.subsystems.cargo.*;
 import org.huskyrobotics.frc2019.subsystems.hatch.*;
@@ -53,10 +33,6 @@ import org.huskyrobotics.frc2019.subsystems.superstructure.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public Robot(){
-    super(0.025d);
-  }
-
   public static OI m_oi;
   public static PivotArm m_Arm;
   public static CargoIO m_Sputnik;
@@ -67,8 +43,7 @@ public class Robot extends TimedRobot {
   public UseDrive m_DriveTrain;
   
   Command m_autonomousCommand;
-  SendableChooser<Command> Auto;
-  //private ShuffleboardTab tab = Shuffleboard.getTab("Commands");
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -76,17 +51,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_Drive.getLocalization().reset(new Pose2d(LengthKt.getFeet(5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
-    m_Drive.init();
-    m_Drive.zeroGyro();
-    System.out.println("Robot is Zeroed and init'd");
-    
-    
-    
-
-    Trajectories.generateAllTrajectories();
-    m_Compressor.setClosedLoopControl(true);                                                                                        
-
     m_oi = new OI(0, 1);
     m_Arm = new PivotArm(RobotMap.kPivotMaster, EncoderMode.QuadEncoder);
     m_Sputnik = new CargoIO(RobotMap.kCargo);
@@ -105,54 +69,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    m_Drive.getLocalization().update();
-
-
-    SmartDashboard.putNumber("Robot X (feet) ", m_Drive.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-    SmartDashboard.putNumber("Robot Y (feet) ", m_Drive.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
-    SmartDashboard.putNumber("Robot Heading (degrees)", m_Drive.getLocalization().getRobotPosition().getRotation().getDegree());
-
-		LiveDashboard.INSTANCE.setRobotX(m_Drive.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		LiveDashboard.INSTANCE.setRobotY(m_Drive.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
-		LiveDashboard.INSTANCE.setRobotHeading(m_Drive.getLocalization().getRobotPosition().getRotation().getRadian());
-
-		SmartDashboard.putNumber("Left talon speed", m_Drive.getLeft().getFeetPerSecond());
-		SmartDashboard.putNumber("Left talon error", m_Drive.getLeft().getClosedLoopError().getFeet());
-		SmartDashboard.putNumber("Right talon speed", m_Drive.getRight().getFeetPerSecond());
-		SmartDashboard.putNumber("Right talon error", m_Drive.getRight().getClosedLoopError().getFeet());
-
-		List<Double> feetPerSecond = Arrays.asList(
-				VelocityKt.getFeetPerSecond(m_Drive.getLeft().getVelocity()),
-				VelocityKt.getFeetPerSecond(m_Drive.getRight().getVelocity()));
-		List<Double> feetPerSecondPerSecond = Arrays.asList(
-				(VelocityKt.getFeetPerSecond(m_Drive.getLeft().getVelocity()) - m_Drive.lastVelocity.get(0)) / 0.02d,
-        (VelocityKt.getFeetPerSecond(m_Drive.getRight().getVelocity()) - m_Drive.lastVelocity.get(0)) / 0.02d);
-        
-		SmartDashboard.putNumber("Left drivetrain feet per second", feetPerSecond.get(0));
-    SmartDashboard.putNumber("Right drivetrain feet per second", feetPerSecond.get(1));
-
-    SmartDashboard.putNumber("Rough Speed", Math.sqrt(Math.pow(feetPerSecond.get(0), 2) + Math.pow(feetPerSecond.get(1), 2)));
-
-    SmartDashboard.putNumber("Left Acceleration", feetPerSecondPerSecond.get(0));
-    SmartDashboard.putNumber("Right Aceeleration", feetPerSecondPerSecond.get(0));
-
-    SmartDashboard.putNumber("Rough Acceleration", Math.sqrt(Math.pow(feetPerSecondPerSecond.get(0), 2) + Math.pow(feetPerSecondPerSecond.get(1), 2)));
-
-		SmartDashboard.putNumber("7 feet per second is", m_Drive.getLeft().getModel().fromModel(LengthKt.getFeet(7)).getValue());
-
-    SmartDashboard.putNumber("Current Gyro angle", m_Drive.getGyro());
-    
-    double[] limelightdata = m_Limelight.getData();
-    if(limelightdata[0] == 1){
-      m_HasTarget = true;
-    }
-
-		SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-		SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-		SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-		SmartDashboard.putNumber("Target area", limelightdata[3]);
-		SmartDashboard.putNumber("Target skew", limelightdata[4]);
-		SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
   }
 
   /**
@@ -162,9 +78,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    m_Drive.getLocalization().reset(new Pose2d(LengthKt.getFeet(5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
-    m_Drive.setNeutralMode(NeutralMode.Coast);
-    m_Drive.setLowGear();
   }
 
   @Override
@@ -185,8 +98,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = Auto.getSelected();
-    m_Drive.zeroEncoders();
+    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -207,6 +119,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    
     m_DriveTrain.start();
   }
 
@@ -227,7 +140,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    
     m_oi.periodic();
 
     m_Arm.periodic();

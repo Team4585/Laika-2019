@@ -69,15 +69,6 @@ public class OI {
     weaponsControls = new HashMap[] {controlsMic, controlsAhn};
   }
 
-    controlsW.put("ArmAxis", 1);
-    controlsW.put("CargoIn", 1);
-    controlsW.put("CargoOut", 2);
-    //controlsW.put("HatchPush", 1);
-    controlsW.put("Climb", 3);
-    controlsW.put("TeleopSwitch", 7);
-    controlsW.put("ArmRotate", 5);
-  } 
-
   //These functions will be used by robot.java to get the input
   public double getRobotForward () {//The value used for robot motors moving forward. Should be put into Drive
     return m_HelmStick.getRawAxis((int) helmControls[m_helm.getSelected()].get("RobotForward"));
@@ -88,15 +79,10 @@ public class OI {
   public boolean getTeleopSwitch () {//The value used to switch to teleop incase auto fails. Should be put somewhere? ¯\_(ツ)_/¯
     return m_HelmStick.getRawButton((int) helmControls[m_helm.getSelected()].get("TeleopSwitch"));
   }
-  public boolean GetCargoIn () {//The value used for controlling the cargo intake. Should be put into CargoIO
-    return m_WeaponStick.getRawButton(controlsW.get("CargoIn"));
-  }
-  public boolean GetCargoOut() {
-    return m_WeaponStick.getRawButton(controlsW.get("CargoOut"));
+
 
   public double getArmAxis () {//The value used for moving the arm up and down. Should be put into PivotArm
     return m_WeaponStick.getRawAxis((int) weaponsControls[m_weapon.getSelected()].get("ArmAxis"));
-
   }
   public double getCargoAxis () {//The value used for controlling the cargo intake. Should be put into CargoIO
     if ((int) weaponsControls[m_weapon.getSelected()].get("CargoIn") > 0) {
@@ -130,9 +116,6 @@ public class OI {
   }
   public boolean getHatchToggle () {//The value used for pushing out hatch panels. Should be put into HatchIO
     return m_WeaponStick.getRawButtonReleased((int) weaponsControls[m_weapon.getSelected()].get("HatchToggle"));
-  }
-  public boolean getRotate(){
-    return m_WeaponStick.getRawButton(controlsW.get("ArmRotate"));
   }
 }
 

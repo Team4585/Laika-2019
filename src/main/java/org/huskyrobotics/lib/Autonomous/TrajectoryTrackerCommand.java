@@ -14,7 +14,7 @@ import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerDriveBase;
 import java.util.function.Supplier;
 
-
+@SuppressWarnings({"unused"})
 public class TrajectoryTrackerCommand extends Command {
     private TrajectoryTracker trajectoryTracker;
     private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
